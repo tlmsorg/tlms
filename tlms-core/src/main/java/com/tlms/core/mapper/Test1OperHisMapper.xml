@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tlms.core.dao.Test1OperHisMapper">
+  <resultMap id="BaseResultMap" type="com.tlms.core.domain.Test1OperHis">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_CODE" jdbcType="VARCHAR" property="appCode" />
+    <result column="USER_CODE" jdbcType="VARCHAR" property="userCode" />
+    <result column="CLASS_NAME" jdbcType="VARCHAR" property="className" />
+    <result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
+    <result column="UPD_MODE" jdbcType="VARCHAR" property="updMode" />
+    <result column="VALUE_PRE" jdbcType="VARCHAR" property="valuePre" />
+    <result column="VALUE_NOW" jdbcType="VARCHAR" property="valueNow" />
+    <result column="OPER_TIME" jdbcType="TIMESTAMP" property="operTime" />
+    <result column="FIELD_NAME" jdbcType="VARCHAR" property="fieldName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, APP_CODE, USER_CODE, CLASS_NAME, TABLE_NAME, UPD_MODE, VALUE_PRE, VALUE_NOW, 
+    OPER_TIME, FIELD_NAME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_test1_operhis
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_test1_operhis
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tlms.core.domain.Test1OperHis">
+    insert into t_test1_operhis (ID, APP_CODE, USER_CODE, 
+      CLASS_NAME, TABLE_NAME, UPD_MODE, 
+      VALUE_PRE, VALUE_NOW, OPER_TIME, 
+      FIELD_NAME)
+    values (#{id,jdbcType=VARCHAR}, #{appCode,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, 
+      #{className,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{updMode,jdbcType=VARCHAR}, 
+      #{valuePre,jdbcType=VARCHAR}, #{valueNow,jdbcType=VARCHAR}, #{operTime,jdbcType=TIMESTAMP}, 
+      #{fieldName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tlms.core.domain.Test1OperHis">
+    insert into t_test1_operhis
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="appCode != null">
+        APP_CODE,
+      </if>
+      <if test="userCode != null">
+        USER_CODE,
+      </if>
+      <if test="className != null">
+        CLASS_NAME,
+      </if>
+      <if test="tableName != null">
+        TABLE_NAME,
+      </if>
+      <if test="updMode != null">
+        UPD_MODE,
+      </if>
+      <if test="valuePre != null">
+        VALUE_PRE,
+      </if>
+      <if test="valueNow != null">
+        VALUE_NOW,
+      </if>
+      <if test="operTime != null">
+        OPER_TIME,
+      </if>
+      <if test="fieldName != null">
+        FIELD_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appCode != null">
+        #{appCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userCode != null">
+        #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null">
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null">
+        #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="updMode != null">
+        #{updMode,jdbcType=VARCHAR},
+      </if>
+      <if test="valuePre != null">
+        #{valuePre,jdbcType=VARCHAR},
+      </if>
+      <if test="valueNow != null">
+        #{valueNow,jdbcType=VARCHAR},
+      </if>
+      <if test="operTime != null">
+        #{operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fieldName != null">
+        #{fieldName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tlms.core.domain.Test1OperHis">
+    update t_test1_operhis
+    <set>
+      <if test="appCode != null">
+        APP_CODE = #{appCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userCode != null">
+        USER_CODE = #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null">
+        CLASS_NAME = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null">
+        TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="updMode != null">
+        UPD_MODE = #{updMode,jdbcType=VARCHAR},
+      </if>
+      <if test="valuePre != null">
+        VALUE_PRE = #{valuePre,jdbcType=VARCHAR},
+      </if>
+      <if test="valueNow != null">
+        VALUE_NOW = #{valueNow,jdbcType=VARCHAR},
+      </if>
+      <if test="operTime != null">
+        OPER_TIME = #{operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fieldName != null">
+        FIELD_NAME = #{fieldName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tlms.core.domain.Test1OperHis">
+    update t_test1_operhis
+    set APP_CODE = #{appCode,jdbcType=VARCHAR},
+      USER_CODE = #{userCode,jdbcType=VARCHAR},
+      CLASS_NAME = #{className,jdbcType=VARCHAR},
+      TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+      UPD_MODE = #{updMode,jdbcType=VARCHAR},
+      VALUE_PRE = #{valuePre,jdbcType=VARCHAR},
+      VALUE_NOW = #{valueNow,jdbcType=VARCHAR},
+      OPER_TIME = #{operTime,jdbcType=TIMESTAMP},
+      FIELD_NAME = #{fieldName,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+ 
+
+</mapper>

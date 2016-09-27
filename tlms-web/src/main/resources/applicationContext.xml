@@ -2,8 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context" xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
@@ -11,17 +14,16 @@
 	default-lazy-init="true">
 	
 	<context:annotation-config/>
-	
-	<!-- 自动扫描且只扫描@Controller -->
-	<context:component-scan base-package="com.sys.controler" use-default-filters="false">
-		<!-- <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" /> -->
-	</context:component-scan>
-	<context:component-scan base-package="me.kafeitu.activiti.web.chapter5.deployment"></context:component-scan>
+
 	
 	<!-- 扫描服务层 -->
-	<context:component-scan base-package="com.sys.service.impl"></context:component-scan>
-	<context:component-scan base-package="com.tlms.core.service"></context:component-scan>
+	<context:component-scan base-package="com.sys.service.impl"/>
+	<context:component-scan base-package="com.tlms.core.service"/>
+	<context:component-scan base-package="com.sys.aop.impl"/>
+	<context:component-scan base-package="com.tlms.core.servlce.impl"/>
 	
+	
+	<!-- <bean class="com.sys.aop.aspect.PreGreetingAspect"/> -->
 	
 	<!-- 定义首页 -->
 	<!-- <mvc:view-controller path="/" view-name="redirect:/login/" /> -->
@@ -38,5 +40,8 @@
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"
 		p:messageConverters-ref="mappingJacksonHttpMessageConverter"/> 
 		
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<bean class="com.sys.aop.aspect.PreGreetingAspect"/>
+	<bean class="com.tlms.core.aspect.PreGreetingAspect"/>
 	
 </beans>

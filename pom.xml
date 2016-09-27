@@ -195,11 +195,11 @@
 		</dependency>
 		<!-- LOGGING end -->
 		<!-- oracle begin -->
-		<dependency>
+	<!-- 	<dependency>
 		    <groupId>com.oracle</groupId>
 		    <artifactId>ojdbc14</artifactId>
 		    <version>${oracle.version}</version>
-		</dependency>
+		</dependency> -->
         <!-- oracle end -->
         <!-- activit begin -->
 		<dependency>
@@ -220,6 +220,20 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.35</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt -->
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjrt</artifactId>
+		    <version>1.8.9</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>1.8.9</version>
+		</dependency>
+		
   </dependencies>
   <modules>
     <module>tlms-core</module>

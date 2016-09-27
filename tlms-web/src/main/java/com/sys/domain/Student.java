@@ -1,9 +1,9 @@
 package com.sys.domain;
 
 public class Student {
-	private String userId;
-	private String couse;
-	private String point;
+	public String userId;
+	public String couse;
+	public String point;
 	public String getUserId() {
 		return userId;
 	}

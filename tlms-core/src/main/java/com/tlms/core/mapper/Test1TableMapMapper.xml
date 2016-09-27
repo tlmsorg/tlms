@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tlms.core.dao.Test1TableMapMapper">
+  <resultMap id="BaseResultMap" type="com.tlms.core.domain.Test1TableMap">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="CLASS_NAME" jdbcType="VARCHAR" property="className" />
+    <result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CLASS_NAME, TABLE_NAME
+  </sql>
+  
+  
+   <select id="selectByClassname" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_test1_tablemap
+    where CLASS_NAME = #{className,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_test1_tablemap
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_test1_tablemap
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tlms.core.domain.Test1TableMap">
+    insert into t_test1_tablemap (ID, CLASS_NAME, TABLE_NAME
+      )
+    values (#{id,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tlms.core.domain.Test1TableMap">
+    insert into t_test1_tablemap
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="className != null">
+        CLASS_NAME,
+      </if>
+      <if test="tableName != null">
+        TABLE_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null">
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null">
+        #{tableName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tlms.core.domain.Test1TableMap">
+    update t_test1_tablemap
+    <set>
+      <if test="className != null">
+        CLASS_NAME = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null">
+        TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tlms.core.domain.Test1TableMap">
+    update t_test1_tablemap
+    set CLASS_NAME = #{className,jdbcType=VARCHAR},
+      TABLE_NAME = #{tableName,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

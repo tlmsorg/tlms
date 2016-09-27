@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-@Service
+import com.sys.service.ICoreServiceImpl1;
+
+@Service("coreService1")
 @Transactional
-public class CoreServiceImpl1 {
+public class CoreServiceImpl1 implements ICoreServiceImpl1{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
