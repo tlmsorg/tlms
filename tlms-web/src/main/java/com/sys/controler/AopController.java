@@ -1,6 +1,7 @@
 package com.sys.controler;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,10 +14,13 @@ public class AopController {
 	@Autowired
 	private Waiter waiter;
 	
+	@Value("${db_connect.driver}")
+	private String driver;
+	
 	@ResponseBody
 	@RequestMapping(value="/aspectj_test.ctrl")
 	public String aspectj_test(){
-		System.out.println("AopController->aspectj_test");
+		System.out.println("AopController->aspectj_test driver:"+driver);
 		waiter.greetTo("111");
 		return "rollback_test";
 	}

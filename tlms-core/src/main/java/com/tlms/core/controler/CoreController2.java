@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONArray;
+import com.tlms.core.annotion.AnnotationTest;
 import com.tlms.core.domain.Test1;
 import com.tlms.core.domain.Test2;
 import com.tlms.core.service.IUserSerivice;
@@ -76,7 +77,7 @@ public class CoreController2{
 		test1.setPoint("80");
 		test1.setUserid("1");
 //		userService.userUpd(test1);
-		userService.userUpd(test1);
+		userService.userUpd(test1,"userUpd");
 		return "rollback_test";
 	}
 	
@@ -90,7 +91,7 @@ public class CoreController2{
 		test2.setName("brighttang");
 		test2.setSex("女");
 		test2.setUserAddress("重庆市永川区大安街道");
-		userService.userUpd2(test2);
+		userService.userUpd2(test2,"userUpd2");
 		return "rollback_test";
 	}
 	
@@ -104,7 +105,7 @@ public class CoreController2{
 		test2.setName("brighttang");
 		test2.setSex("女");
 		test2.setUserAddress("重庆市永川区");
-		userService.userUpd3(test2);
+		userService.userUpd3(test2,"userUpd3");
 		return "rollback_test";
 	}
 	

@@ -8,6 +8,12 @@ import java.util.regex.Pattern;
 
 public class Test {
 	
+	@AnnotationTest(name="100")
+	public void testAnnotation(String name){
+		System.out.println("111");
+		System.out.println(name);
+	}
+	
 	public String timeParse(String src,String pattern){
 		Calendar calendar = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
@@ -43,7 +49,7 @@ public class Test {
 		Calendar cl = Calendar.getInstance();
 		SimpleDateFormat format = new SimpleDateFormat("YYMMdd");
 		System.out.println(format.format(cl.getTime()));
-		
+		Test test = new Test();
 		new Test().propParse("myUserName");
 		
 		Calendar calendar = Calendar.getInstance();
@@ -51,6 +57,10 @@ public class Test {
 		String timeNow = sdf.format(calendar.getTime());
 		System.out.println("timeNow:"+timeNow);
 		System.out.println(calendar.getTime());
+		
+		test.testAnnotation("");
+		
+		
 	}
 
 }

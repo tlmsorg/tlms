@@ -23,6 +23,11 @@
 			<artifactId>tlms-core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.tang.test</groupId>
+			<artifactId>tlms-push</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		
   </dependencies>
   <build>

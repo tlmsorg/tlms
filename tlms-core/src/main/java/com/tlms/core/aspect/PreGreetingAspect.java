@@ -33,8 +33,10 @@ public class PreGreetingAspect {
 	@Autowired
 	private Test1TableMapMapper test1TableMapMapper;
 	
-	@Before("execution(* com.tlms.core.servlce.impl..*(..)) && args(object)")
-	public void target(Object object) throws IllegalArgumentException, IllegalAccessException, ParseException{
+//	@Before("execution(* com.tlms.core.servlce.impl..*(..)) && args(object)")
+	@Before("@annotation(com.tlms.core.annotion.AnnotationTest) && args(object,accountId)")
+//	@Before("@annotation(com.tlms.core.annotion.AnnotationTest)")
+	public void target(Object object,String accountId) throws IllegalArgumentException, IllegalAccessException, ParseException{
 		JSONObject jsonObj = (JSONObject) JSONObject.toJSON(object);
 		Calendar cl = Calendar.getInstance();
 //		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss");
@@ -48,7 +50,7 @@ public class PreGreetingAspect {
 		String tableName = "";
 		Field[] fields = object.getClass().getDeclaredFields();
 		System.out.println("*********增强开始***********");
-		System.out.println("PreGreetingAspect->target");
+		System.out.println("PreGreetingAspect->target accountId:"+accountId);
 		System.out.println("对象类名 ："+object.getClass().getName());
 		className = object.getClass().getName();
 		Test1TableMap ttmm = test1TableMapMapper.selectByClassname(className);

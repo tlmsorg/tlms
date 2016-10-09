@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import com.tlms.core.annotion.AnnotationTest;
 import com.tlms.core.dao.Test1Mapper;
 import com.tlms.core.dao.Test2Mapper;
 import com.tlms.core.domain.Test1;
@@ -20,19 +21,21 @@ public class UserServiceImpl implements IUserSerivice {
 	@Autowired
 	private Test2Mapper test2Mapper;
 	
-	public void userUpd(Test1 test1) {
+	public void userUpd(Test1 test1,String accountId) {
 		// TODO Auto-generated method stub
 		System.out.println("UserServiceImpl->userUpd，开始更新test1表");
-		if(test1Mapper.updateByPrimaryKey(test1) <= 0){
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//		TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		if(test1Mapper.updateByPrimaryKeySelective(test1) <= 0){
+//			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			System.out.println("test1未更新");
 		}else{
 			System.out.println("test1更新成功");
 		}
-		
+//		TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//		throw new RuntimeException("ttttttttttt");
 	}
 	
-	public void userUpd2(Test2 test2) {
+	public void userUpd2(Test2 test2,String accountId) {
 		// TODO Auto-generated method stub
 		System.out.println("UserServiceImpl->userUpd2,开始更新test2表");
 		if(test2Mapper.updateByPrimaryKey(test2) <=0 ){
@@ -45,7 +48,8 @@ public class UserServiceImpl implements IUserSerivice {
 		
 	}
 
-	public void userUpd3(Test2 test2) {
+	@AnnotationTest
+	public void userUpd3(Test2 test2,String accountId) {
 		// TODO Auto-generated method stub
 		System.out.println("UserServiceImpl->userUpd3,开始更新test2表");
 //		if(test2Mapper.updateByPrimaryKey(test2) <=0 ){
@@ -56,5 +60,6 @@ public class UserServiceImpl implements IUserSerivice {
 			System.out.println("test2更新成功");
 		}
 	}
+
 
 }

@@ -12,8 +12,17 @@
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 	<!-- <context:component-scan base-package="com.sys.controler"/> -->
-	<context:component-scan base-package="com.tlms.core.controler"></context:component-scan>
+	<context:component-scan base-package="com.tlms.core.controler"/>
+	<context:component-scan base-package="com.tlms.push.comtroler"/>
 	
+	<context:property-placeholder location="classpath:property.properties"/>
+	
+	
+		<!-- websocket 扫描 -->
+	<context:component-scan base-package="com.tlms.push"/>
+	<context:component-scan base-package="com.milanosoft.RCS.web.webSocket.config" />
+    <context:component-scan base-package="com.milanosoft.RCS.web.webSocket.hndler"/>
+    <context:component-scan base-package="com.milanosoft.RCS.web.webSocket.interceptor"/>
 	<mvc:annotation-driven />
 	
 	<mvc:default-servlet-handler />
@@ -41,4 +50,6 @@
 
 	<!-- 支持上传文件 -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	
+
 </beans>

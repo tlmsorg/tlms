@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+
+<!-- <script type="text/javascript" src="http://localhost:8080/ship/js/jquery/jquery.min.js"></script>   -->
+<script type="text/javascript" src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>  
+<script type="text/javascript">  
+    var websocket = null;  
+    var ws = null;  
+    var url = "http://localhost:8080/tlms-web/webSocketServer";  
+    var transports = [];
+    
+    function connect() {  
+        alert("url:"+url);  
+        if (!url) {  
+            alert('Select whether to use W3C WebSocket or SockJS');  
+            return;  
+        }  
+        ws = (url.indexOf('sockjs') != -1) ?   
+            new SockJS(url, undefined, {protocols_whitelist: transports}) : new WebSocket(url);  
+
+        ws.onopen = function () {  
+        	alert("tttt");
+            setConnected(true);  
+            log('Info: connection opened.');  
+        };  
+        ws.onmessage = function (event) {  
+            log('Received: ' + event.data);  
+        };  
+        ws.onclose = function (event) {  
+            setConnected(false);  
+            log('Info: connection closed.');  
+            log(event);  
+        };  
+    }
+    
+    if ('WebSocket' in window) {  
+    	alert("11");
+    	websocket = new WebSocket("ws://localhost:8080/tlms-web/webSocketServer"); 
+    }   
+    else if ('MozWebSocket' in window) {  
+    	alert("22");
+        websocket = new MozWebSocket("ws://localhost:8080/tlms-web/webSocketServer");  
+    }   
+    else {  
+    	alert("33");
+        websocket = new SockJS("http://localhost:8080/tlms-web/sockjs/webSocketServer");  
+    }  
+    websocket.onopen = onOpen;  
+    websocket.onmessage = onMessage;  
+    websocket.onerror = onError;  
+    websocket.onclose = onClose;  
+              
+    function onOpen(openEvt) {  
+        //alert(openEvt.Data);  
+    }  
+      
+    function onMessage(evt) {  
+        alert(evt.data);  
+    }  
+    function onError() {}  
+    function onClose() {
+    	alert("onClosttte");
+    }  
+      
+    function doSend() {  
+    	alert(websocket.readyState);
+        if (websocket.readyState == websocket.OPEN) {         
+           // var msg = document.getElementById("inputMsg").value;    
+          //  websocket.send(msg);//调用后台handleTextMessage方法  
+          //  alert("发送成功!");    
+        } else {    
+            alert("连接失败!");    
+        }    
+    }  
+</script>  
+
+<body>
+请输入：<textarea rows="5" cols="10" id="inputMsg" name="inputMsg"></textarea>  
+<button id="connect" onclick="connect();">Connect</button>  
+<button onclick="doSend();">发送</button> 
+</body>
+</html>
