@@ -275,5 +275,6 @@
     <module>tlms-core</module>
     <module>tlms-web</module>
     <module>tlms-push</module>
+    <module>tlms-docs</module>
   </modules>
 </project>

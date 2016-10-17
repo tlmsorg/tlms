@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before; 
 
-//@Aspect 
+@Aspect 
 public class PreGreetingAspect {
 	/*@Before("execution(* greetTo(..))")
 	public void beforeGreeting(){
@@ -32,7 +32,7 @@ public class PreGreetingAspect {
 			Field field = fields[i];
 			
 			try {
-				System.out.println("属性名:"+field.getName()+"|值："+(String) field.get(object));
+//				System.out.println("属性名:"+field.getName()+"|值："+(String) field.get(object));
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 

@@ -16,14 +16,13 @@
 	default-lazy-init="true">
 	
 	<context:annotation-config/>
-	
-		<!-- 扫描服务层 -->
+			<!-- 扫描服务层 -->
 	<context:component-scan base-package="com.sys.service.impl"/>
 	<context:component-scan base-package="com.tlms.core.service"/>
-	<context:component-scan base-package="com.sys.aop.impl"/>
 	<context:component-scan base-package="com.tlms.core.servlce.impl"/>
+	<context:component-scan base-package="com.tlms.push.service.aopcontexttest"/>
+	<context:component-scan base-package="com.sys.aop.impl"/>
 	
-
 	
 	<!-- <bean class="com.sys.aop.aspect.PreGreetingAspect"/> -->
 	
@@ -42,9 +41,10 @@
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"
 		p:messageConverters-ref="mappingJacksonHttpMessageConverter"/> 
 		
-	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="true"/>
 	<!-- <bean class="com.sys.aop.aspect.PreGreetingAspect"/> -->
 	<bean class="com.tlms.core.aspect.PreGreetingAspect"/>
+	<bean class="com.tlms.push.service.aopcontexttest.AopContextAspect"/>
 <!-- 	
 	
 <bean id="websocket" class="com.tlms.push2.WebsocketEndPoint"/>  

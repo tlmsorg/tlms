@@ -8,21 +8,28 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 
 	<!-- 自动扫描且只扫描@Controller -->
-	<context:component-scan base-package="com.sys.controler" use-default-filters="false">
+	<!-- <context:component-scan base-package="com.sys.controler" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
-	</context:component-scan>
-	<!-- <context:component-scan base-package="com.sys.controler"/> -->
+	</context:component-scan> -->
+	<context:component-scan base-package="com.sys.controller"/>
 	<context:component-scan base-package="com.tlms.core.controler"/>
-	<context:component-scan base-package="com.tlms.push.comtroler"/>
-	
+	<context:component-scan base-package="com.tlms.push.controller"/>
+
+
+
+
 	<context:property-placeholder location="classpath:property.properties"/>
 	
 	
 		<!-- websocket 扫描 -->
-	<context:component-scan base-package="com.tlms.push"/>
 	<context:component-scan base-package="com.milanosoft.RCS.web.webSocket.config" />
     <context:component-scan base-package="com.milanosoft.RCS.web.webSocket.hndler"/>
     <context:component-scan base-package="com.milanosoft.RCS.web.webSocket.interceptor"/>
+    <context:component-scan base-package="com.tlms.push.config"/>
+    <context:component-scan base-package="com.tlms.push.handler"/>
+    <context:component-scan base-package="com.tlms.push.intercepter"/>
+    
+    
 	<mvc:annotation-driven />
 	
 	<mvc:default-servlet-handler />
@@ -50,6 +57,4 @@
 
 	<!-- 支持上传文件 -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
-	
-
 </beans>

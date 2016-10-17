@@ -58,7 +58,7 @@
             //ws = (url.indexOf('sockjs') != -1) ?new SockJS(url, undefined, {protocols_whitelist: transports}) : new WebSocket(url);
             if ('WebSocket' in window) {
             	alert("111");
-                ws= new WebSocket("ws://localhost:8080/tlms-web/websck.ctrl");
+                ws= new WebSocket("ws://localhost:8080/tlms-web/tlmsWebSocketServer.ctrl");
             }else {
             	alert("222");
                 ws = new SockJS("http://localhost:8080/tlms-web/sockjs/websck");
