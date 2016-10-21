@@ -34,6 +34,139 @@ import com.tlms.docs.vo.PdfMgc;
 public class PdfMain {
 	public final String classPath = PdfMain.class.getClassLoader().getResource("").toString();
 	
+	/**
+	 * 打印共同还租承诺 print colessee promise
+	 */
+	public void printCp(){
+		int period = 12;
+		PdfReader pdfReader = null;
+		OutputStream os = null;
+		PdfStamper pdfStamper = null;
+		
+		try {
+			pdfReader = new PdfReader(classPath+"/pdf/tpl/7-共同还租承诺书-模板.pdf");
+			File file = new File("print/7-共同还租承诺书-print.pdf");
+			if(file.exists())
+				file.createNewFile();
+			os = new FileOutputStream(file);
+			pdfStamper = new PdfStamper(pdfReader, os);
+			BaseFont bf = BaseFont.createFont("STSongStd-Light",  "UniGB-UCS2-H", false);
+//			BaseFont bf = BaseFont.createFont(classPath+"/MSYH.ttf",BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+			Font font = new Font(bf,10,Font.NORMAL);
+			AcroFields fields = pdfStamper.getAcroFields();
+			Map<String, Item> map = fields.getFields();
+			for(Map.Entry<String, Item> entry:map.entrySet()){
+				fields.setFieldProperty(entry.getKey(), "textfont", bf, null);
+				if("contractNo".equals(entry.getKey()))
+					fields.setFieldProperty(entry.getKey(), "textsize", new Float(8), null); 
+				else{
+					fields.setFieldProperty(entry.getKey(), "textsize", new Float(12), null); 
+				}
+				System.out.println(entry.getKey()+"|"+fields.getField(entry.getKey()));
+			}
+			for(int i = 0;i < period;i++){
+				fields.setField("fill_"+(i*2+1), "2015-01-01");
+				fields.setField("fill_"+(i*2+2), "8657");
+			}
+//			fields.setFieldProperty("contractNo","textsize",new Float(6),null);
+			fields.setField("contractNo", " N220160621068");
+			fields.setField("colesseeName", "共租人");
+			fields.setField("colesseeIdNo", "500383198808181994");
+			fields.setField("tenantName", "承租人");
+			fields.setField("tenantIdNo", "500383198808181994");
+			fields.setField("relation", "妃子");
+			
+			pdfStamper.setFormFlattening(true);
+			pdfStamper.close();
+			pdfReader.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 打印还款提醒 print repayment remind
+	 */
+	public void printRr(){
+		int period = 12;
+		PdfReader pdfReader = null;
+		OutputStream os = null;
+		PdfStamper pdfStamper = null;
+		
+		try {
+			pdfReader = new PdfReader(classPath+"/pdf/tpl/6-还款提醒-模板.pdf");
+			File file = new File("print/6-还款提醒-print.pdf");
+			if(file.exists())
+				file.createNewFile();
+			os = new FileOutputStream(file);
+			pdfStamper = new PdfStamper(pdfReader, os);
+//			BaseFont bf = BaseFont.createFont("STSongStd-Light",  "UniGB-UCS2-H", false);
+			BaseFont bf = BaseFont.createFont(classPath+"/MSYH.ttf",BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+			Font font = new Font(bf,10,Font.NORMAL);
+			AcroFields fields = pdfStamper.getAcroFields();
+			Map<String, Item> map = fields.getFields();
+			for(Map.Entry<String, Item> entry:map.entrySet()){
+				fields.setFieldProperty(entry.getKey(), "textfont", bf, null);
+				fields.setFieldProperty(entry.getKey(), "textsize", new Float(8), null); 
+				System.out.println(entry.getKey()+"|"+fields.getField(entry.getKey()));
+			}
+			for(int i = 0;i < period;i++){
+				fields.setField("fill_"+(i*2+1), "2015-01-01");
+				fields.setField("fill_"+(i*2+2), "8657");
+			}
+			fields.setField("accountName", "阿布拉多.艾尼瓦尔.萨迪克买买提");
+//			fields.setFieldProperty("contractNo","textsize",new Float(6),null);
+			fields.setField("contractNo", " N220160621068");
+			fields.setField("totalFinanceAmt", "云南南天电子信息产业股份有限公司");
+			fields.setField("period", "12");
+			fields.setField("firstRepayDate", "2016-12-11");
+			fields.setField("firstRepayFee", "8657");
+			
+			pdfStamper.setFormFlattening(true);
+			pdfStamper.close();
+			pdfReader.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 打印贷款收据print loan receipt
+	 */
+	public void printLr(){
+		PdfReader pdfReader = null;
+		OutputStream os = null;
+		PdfStamper pdfStamper = null;
+		try {
+			pdfReader = new PdfReader(classPath+"/pdf/tpl/5-收据-模板.pdf");
+			File file = new File("print/5-收据-print.pdf");
+			if(file.exists())
+				file.createNewFile();
+			os = new FileOutputStream(file);
+			pdfStamper = new PdfStamper(pdfReader, os);
+			BaseFont bf = BaseFont.createFont("STSongStd-Light",  "UniGB-UCS2-H", false);
+			Font font = new Font(bf,10,Font.NORMAL);
+			AcroFields fields = pdfStamper.getAcroFields();
+			Map<String, Item> map = fields.getFields();
+			for(Map.Entry<String, Item> entry:map.entrySet()){
+				fields.setFieldProperty(entry.getKey(), "textfont", bf, null);
+				fields.setFieldProperty(entry.getKey(), "textsize", new Float(7), null); 
+				System.out.println(entry.getKey()+"|"+fields.getField(entry.getKey()));
+			}
+			fields.setField("contractNo", "GZZJ-HT2013-JS001");
+//			fields.setFieldProperty("contractNo","textsize",new Float(6),null);
+			fields.setField("totalLoanAmt", "8563");
+			fields.setField("branchName", "云南南天电子信息产业股份有限公司");
+			pdfStamper.setFormFlattening(true);
+			pdfStamper.close();
+			pdfReader.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * 打印抵押车辆清单print mortgage car list
@@ -42,9 +175,10 @@ public class PdfMain {
 		PdfReader pdfReader = null;
 		OutputStream os = null;
 		PdfStamper pdfStamper = null;
+		int carAmt = 20;//抵押车辆数量
 		try {
 			pdfReader = new PdfReader(classPath+"/pdf/tpl/4-抵押车辆清单-模板.pdf");
-			File file = new File("print/车辆交接单-套打-print.pdf");
+			File file = new File("print/4-抵押车辆清单-print.pdf");
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
@@ -59,7 +193,7 @@ public class PdfMain {
 				System.out.println(entry.getKey()+"|"+fields.getField(entry.getKey()));
 			}
 			fields.setField("contractNo","200810405234");
-			for (int i = 0; i < 60; i++) {
+			for (int i = 0; i < carAmt; i++) {
 				fields.setField("fill_"+(6*i+2),"车牌号"+i+1);
 				fields.setField("fill_"+(6*i+3),"品牌及车型"+i+1);
 				fields.setField("fill_"+(6*i+4),"车架号"+i+1);
@@ -67,7 +201,7 @@ public class PdfMain {
 				fields.setField("fill_"+(6*i+6), "车辆颜色"+i+1);
 				fields.setField("fill_"+(6*i+7), "生产商"+i+1);
 			}
-			fields.setField("carAmt", "60");
+			fields.setField("carAmt", carAmt+"");
 			fields.setField("year", "2016");
 			fields.setField("month", "10");
 			fields.setField("day", "12");
@@ -88,8 +222,8 @@ public class PdfMain {
 		OutputStream os = null;
 		PdfStamper pdfStamper = null;
 		try {
-			pdfReader = new PdfReader(classPath+"/pdf/tpl/车辆交接单-套打-模板.pdf");
-			File file = new File("print/车辆交接单-套打-print.pdf");
+			pdfReader = new PdfReader(classPath+"/pdf/tpl/3-车辆交接单-套打-模板-有背景.pdf");
+			File file = new File("print/3-车辆交接单-套打-模板-print.pdf");
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
@@ -130,10 +264,10 @@ public class PdfMain {
 		OutputStream os = null;
 		PdfStamper pdfStamper = null;
 		try {
-			pdfReader = new PdfReader(classPath+"/pdf/tpl/潽金融资租赁有限公司租赁合同-套打-模板.pdf");
+			pdfReader = new PdfReader(classPath+"/pdf/tpl/1-融资租赁合同-套打-模板.pdf");
 //			os = new FileOutputStream("d:\\潽金融资租赁有限公司抵押合同B-print.pdf");
 //			File file = new File(classPath+"/pdf/print/潽金融资租赁有限公司抵押合同B-print.pdf");
-			File file = new File("print/潽金融资租赁有限公司租赁合同-print.pdf");
+			File file = new File("print/1-融资租赁合同-print.pdf");
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
@@ -235,10 +369,10 @@ public class PdfMain {
 		OutputStream os = null;
 		PdfStamper pdfStamper = null;
 		try {
-			pdfReader = new PdfReader(classPath+"/pdf/tpl/潽金融资租赁有限公司租赁合同-套打-模板.pdf");
+			pdfReader = new PdfReader(classPath+"/pdf/tpl/2-抵押合同（版本A）-套打-有背景.pdf");
 //			os = new FileOutputStream("d:\\潽金融资租赁有限公司抵押合同B-print.pdf");
 //			File file = new File(classPath+"/pdf/print/潽金融资租赁有限公司抵押合同B-print.pdf");
-			File file = new File("print/潽金融资租赁有限公司抵押合同B-print.pdf");
+			File file = new File("print/2-抵押合同（版本B）-套打-print.pdf");
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
@@ -354,10 +488,13 @@ public class PdfMain {
 		try {
 			PdfMain pdfMain = new PdfMain();
 //			pdfMain.pdfReader();
-//			pdfMain.printMgcB();
-//			pdfMain.printLsc();
-//			pdfMain.printCdr();
+			pdfMain.printLsc();
+			pdfMain.printMgcB();
+			pdfMain.printCdr();
 			pdfMain.printMcl();
+			pdfMain.printLr();
+			pdfMain.printRr();
+			pdfMain.printCp();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
