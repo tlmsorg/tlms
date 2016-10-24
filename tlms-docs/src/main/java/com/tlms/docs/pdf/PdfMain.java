@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -49,6 +51,7 @@ public class PdfMain {
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
+			System.out.println("*******************:"+file.length());
 			pdfStamper = new PdfStamper(pdfReader, os);
 			BaseFont bf = BaseFont.createFont("STSongStd-Light",  "UniGB-UCS2-H", false);
 //			BaseFont bf = BaseFont.createFont(classPath+"/MSYH.ttf",BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
@@ -79,6 +82,7 @@ public class PdfMain {
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
+			System.out.println("*******************:"+file.length());
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -86,7 +90,7 @@ public class PdfMain {
 	}
 	
 	/**
-	 * 打印还款提醒 print repayment remind
+	 * 打印还款提醒 print repay  remind
 	 */
 	public void printRr(){
 		int period = 12;
@@ -215,7 +219,7 @@ public class PdfMain {
 	}
 	
 	/**
-	 * 打印车辆交接单print car delievry receipt
+	 * 打印车辆交接单print car delievery receipt
 	 */
 	public void printCdr(){
 		PdfReader pdfReader = null;
@@ -265,6 +269,7 @@ public class PdfMain {
 		PdfStamper pdfStamper = null;
 		try {
 			pdfReader = new PdfReader(classPath+"/pdf/tpl/1-融资租赁合同-套打-模板.pdf");
+//			pdfReader = new PdfReader(classPath+"/pdf/tpl/checkboxes.pdf");
 //			os = new FileOutputStream("d:\\潽金融资租赁有限公司抵押合同B-print.pdf");
 //			File file = new File(classPath+"/pdf/print/潽金融资租赁有限公司抵押合同B-print.pdf");
 			File file = new File("print/1-融资租赁合同-print.pdf");
@@ -282,26 +287,28 @@ public class PdfMain {
 				fields.setFieldProperty(entry.getKey(), "textsize", new Float(6), null); 
 				System.out.println(entry.getKey()+"|"+fields.getField(entry.getKey()));
 			}
+//			fields.setField("cb0","Yes");
+			
 			fields.setField("name1","潽金融资租赁有限公司");
 			fields.setField("phone1","18723290801");
 			fields.setField("name2","云南南天电子信息产业股份有限公司");
 			fields.setField("phone2","023-63517181");
-			fields.setField("ctfType1", "ctfType1");
+			fields.setField("ctfType1", "护照1");
 			fields.setField("ctfNo1", "ctfNo1");
 			fields.setField("address1", "重庆市两江新区黄山大道中段56号B1栋11层");
 			fields.setField("address2", "重庆市两江新区黄山大道中段56号B1栋11层重庆市两江新区黄山大道中段56号B1栋11层");
-			fields.setField("ctfType2", "ctfType2");
 			fields.setField("ctfNo2", "ctfNo2");
-			fields.setField("ctfType2", "ctfType2");
-//			fields.setField("isSalePrice", "isSalePrice");
-//			fields.setField("isPurchaseTax", "isPurchaseTax");
-//			fields.setField("isGpsFee", "");
-//			fields.setField("isFinanceFee", "");
-//			fields.setField("isServiceFee", "");
-//			fields.setField("isTransferFee", "");
-//			fields.setField("isInsruanceFee", "");
-//			fields.setField("isAddonFee", "");
-//			fields.setField("isDelayInsuranceFee", "");
+			fields.setField("userType", "担保人");
+			fields.setField("ctfType2", "组织机构代码证2");
+			fields.setField("isSalePrice", "false");
+			fields.setField("isPurchaseTax", "true");
+			fields.setField("isGpsFee", "false");
+			fields.setField("isFinanceFee", "true");
+			fields.setField("isServiceFee", "false");
+			fields.setField("isTransferFee", "true");
+			fields.setField("isInsruanceFee", "true");
+			fields.setField("isAddonFee", "true");
+			fields.setField("isDelayInsuranceFee", "false");
 			fields.setField("salePrice", "salePrice");
 			fields.setField("purchaseTax", "purchaseTax");
 			fields.setField("gpsFee", "gpsFee");
@@ -352,7 +359,7 @@ public class PdfMain {
 			fields.setField("endDay", "11");
 			fields.setField("totalMonth", "110");
 			
-			pdfStamper.setFormFlattening(true);
+			pdfStamper.setFormFlattening(false);
 			pdfStamper.close();
 			pdfReader.close();
 		} catch (Exception e) {
@@ -362,7 +369,7 @@ public class PdfMain {
 	}
 	
 	/**
-	 * 打印抵押合同B版  print martgatge contract  B 
+	 * 打印抵押合同B版  print mortgatge contract  B 
 	 */
 	public void printMgcB(){
 		PdfReader pdfReader = null;
@@ -489,12 +496,12 @@ public class PdfMain {
 			PdfMain pdfMain = new PdfMain();
 //			pdfMain.pdfReader();
 			pdfMain.printLsc();
-			pdfMain.printMgcB();
+		/*	pdfMain.printMgcB();
 			pdfMain.printCdr();
 			pdfMain.printMcl();
 			pdfMain.printLr();
 			pdfMain.printRr();
-			pdfMain.printCp();
+			pdfMain.printCp();*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
