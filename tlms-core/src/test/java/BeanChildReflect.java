@@ -1,5 +1,6 @@
 
-public class BeanReflect {
+public class BeanChildReflect extends BeanParent{
+//	 extends BeanParent
 	private String name;
 
 	public String getName() {

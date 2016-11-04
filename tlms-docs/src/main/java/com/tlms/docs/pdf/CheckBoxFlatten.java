@@ -49,6 +49,7 @@ public class CheckBoxFlatten {
 //			fields.setFieldProperty(entry.getKey(), "textsize", new Float(6), null); 
 			System.out.println(entry.getKey()+"|"+fields.getField(entry.getKey()));
 		}
+		
 		fields.setField("cb0", "Yes");
 		pdfStamper.setFormFlattening(true);
 		pdfStamper.close();

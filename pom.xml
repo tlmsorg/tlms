@@ -276,5 +276,6 @@
     <module>tlms-web</module>
     <module>tlms-push</module>
     <module>tlms-docs</module>
+    <module>tlms_bpm</module>
   </modules>
 </project>

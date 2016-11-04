@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -31,11 +32,28 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.events.IndexEvents.Entry;
 import com.itextpdf.text.pdf.hyphenation.TernaryTree;
 import com.itextpdf.text.pdf.hyphenation.TernaryTree.Iterator;
+import com.tlms.docs.vo.LeaseConstractVo;
 import com.tlms.docs.vo.PdfMgc;
 
 public class PdfMain {
 	public final String classPath = PdfMain.class.getClassLoader().getResource("").toString();
 	
+	public void setAcroFields(AcroFields fields,Object obj){
+		Class cls = obj.getClass();
+		Field[] fieldArray = cls.getDeclaredFields();
+		for (Field field:fieldArray) {
+			field.setAccessible(true);
+			try {
+				if(field.get(obj) != null){
+					System.out.println("*************"+field.get(obj));
+					if(!"select".equals(field.get(obj)))//"select":复选框已选中;"true"：叉形;"其他字符串"：取消选中复选框
+						fields.setField(field.getName(), field.get(obj).toString());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	/**
 	 * 打印共同还租承诺 print colessee promise
 	 */
@@ -44,7 +62,6 @@ public class PdfMain {
 		PdfReader pdfReader = null;
 		OutputStream os = null;
 		PdfStamper pdfStamper = null;
-		
 		try {
 			pdfReader = new PdfReader(classPath+"/pdf/tpl/7-共同还租承诺书-模板.pdf");
 			File file = new File("print/7-共同还租承诺书-print.pdf");
@@ -287,79 +304,95 @@ public class PdfMain {
 				fields.setFieldProperty(entry.getKey(), "textsize", new Float(6), null); 
 				System.out.println(entry.getKey()+"|"+fields.getField(entry.getKey()));
 			}
-//			fields.setField("cb0","Yes");
+			LeaseConstractVo leaseConstract = new LeaseConstractVo();
+			leaseConstract.setName1("name1");
+			leaseConstract.setPhone1("phone1");
+			leaseConstract.setName2("name2");
+			leaseConstract.setPhone2("phone2");
+			leaseConstract.setIsTenant("");
+//			leaseConstract.setField("isGuarantor");
 			
-			fields.setField("name1","潽金融资租赁有限公司");
-			fields.setField("phone1","18723290801");
-			fields.setField("name2","云南南天电子信息产业股份有限公司");
-			fields.setField("phone2","023-63517181");
-			fields.setField("ctfType1", "护照1");
-			fields.setField("ctfNo1", "ctfNo1");
-			fields.setField("address1", "重庆市两江新区黄山大道中段56号B1栋11层");
-			fields.setField("address2", "重庆市两江新区黄山大道中段56号B1栋11层重庆市两江新区黄山大道中段56号B1栋11层");
-			fields.setField("ctfNo2", "ctfNo2");
-			fields.setField("userType", "担保人");
-			fields.setField("ctfType2", "组织机构代码证2");
-			fields.setField("isSalePrice", "false");
-			fields.setField("isPurchaseTax", "true");
-			fields.setField("isGpsFee", "false");
-			fields.setField("isFinanceFee", "true");
-			fields.setField("isServiceFee", "false");
-			fields.setField("isTransferFee", "true");
-			fields.setField("isInsruanceFee", "true");
-			fields.setField("isAddonFee", "true");
-			fields.setField("isDelayInsuranceFee", "false");
-			fields.setField("salePrice", "salePrice");
-			fields.setField("purchaseTax", "purchaseTax");
-			fields.setField("gpsFee", "gpsFee");
-			fields.setField("financeFee", "financeFee");
-			fields.setField("serviceFee", "serviceFee");
-			fields.setField("transferFee", "transferFee");
-			fields.setField("insruanceFee", "insruanceFee");
-			fields.setField("addonFee", "addonFee");
-			fields.setField("delayInsuranceFee", "delayInsuranceFee");
-			fields.setField("totalCarPrice", "totalCarPrice");
-			fields.setField("addFee", "addFee");
-			fields.setField("collateral", "collateral");
-			fields.setField("totalLoanAmt", "totalLoanAmt");
-			fields.setField("repayDate", "30");
-			fields.setField("manageFee", "manageFee");
-			fields.setField("totalFianceAmt", "totalFianceAmt");
-			fields.setField("monthRent", "monthRent");
-			fields.setField("initPayAmount", "initPayAmount");
-			fields.setField("loanAcctNo", "loanAcctNo");
-			fields.setField("loadBankName", "loadBankName");
-			fields.setField("loadAcctName", "loadAcctName");
-			fields.setField("repayAcctNo", "repayAcctNo");
-			fields.setField("repayBankName", "repayBankName");
-			fields.setField("repayAcctName", "repayAcctName");
-			fields.setField("plateNo1", "plateNo1");
-			fields.setField("plateNo2", "plateNo2");
-			fields.setField("plateNo3", "plateNo3");
-			fields.setField("carBrand1", "carBrand1");
-			fields.setField("carBrand2", "carBrand2");
-			fields.setField("carBrand3", "carBrand3");
-			fields.setField("carVin1", "carVin1");
-			fields.setField("carVin2", "carVin2");
-			fields.setField("carVin3", "carVin3");
-			fields.setField("carEngine1", "carEngine1");
-			fields.setField("carEngine2", "carEngine2");
-			fields.setField("carEngine3", "carEngine3");
-			fields.setField("carColor1", "carColor1");
-			fields.setField("carColor2", "carColor2");
-			fields.setField("carColor3", "carColor3");
-			fields.setField("carManu1", "carManu1");
-			fields.setField("carManu2", "carManu2");
-			fields.setField("carManu3", "carManu3");
-			fields.setField("startYear", "2012");
-			fields.setField("startMonth", "12");
-			fields.setField("startDay", "10");
-			fields.setField("endYear", "2016");
-			fields.setField("endMonth", "10");
-			fields.setField("endDay", "11");
-			fields.setField("totalMonth", "110");
+			leaseConstract.setIsIdCard1("select");
+			leaseConstract.setIsPassport1("unselect");
+			leaseConstract.setIsOrgCodeId1("unselect");
+			leaseConstract.setIsIdCard2("unselect");
+			leaseConstract.setIsPassport2("select");
+			leaseConstract.setIsOrgCodeId2("unselect");
 			
-			pdfStamper.setFormFlattening(false);
+			leaseConstract.setCtfNo1("ctfNo1");
+			leaseConstract.setAddress1("address1");
+			leaseConstract.setCtfNo2("ctfNo2");
+			leaseConstract.setAddress2("address2");
+			
+			leaseConstract.setIsSalePrice("select");
+			leaseConstract.setIsPurchaseTax("select");
+			leaseConstract.setIsGpsFee("select");
+			leaseConstract.setIsFinanceFee("select");
+			leaseConstract.setIsServiceFee("select");
+			leaseConstract.setIsTransferFee("unselect");
+			leaseConstract.setIsInsruanceFee("unselect");
+			leaseConstract.setIsAddonFee("select");
+			leaseConstract.setIsDelayInsuranceFee("select");
+			/*
+			leaseConstract.setField("salePrice");
+			leaseConstract.setField("purchaseTax");
+			leaseConstract.setField("gpsFee");
+			leaseConstract.setField("financeFee");
+			leaseConstract.setField("serviceFee");
+			leaseConstract.setField("transferFee");
+			leaseConstract.setField("insruanceFee");
+			leaseConstract.setField("addonFee");
+			leaseConstract.setField("delayInsuranceFee");
+			
+			leaseConstract.setField("totalCarPrice");
+			leaseConstract.setField("addFee");
+			leaseConstract.setField("collateral");
+			leaseConstract.setField("initPayAmount");
+			leaseConstract.setField("totalFianceAmt");
+			leaseConstract.setField("totalLoanAmt");
+			leaseConstract.setField("monthRent");
+			leaseConstract.setField("manageFee");
+			leaseConstract.setField("repayDate");
+			
+			leaseConstract.setField("plateNo1");
+			leaseConstract.setField("plateNo2");
+			leaseConstract.setField("plateNo3");
+			leaseConstract.setField("carBrand1");
+			leaseConstract.setField("carBrand2");
+			leaseConstract.setField("carBrand3");
+			leaseConstract.setField("carVin1");
+			leaseConstract.setField("carVin2");
+			leaseConstract.setField("carVin3");
+			leaseConstract.setField("carEngine1");
+			leaseConstract.setField("carEngine2");
+			leaseConstract.setField("carEngine3");
+			leaseConstract.setField("carColor1");
+			leaseConstract.setField("carColor2");
+			leaseConstract.setField("carColor3");
+			leaseConstract.setField("carManu1");
+			leaseConstract.setField("carManu2");
+			leaseConstract.setField("carManu3");
+			leaseConstract.setField("startYear");
+			leaseConstract.setField("startMonth");
+			leaseConstract.setField("startDay");
+			leaseConstract.setField("endYear");
+			leaseConstract.setField("endMonth");
+			leaseConstract.setField("endDay");
+			leaseConstract.setField("totalMonth");
+			
+			leaseConstract.setField("loanAcctNo");
+			leaseConstract.setField("loadBankName");
+			leaseConstract.setField("loadAcctName");
+			leaseConstract.setField("repayAcctNo");
+			leaseConstract.setField("repayBankName");
+			leaseConstract.setField("repayAcctName");*/
+			
+			this.setAcroFields(fields, leaseConstract);
+			System.out.println("222222222222"+fields.getField("name1"));
+			
+			
+			
+//			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
 		} catch (Exception e) {

@@ -1,12 +1,14 @@
+package com.test.reflect.field;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class BeanMain {
 
 	/**
-	 * 递归获取field
-	 * @param obj 对象
+	 * 递归所有父类field
+	 * @param obj 当前递归对象
 	 * @param fieldList 所有field列表
 	 */
 	public void getField(Class obj,List<Field> fieldList){
@@ -25,7 +27,7 @@ public class BeanMain {
 	 * @return
 	 */
 	public List<Field> getFieldList(Class obj){
-		List<Field> fieldList = new ArrayList<>();
+		List<Field> fieldList = new LinkedList<Field>();
 		this.getField(obj, fieldList);
 		return fieldList;
 	}
@@ -47,9 +49,10 @@ public class BeanMain {
 //		Class pprtCls = prtCls.getSuperclass();
 		BeanMain beanMain = new BeanMain();
 		List<Field> fieldList = beanMain.getFieldList(cls);
+		System.out.println("遍历获取所有属性如下；");
 		for (Field field:fieldList) {
 			try {
-				System.out.println("bf属性值："+field.get(bf));
+				System.out.println("bf属性值："+field.getName()+"|"+field.get(bf));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

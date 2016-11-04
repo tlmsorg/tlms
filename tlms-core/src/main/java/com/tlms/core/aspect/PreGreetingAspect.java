@@ -71,7 +71,7 @@ public class PreGreetingAspect {
 				System.out.println("key:"+key+"|value:"+value);
 				for (int i = 0; i < fields.length; i++) {
 					Field field = fields[i];
-					String fieldName = Utils.fieldParse2Col(field.getName());//属性名转数据库列
+					String fieldName = Utils.field2Col(field.getName());//属性名转数据库列
 					String feildValue = (String) field.get(object);
 					System.out.println("fieldName:"+fieldName+"|feildValue:"+feildValue);
 					if(key.toUpperCase().equals(fieldName)){
@@ -96,7 +96,7 @@ public class PreGreetingAspect {
 //			不存在记录，执行新增操作
 			for (int i = 0; i < fields.length; i++) {
 				Field field = fields[i];
-				String fieldName = Utils.fieldParse2Col(field.getName());
+				String fieldName = Utils.field2Col(field.getName());
 				String fieldValue = (String) field.get(object);
 				Test1OperHis test1OperHis = new Test1OperHis();
 				test1OperHis.setAppCode("1");
