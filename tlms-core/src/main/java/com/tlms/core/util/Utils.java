@@ -19,12 +19,32 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSONObject;
+import com.test.postloan.RepayScheduleDetailPo;
 import com.test.postloan.RepayScheduleDetailVo;
 import com.test.postloan.RepaySchedulePo;
 import com.test.postloan.RepayScheduleVo;
 
 public class Utils {
 	private Logger logger = Logger.getLogger(Utils.class);
+	
+	/**
+	 * 日期格式化
+	 * tom 2016年11月7日
+	 * @param date
+	 * @param formateStr
+	 * @return
+	 */
+	public static Date formateDate(Date date,String formateStr){
+		SimpleDateFormat formate = new SimpleDateFormat(formateStr);
+		Date dateRet = null;
+		try {
+			dateRet = formate.parse(formate.format(date));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return dateRet;
+	}
+	
 	/**
 	 * 递归所有父类field
 	 * @param obj 当前递归对象
@@ -51,10 +71,13 @@ public class Utils {
 		return fieldList;
 	}
 	
+	/**
+	 * 属性拷贝
+	 * tom 2016年11月7日
+	 * @param source 源对象
+	 * @param dest 目标对象
+	 */
 	public static void copyProperties(Object source,Object dest){
-//		String jsonStr = JSONObject.toJSONString(source);
-//		RepayScheduleDetailVo rscv  = (RepayScheduleDetailVo) JSONObject.parse(jsonStr);
-//		System.out.println("dest:"+dest);
 		Class srcCls = source.getClass();
 		Class destCls = dest.getClass();
 		List<Field> srcFieldList = Utils.getFieldList(srcCls);
@@ -62,67 +85,62 @@ public class Utils {
 		Method[] srcMethods = srcCls.getMethods();
 		Method[] destMethods = destCls.getMethods();
 		List destList = new ArrayList();
-		/*for (int i = 0; i < srcFieldList.size(); i++) {
-			Field tempField = srcFieldList.get(i);
-			try {
-				System.out.println(tempField.get(srcCls));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}*/
-		for (int i = 0; i < srcMethods.length; i++) {
-			Method method = srcMethods[i];
-//			System.out.println(method.getName());
-		}
-		/*
-		for (int i = 0; i < destMethods.length; i++) {
-			Method method = srcMethods[i];
-		}*/
-		for (Field srcField : srcFieldList) {
+		for (int i = 0; i < srcFieldList.size(); i++) {
+			Field srcField = srcFieldList.get(i);
 			String srcFieldName = srcField.getName();
 			Class srcFieldType = srcField.getType();
+			String srcFieldTypeName = srcFieldType.getName();
 			Object srcFieldValue = null;
-			try {
+			try {//处理source中list成员变量
 				srcFieldValue = srcField.get(source);
-//				System.out.println(srcFieldType+"|"+srcFieldValue);
-				if((srcFieldType+"").equals("interface java.util.List")){
-//					System.out.println(srcFieldType+"|"+srcFieldName+"|"+srcField.getGenericType());
-					List listObj = (List) srcField.get(source);
-//					System.out.println(listObj.size());
-					for (Object object : listObj) {
-						RepayScheduleDetailVo rsdv = new RepayScheduleDetailVo();
-//						System.out.println("object:"+object);
-						Utils.copyProperties(object, rsdv);
-//						System.out.println("rsdv:"+JSONObject.toJSONString(rsdv));
-						destList.add(rsdv);
+//				System.out.println(srcFieldType.getName().equals(double.class.getName())+"*********|"+srcFieldValue);
+				for (Field destField : destFieldList) {
+					String destFieldName = destField.getName();
+					Class destFieldType = destField.getType();
+					if(srcFieldName.equals(destFieldName)){
+						if(srcFieldTypeName.equals(List.class.getName())){//判断list变量
+//							System.out.println(srcFieldType+"|"+srcFieldName+"|"+srcField.getGenericType());
+							List tempSrcFieldValue = (List) srcField.get(source);
+							Type gType  = destField.getGenericType();
+							ParameterizedType pType = (ParameterizedType) gType;
+							Type[] types = pType.getActualTypeArguments();
+//							System.out.println("****types[0]:"+types[0]+"|"+"types[0].getTypeName():"+types[0].getTypeName()+"|"+types[0].getTypeName().equals(RepayScheduleDetailPo.class.getTypeName())+"|"+types[0].getClass());
+//							System.out.println("ttt:"+srcField.get(source));
+							for (Object object : tempSrcFieldValue) {
+								Object rsdv = Class.forName(types[0].getTypeName()).newInstance();//目前仅仅拷贝list泛型中含有一个参数的情况，如：List<String>
+								Utils.copyProperties(object, rsdv);
+								destList.add(rsdv);
+							}
+						}
 					}
-					Type gType  = srcField.getGenericType();
-					ParameterizedType pType = (ParameterizedType) gType;
-//					System.out.println("pType:"+pType);
-					Type[] typs = pType.getActualTypeArguments();
-					for (int i = 0; i < typs.length; i++) {
-//						System.out.println(typs[i]);
-					}
-//					System.out.println("ttt:"+srcField.get(source));
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
+			//处理resource中普通成员变量
 			for (Field destField : destFieldList) {
 				String destFieldName = destField.getName();
 				Class destFieldType = destField.getType();
 //				System.out.println(destFieldType+"|"+destFieldName);
 				if(destFieldName.equals(srcFieldName)){
-					for (int i = 0; i < destMethods.length; i++) {
-						Method destMethod = destMethods[i];
+					for (int j = 0; j < destMethods.length; j++) {
+						Method destMethod = destMethods[j];
 						String methodName = destMethod.getName();
 						if(("set"+destFieldName).toLowerCase().equals(methodName.toLowerCase())){
 							try {
-								if(!(srcFieldType+"").equals("interface java.util.List")){
-									destMethod.invoke(dest, srcFieldValue+"");
-								}else{
+								if(srcFieldTypeName.equals(List.class.getName())){
 									destMethod.invoke(dest, destList);
+								}else if(srcFieldTypeName.equals(Date.class.getName())){
+									SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+									destMethod.invoke(dest, formater.format(srcFieldValue));
+								}else if(srcFieldTypeName.equals(Double.class.getName()) || srcFieldTypeName.equals(double.class.getName())){
+									destMethod.invoke(dest, Utils.formateDouble2String((double)srcFieldValue, 2));
+								}else if(srcFieldTypeName.equals(Integer.class.getName()) || srcFieldTypeName.equals(int.class.getName())){
+									destMethod.invoke(dest, srcFieldValue+"");
+								}else if(!srcFieldType.isPrimitive()){
+									destMethod.invoke(dest, srcFieldValue);
 								}
+//								System.out.println("***********************srcFieldType.isMemberClass():"+srcFieldType.getName()+"|destFieldType:"+destFieldType.getName()+"|"+srcFieldType.getSuperclass());
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -130,22 +148,7 @@ public class Utils {
 					}
 				}
 			}
-			
-			try {
-//				System.out.println("***********"+srcCls.getMethod("getMortgageAmt", null).getName());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			/*for (Field fieldDest : destFieldList) {
-				String nameDest = fieldDest.getName();
-				try {
-//					destCls.getMethod(nameSource, typeClass2).invoke(dest, args);
-				} catch (Exception e) {
-					e.printStackTrace();
-				} 
-			}*/
 		}
-//		System.out.println(JSONObject.toJSONString(srcFieldList));
 	}
 	
 	/**
@@ -186,7 +189,7 @@ public class Utils {
 	public static String formateDouble2String(double number,int scale){
 		String formateDouble = "";
 		BigDecimal formater = new BigDecimal(number);
-		new Double("");
+//		new Double("");
 		formateDouble = formater.setScale(scale, BigDecimal.ROUND_HALF_EVEN).toString();
 		return formateDouble;
 	}
@@ -232,10 +235,10 @@ public class Utils {
 	 * @param loadDate
 	 * @return
 	 */
-	public static Date getFirstRepayDate(Date loadDate){
+	public static Date getFirstRepayDate(Date valueDate){
 		Date firstRepayDate = null;
 		Calendar firstRepayCl = Calendar.getInstance();
-		firstRepayCl.setTime(loadDate);
+		firstRepayCl.setTime(valueDate);
 		firstRepayCl.add(Calendar.MONTH, 1);
 		SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
 		return firstRepayCl.getTime();

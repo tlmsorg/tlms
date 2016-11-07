@@ -11,7 +11,7 @@ public class RepayScheduleVo{
 	private String repayAmt;//还款总额
 	private String interestAmt;//支付利息总款
 	private String monthRepay;//月均还款
-	private String peroid;//贷款期数
+	private String period;//贷款期数
 	private List<RepayScheduleDetailVo> repayScheduleDetails;
 	
 	public List<RepayScheduleDetailVo> getRepayScheduleDetails() {
@@ -44,10 +44,12 @@ public class RepayScheduleVo{
 	public void setMonthRepay(String monthRepay) {
 		this.monthRepay = monthRepay;
 	}
-	public String getPeroid() {
-		return peroid;
+	public String getPeriod() {
+		return period;
 	}
-	public void setPeroid(String peroid) {
-		this.peroid = peroid;
+	public void setPeriod(String period) {
+		this.period = period;
 	}
+
+
 }

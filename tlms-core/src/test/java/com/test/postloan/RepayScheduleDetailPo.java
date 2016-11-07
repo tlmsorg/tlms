@@ -13,7 +13,7 @@ public class RepayScheduleDetailPo {
 	private double capital;//本金
 	private Date dueDate;//当前还款日期
 	private double remainCapital;//所欠本金
-	private RepaySchedulePo repaySchedulePo;
+//	private RepaySchedulePo repaySchedulePo;
 	
 	
 
@@ -23,12 +23,12 @@ public class RepayScheduleDetailPo {
 	public void setCapital(double capital) {
 		this.capital = capital;
 	}
-	public RepaySchedulePo getRepaySchedulePo() {
+/*	public RepaySchedulePo getRepaySchedulePo() {
 		return repaySchedulePo;
 	}
 	public void setRepaySchedulePo(RepaySchedulePo repaySchedulePo) {
 		this.repaySchedulePo = repaySchedulePo;
-	}
+	}*/
 	public int getPhase() {
 		return phase;
 	}

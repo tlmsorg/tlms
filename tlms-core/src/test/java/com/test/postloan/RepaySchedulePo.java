@@ -11,7 +11,7 @@ public class RepaySchedulePo {
 	private Double repayAmt;//还款总额
 	private Double interestAmt;//支付利息总款
 	private Double monthRepay;//月均还款
-	private Integer peroid;//贷款期数
+	private Integer period;//贷款期数
 	private List<RepayScheduleDetailPo> repayScheduleDetails;
 	
 	public List<RepayScheduleDetailPo> getRepayScheduleDetails() {
@@ -44,11 +44,11 @@ public class RepaySchedulePo {
 	public void setMonthRepay(double monthRepay) {
 		this.monthRepay = monthRepay;
 	}
-	public int getPeroid() {
-		return peroid;
+	public Integer getPeriod() {
+		return period;
 	}
-	public void setPeroid(int peroid) {
-		this.peroid = peroid;
+	public void setPeriod(Integer period) {
+		this.period = period;
 	}
 	
 }
