@@ -24,7 +24,7 @@ import com.tlms.core.util.Utils;
 /**贷款计算测试
  * @author tom
  */
-public class LoanCalculate {
+public class LoanCalculateMain {
 		
 	/**
 	 * 等额利息按月还本
@@ -264,14 +264,14 @@ public class LoanCalculate {
 			repayScheduleDetail.add(rsdp);
 			rsp.setRepayScheduleDetails(repayScheduleDetail);
 			
-			for (RepayScheduleDetailPo loanSchedule : repayScheduleDetail) {
+			/*for (RepayScheduleDetailPo loanSchedule : repayScheduleDetail) {
 				System.out.println(loanSchedule.getDueDate()
 						+"|第"+loanSchedule.getPhase()+"期"
 						+"|归还本金："+loanSchedule.getCapital()
 						+"|归还利息："+loanSchedule.getInterest()
 						+"|月供："+loanSchedule.getMonthRepay()
 						+"|剩余本金："+loanSchedule.getRemainCapital());
-			}
+			}*/
 		}
 		rsp.setInterestAmt(Utils.formateDouble2Double(interestAmt, 2));
 		rsp.setMonthRepay(Utils.formateDouble2Double(monthRepay, 2));
@@ -346,10 +346,9 @@ public class LoanCalculate {
 	 * @throws ParseException 
 	 */
 	public static void main(String[] args) throws ParseException {
-		LoanCalculate lc = new LoanCalculate();
+		LoanCalculateMain lc = new LoanCalculateMain();
 		SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar clNow = Calendar.getInstance();
-//		int dayCount = lc.getDayCountOfYear(clNow.get(Calendar.YEAR));//年总天数
 		int dayCount = 360;
 		String settleDateStr = "2015-01-31";//结账日
 		String valueDateStr = "2015-05-2";//起息日/放款完成日
@@ -363,10 +362,10 @@ public class LoanCalculate {
 		System.out.println("今年天数："+dayCount);
 		System.out.println("放款日："+valueDateStr);
 		Date valueDate = formater.parse(valueDateStr);
-//		RepaySchedulePo repaySchedulePo = lc.generateCpmSchedule(fianceAmt, monthRate, period,valueDate);
+		RepaySchedulePo repaySchedulePo = lc.generateCpmSchedule(fianceAmt, monthRate, period,valueDate);
 //		RepaySchedulePo repaySchedulePo = lc.monthIntetrest(fianceAmt, monthRate, period,valueDate);
 //		RepaySchedulePo repaySchedulePo = lc.oneInterest(fianceAmt, monthRate, period,valueDate);
-		RepaySchedulePo repaySchedulePo = lc.avgInterest(fianceAmt, monthRate, period,valueDate);
+//		RepaySchedulePo repaySchedulePo = lc.avgInterest(fianceAmt, monthRate, period,valueDate);
 		
 //		System.out.println("repaySchedulePo:"+JSONObject.toJSONString(repaySchedulePo));
 //		System.out.println(Utils.getFieldList(repaySchedulePo.getClass()));

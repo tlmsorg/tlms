@@ -7,6 +7,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSONObject;
@@ -23,9 +26,66 @@ import com.test.postloan.RepayScheduleDetailPo;
 import com.test.postloan.RepayScheduleDetailVo;
 import com.test.postloan.RepaySchedulePo;
 import com.test.postloan.RepayScheduleVo;
-
+import com.tlms.core.enumeration.EIntervalMode;
 public class Utils {
 	private Logger logger = Logger.getLogger(Utils.class);
+	
+	/**
+	 * 获取时间间隔
+	 * tom 2016年11月8日
+	 * @param beginDate 开始日期
+	 * @param endDate 截止日期
+	 * @param intervalMode 间隔模式
+	 * @return 时间间隔
+	 */
+	public static long getTimeInterval(Date beginDate,Date endDate,EIntervalMode intervalMode){
+		long interval = 0;
+		Calendar beginCl = Calendar.getInstance();
+		Calendar endCl = Calendar.getInstance();
+		beginCl.setTime(beginDate);
+		endCl.setTime(endDate);
+		switch(intervalMode.name()){
+		case "YEARS":
+			interval = endCl.get(Calendar.YEAR) - beginCl.get(Calendar.YEAR);
+			break;
+		case "MONTHS":
+			interval = (endCl.get(Calendar.YEAR) - beginCl.get(Calendar.YEAR)) * 12 + endCl.get(Calendar.MONTH) - beginCl.get(Calendar.MONTH);
+			break;
+		case "DAYS":
+			interval = (endCl.getTimeInMillis() - beginCl.getTimeInMillis())/(24 * 60 * 60 * 1000);
+			break;
+		case "HOURS":
+			interval = (endCl.getTimeInMillis() - beginCl.getTimeInMillis())/(60 * 60 * 1000);
+			break;
+		case "MINUTES":
+			interval = (endCl.getTimeInMillis() - beginCl.getTimeInMillis())/(60 * 1000);
+			break;
+		case "SECONDS":
+			interval = (endCl.getTimeInMillis() - beginCl.getTimeInMillis())/(1000);
+		case "MIllISECCONDS":
+			interval = endCl.getTimeInMillis() - beginCl.getTimeInMillis();
+			break;
+		}
+		return interval;
+	}
+	
+	/**
+	 * 日期格式化
+	 * tom 2016年11月7日
+	 * @param date
+	 * @param formateStr
+	 * @return
+	 */
+	public static String formateDate2String(Date date,String formateStr){
+		SimpleDateFormat formate = new SimpleDateFormat(formateStr);
+		String dateRet = "";
+		try {
+			dateRet = formate.format(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dateRet;
+	}
 	
 	/**
 	 * 日期格式化
@@ -135,8 +195,10 @@ public class Utils {
 									destMethod.invoke(dest, formater.format(srcFieldValue));
 								}else if(srcFieldTypeName.equals(Double.class.getName()) || srcFieldTypeName.equals(double.class.getName())){
 									destMethod.invoke(dest, Utils.formateDouble2String((double)srcFieldValue, 2));
+//									destMethod.invoke(dest, srcFieldValue);
 								}else if(srcFieldTypeName.equals(Integer.class.getName()) || srcFieldTypeName.equals(int.class.getName())){
 									destMethod.invoke(dest, srcFieldValue+"");
+//									destMethod.invoke(dest, srcFieldValue);
 								}else if(!srcFieldType.isPrimitive()){
 									destMethod.invoke(dest, srcFieldValue);
 								}
