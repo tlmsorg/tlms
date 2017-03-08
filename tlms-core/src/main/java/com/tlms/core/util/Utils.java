@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
@@ -29,6 +31,44 @@ import com.test.postloan.RepayScheduleVo;
 import com.tlms.core.enumeration.EIntervalMode;
 public class Utils {
 	private Logger logger = Logger.getLogger(Utils.class);
+	
+	
+	
+	/**格式化对象中的Double对象
+	 * tom 2016年11月23日
+	 * @param obj 待转换Double成员属性对象
+	 * @param scale 转换后Double成员属性小数位数
+	 * @return
+	 */
+	public static Object formateDoubleOfObject(Object obj,int scale){
+		Class objClass = obj.getClass();
+		Field[] fields = objClass.getDeclaredFields();
+		Method[] methods = objClass.getMethods();
+		List<Field> fieldList = Utils.getFieldList(objClass);
+		for (Field field : fieldList) {
+			if(field.getType().getName().equals("double") || field.getType().getName().equals("java.lang.Double")){//目前仅支持转double、Double对象数据
+				try {
+//					System.out.println(field.getName());
+					String getMethodStr = Utils.field2GetMethod(field.getName());
+					String setMethodStr = Utils.field2SetMethod(field.getName());
+					Method getMethod = objClass.getMethod(getMethodStr);
+					Method setMethod = null;
+					try {
+						setMethod = objClass.getMethod(setMethodStr,Double.class);
+					} catch (Exception e) {
+						setMethod = objClass.getMethod(setMethodStr,double.class);
+					}
+					Double score = (Double) getMethod.invoke(obj, null);
+					if(score != null)
+						setMethod.invoke(obj,Utils.formateDouble2Double(score, scale));
+				} catch (Exception e) {
+					e.printStackTrace();
+				} 
+			}
+		}
+		return obj;
+	}
+	
 	
 	/**
 	 * 获取时间间隔
@@ -52,6 +92,8 @@ public class Utils {
 			interval = (endCl.get(Calendar.YEAR) - beginCl.get(Calendar.YEAR)) * 12 + endCl.get(Calendar.MONTH) - beginCl.get(Calendar.MONTH);
 			break;
 		case "DAYS":
+			System.out.println(endCl.getTimeInMillis());
+			System.out.println(beginCl.getTimeInMillis());
 			interval = (endCl.getTimeInMillis() - beginCl.getTimeInMillis())/(24 * 60 * 60 * 1000);
 			break;
 		case "HOURS":
@@ -70,7 +112,25 @@ public class Utils {
 	}
 	
 	/**
-	 * 日期格式化
+	 * 字符串转日期
+	 * tom 2016年11月7日
+	 * @param date
+	 * @param formateStr
+	 * @return
+	 */
+	public static Date formateString2Date(String date,String formateStr){
+		SimpleDateFormat formate = new SimpleDateFormat(formateStr);
+		Date dateRet = null;
+		try {
+			dateRet = formate.parse(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dateRet;
+	}
+	
+	/**
+	 * 日期转字符串
 	 * tom 2016年11月7日
 	 * @param date
 	 * @param formateStr
@@ -164,10 +224,11 @@ public class Utils {
 							Type gType  = destField.getGenericType();
 							ParameterizedType pType = (ParameterizedType) gType;
 							Type[] types = pType.getActualTypeArguments();
-//							System.out.println("****types[0]:"+types[0]+"|"+"types[0].getTypeName():"+types[0].getTypeName()+"|"+types[0].getTypeName().equals(RepayScheduleDetailPo.class.getTypeName())+"|"+types[0].getClass());
+							System.out.println("****types[0]:"+types[0]+"|"+"types[0].getTypeName():"+types[0].getTypeName()+"|"+types[0].getTypeName().equals(RepayScheduleDetailPo.class.getTypeName())+"|"+types[0].getClass());
 //							System.out.println("ttt:"+srcField.get(source));
 							for (Object object : tempSrcFieldValue) {
-								Object rsdv = Class.forName(types[0].getTypeName()).newInstance();//目前仅仅拷贝list泛型中含有一个参数的情况，如：List<String>
+//								Object rsdv = Class.forName(types[0].getTypeName()).newInstance();//目前仅仅拷贝list泛型中含有一个参数的情况，如：List<String>
+								Object rsdv = Class.forName(types[0].toString().split(" ")[1]).newInstance();
 								Utils.copyProperties(object, rsdv);
 								destList.add(rsdv);
 							}
@@ -190,19 +251,21 @@ public class Utils {
 							try {
 								if(srcFieldTypeName.equals(List.class.getName())){
 									destMethod.invoke(dest, destList);
-								}else if(srcFieldTypeName.equals(Date.class.getName())){
-									SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-									destMethod.invoke(dest, formater.format(srcFieldValue));
-								}else if(srcFieldTypeName.equals(Double.class.getName()) || srcFieldTypeName.equals(double.class.getName())){
-									destMethod.invoke(dest, Utils.formateDouble2String((double)srcFieldValue, 2));
-//									destMethod.invoke(dest, srcFieldValue);
-								}else if(srcFieldTypeName.equals(Integer.class.getName()) || srcFieldTypeName.equals(int.class.getName())){
-									destMethod.invoke(dest, srcFieldValue+"");
-//									destMethod.invoke(dest, srcFieldValue);
-								}else if(!srcFieldType.isPrimitive()){
-									destMethod.invoke(dest, srcFieldValue);
+								}else if(srcFieldValue != null){
+									if(srcFieldTypeName.equals(Date.class.getName())){
+										SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+										destMethod.invoke(dest, formater.format(srcFieldValue));
+									}else if(srcFieldTypeName.equals(Double.class.getName()) || srcFieldTypeName.equals(double.class.getName())){
+										destMethod.invoke(dest, Utils.formateDouble2String((double)srcFieldValue, 2));
+//										destMethod.invoke(dest, srcFieldValue);
+									}else if(srcFieldTypeName.equals(Integer.class.getName()) || srcFieldTypeName.equals(int.class.getName())){
+										destMethod.invoke(dest, srcFieldValue+"");
+//										destMethod.invoke(dest, srcFieldValue);
+									}else if(!srcFieldType.isPrimitive()){
+										destMethod.invoke(dest, srcFieldValue);
+									}
+//									System.out.println("***********************srcFieldType.isMemberClass():"+srcFieldType.getName()+"|destFieldType:"+destFieldType.getName()+"|"+srcFieldType.getSuperclass());
 								}
-//								System.out.println("***********************srcFieldType.isMemberClass():"+srcFieldType.getName()+"|destFieldType:"+destFieldType.getName()+"|"+srcFieldType.getSuperclass());
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -214,14 +277,15 @@ public class Utils {
 	}
 	
 	/**
-	 * 双精度浮点数转制定格式双进度浮点数
+	 * 双精度浮点数转指定格式双进度浮点数
 	 * tom 2016年11月2日
 	 * @param number 数据源
 	 * @param scale 小数位数
 	 * @return 格式化后双精度浮点数（输入：number=123.1 scale=3 输出：123.1）
 	 */
 	public static Double formateDouble2Double(BigDecimal bigDecimal,int scale){
-		return bigDecimal.setScale(scale, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+		System.out.println("formateDouble2Double");
+		return Utils.formateDouble2Double(bigDecimal.setScale(scale, BigDecimal.ROUND_HALF_EVEN).doubleValue(), scale);
 	}
 	
 	/**
@@ -232,12 +296,14 @@ public class Utils {
 	 * @return 格式化后双精度浮点数（输入：number=123.1 scale=3 输出：123.1）
 	 */
 	public static Double formateDouble2Double(double number,int scale){
+		System.out.println("formateDouble2Double2");
 		Double formateDouble = null;
 		BigDecimal formater = new BigDecimal(number);
 //		方法一：
-		formateDouble = formater.setScale(scale, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+//		formateDouble = formater.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
 //		方法二：
-//		formateDouble = Math.round(number * Math.pow(10, new Double(scale)))/Math.pow(10, new Double(scale));
+		formateDouble = Math.round(number * Math.pow(10, new Double(scale)))/Math.pow(10, new Double(scale));
+		System.out.println(formateDouble);
 		return formateDouble;
 	}
 	
@@ -252,7 +318,7 @@ public class Utils {
 		String formateDouble = "";
 		BigDecimal formater = new BigDecimal(number);
 //		new Double("");
-		formateDouble = formater.setScale(scale, BigDecimal.ROUND_HALF_EVEN).toString();
+		formateDouble = formater.setScale(scale, BigDecimal.ROUND_HALF_UP).toString();
 		return formateDouble;
 	}
 	
@@ -281,8 +347,8 @@ public class Utils {
 		}*/
 //		formateDouble = Double.parseDouble(formater.format(number));
 		BigDecimal formater = new BigDecimal(number);
-		formateDouble = formater.setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
-		String formateStr = formater.setScale(2, BigDecimal.ROUND_HALF_EVEN).toString();
+		formateDouble = formater.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		String formateStr = formater.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 //		System.out.println("double转字符串："+formateStr);
 		
 		BigDecimal d1 = new BigDecimal(900);

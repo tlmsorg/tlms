@@ -3,6 +3,8 @@ package com.test.postloan.copytest;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
+
 import com.alibaba.fastjson.JSONObject;
 import com.tlms.core.util.Utils;
 
@@ -42,7 +44,9 @@ public class TestMain {
 		tb1.setAge(11);
 		tb1.setTbList(tb3List);
 		tb1.setTestBean4(tb4);
-		Utils.copyProperties(tb1, tb2);
+		tb1.setAddress("重庆永川");
+//		Utils.copyProperties(tb1, tb2);
+		BeanUtils.copyProperties(tb1, tb2);
 		System.out.println("tb1拷贝至tb2后，tb2值："+JSONObject.toJSONString(tb2));
 	}
 }

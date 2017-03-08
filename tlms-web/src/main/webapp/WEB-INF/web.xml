@@ -48,10 +48,15 @@
         <load-on-startup>1</load-on-startup>
         <!-- <async-supported>true</async-supported> -->
     </servlet>
-    <servlet-mapping>
+    <!-- <servlet-mapping>
         <servlet-name>springServlet</servlet-name>
         <url-pattern>*.ctrl</url-pattern>
+    </servlet-mapping> -->
+    <servlet-mapping>
+        <servlet-name>springServlet</servlet-name>
+        <url-pattern>/login/*</url-pattern>
     </servlet-mapping>
+    
     <session-config>
         <session-timeout>600</session-timeout>
     </session-config>

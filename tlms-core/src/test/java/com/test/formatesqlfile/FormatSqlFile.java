@@ -21,14 +21,14 @@ public class FormatSqlFile {
 	 */
 	public static void main(String[] args) {
 		try {
-			InputStream is = new FileInputStream(new File("crebas.sql"));
+			InputStream is = new FileInputStream(new File("贷后部分提取alter前.sql"));
 			InputStreamReader reader = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(reader);
 			String rowStr = "";
 			JSONObject json = new JSONObject();
 			int index = 0;
 			StringBuffer sb = new StringBuffer();
-			OutputStream os = new FileOutputStream(new File("d:\\out_crebas.sql"));
+			OutputStream os = new FileOutputStream(new File("贷后部分提取alter后.sql"));
 			
 			while((rowStr = br.readLine()) != null){
 				try {

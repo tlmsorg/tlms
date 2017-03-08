@@ -60,6 +60,7 @@ public class LoanCalculateMain {
 				rsdp.setRemainCapital(Utils.formateDouble2Double(remainCapital, 2));
 			}else{
 				firstDueCl.add(Calendar.MONTH, 1);
+				System.out.println(Utils.formateDate2String(firstDueCl.getTime(), "yyyy-MM-dd"));
 				rsdp.setDueDate(Utils.formateDate(firstDueCl.getTime(), "yyyy-MM-dd"));
 				rsdp.setInterest(Utils.formateDouble2Double(monthInterest, 2));
 				rsdp.setCapital(Utils.formateDouble2Double(monthCaptital, 2));
@@ -69,12 +70,12 @@ public class LoanCalculateMain {
 			}
 //			System.out.println(JSONObject.toJSONString(rsdp));
 			rsdpList.add(rsdp);
-			System.out.println(rsdp.getDueDate()
+			/*System.out.println(rsdp.getDueDate()
 					+"|第"+rsdp.getPhase()+"期"
 					+"|归还本金："+rsdp.getCapital()
 					+"|归还利息："+rsdp.getInterest()
 					+"|月供："+rsdp.getMonthRepay()
-					+"|剩余本金："+rsdp.getRemainCapital());
+					+"|剩余本金："+rsdp.getRemainCapital());*/
 		}
 		rsp.setPeriod(period);
 		rsp.setMonthRepay(Utils.formateDouble2Double(monthRepay, 2));
@@ -226,7 +227,8 @@ public class LoanCalculateMain {
 		List<RepayScheduleDetailPo> repayScheduleDetail = new ArrayList<RepayScheduleDetailPo>();
 		SimpleDateFormat formate = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar dueCalendar = Calendar.getInstance();//到期还款日 日历
-		Date firstDueDate = null;
+		Date firstDueDate = Utils.getFirstRepayDate(valueDate);
+		dueCalendar.setTime(firstDueDate);
 		Date dueDate = null;
 		BigDecimal remainCapital = new BigDecimal(fianceAmt);
 //		BigDecimal fenzi = new BigDecimal(fianceAmt).multiply(new BigDecimal(monthRate)).multiply(new BigDecimal(Math.pow(1+monthRate, period)));
@@ -242,13 +244,14 @@ public class LoanCalculateMain {
 //			Calendar clTemp = Calendar.getInstance();
 			RepayScheduleDetailPo rsdp = new RepayScheduleDetailPo();
 			if(i == 0){
-				dueCalendar.setTime(valueDate);
-				dueCalendar.add(Calendar.MONTH, 1);
+//				dueCalendar.setTime(valueDate);
+//				dueCalendar.add(Calendar.MONTH, 1);
 				firstDueDate = Utils.formateDate(dueCalendar.getTime(), "yyyy-MM-dd");
 				dueDate = firstDueDate;
 			}else{
-				dueCalendar.setTime(firstDueDate);
-				dueCalendar.add(Calendar.MONTH, i);
+//				dueCalendar.setTime(firstDueDate);
+				dueCalendar.add(Calendar.MONTH, 1);
+				System.out.println(Utils.formateDate2String(dueCalendar.getTime(), "yyyy-MM-dd"));
 				dueDate = Utils.formateDate(dueCalendar.getTime(), "yyyy-MM-dd");
 			}
 			BigDecimal currInterest = remainCapital.multiply(new BigDecimal(monthRate));//当月利息
@@ -264,14 +267,14 @@ public class LoanCalculateMain {
 			repayScheduleDetail.add(rsdp);
 			rsp.setRepayScheduleDetails(repayScheduleDetail);
 			
-			/*for (RepayScheduleDetailPo loanSchedule : repayScheduleDetail) {
+			for (RepayScheduleDetailPo loanSchedule : repayScheduleDetail) {
 				System.out.println(loanSchedule.getDueDate()
 						+"|第"+loanSchedule.getPhase()+"期"
 						+"|归还本金："+loanSchedule.getCapital()
 						+"|归还利息："+loanSchedule.getInterest()
 						+"|月供："+loanSchedule.getMonthRepay()
 						+"|剩余本金："+loanSchedule.getRemainCapital());
-			}*/
+			}
 		}
 		rsp.setInterestAmt(Utils.formateDouble2Double(interestAmt, 2));
 		rsp.setMonthRepay(Utils.formateDouble2Double(monthRepay, 2));

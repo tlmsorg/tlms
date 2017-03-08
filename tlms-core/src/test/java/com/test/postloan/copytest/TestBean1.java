@@ -6,7 +6,7 @@ import java.util.List;
  * @author tom
  *
  */
-public class TestBean1 {
+public class TestBean1 extends TestParent{
 	private Integer age;
 	private String name;
 	private String sex;
