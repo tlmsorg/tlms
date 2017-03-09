@@ -60,7 +60,8 @@ public class PreGreetingAspect {
 		HashMap<String,Object> condition = new HashMap<String,Object>();
 		condition.put("tableName", tableName);
 		condition.put("id","'"+jsonObj.getString("id")+"'");
-		HashMap operRecord = test1Mapper.selectCommon(condition);
+		HashMap operRecord = null;
+//		HashMap operRecord = test1Mapper.selectCommon(condition);
 		System.out.println("operRecord:"+operRecord);
 		if(operRecord != null){
 			Iterator<String> keyIt = operRecord.keySet().iterator();

@@ -42,13 +42,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONArray;
 import com.sys.service.impl.Class5_1;
 import com.sys.service.impl.Class5_2;
-import com.sys.service.impl.UserServiceImpl;
 
 //@RequestMapping(value="/ActivitiSpring2")
 @Controller
 public class SpringMybatisControler{
-	@Resource
-	public UserServiceImpl userService;
 	@Resource 
 	public Class5_1 class5_1;
 	@Resource 
@@ -285,12 +282,13 @@ public class SpringMybatisControler{
 	@ResponseBody
 	@RequestMapping(value="/userQuery.ctrl")
 	public JSONArray userQuery(@RequestParam(value="",required=false) String name){
-		System.out.println("name:"+name);
+		JSONArray ja = new JSONArray();
+		/*System.out.println("name:"+name);
 		userService.getUserById("12345");
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		hm.put("name", "唐亮");
-		JSONArray ja = new JSONArray();
-		ja.add(hm);
+		
+		ja.add(hm);*/
 		return ja;
 	}
 	

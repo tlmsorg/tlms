@@ -2,7 +2,7 @@ package com.sys.domain;
 
 import java.util.Date;
 
-public class User {
+public class SysUser {
     private String id;
 
     private String userid;

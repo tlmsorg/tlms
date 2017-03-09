@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sys.dao.UserMapper" >
-  <resultMap id="BaseResultMap" type="com.sys.domain.User" >
+<mapper namespace="com.sys.dao.SysUserMapper" >
+  <resultMap id="BaseResultMap" type="com.sys.domain.SysUser" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="userId" property="userid" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -26,7 +26,7 @@
     delete from sys_user
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.sys.domain.User" >
+  <insert id="insert" parameterType="com.sys.domain.SysUser" >
     insert into sys_user (id, userId, name, 
       sex, age, birthday, 
       province, city, district, 
@@ -36,7 +36,7 @@
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
       #{detail,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.sys.domain.User" >
+  <insert id="insertSelective" parameterType="com.sys.domain.SysUser" >
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -103,7 +103,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.sys.domain.User" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.sys.domain.SysUser" >
     update sys_user
     <set >
       <if test="userid != null" >
@@ -136,7 +136,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.sys.domain.User" >
+  <update id="updateByPrimaryKey" parameterType="com.sys.domain.SysUser" >
     update sys_user
     set userId = #{userid,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},

@@ -3,6 +3,7 @@
 <generatorConfiguration>
 	<classPathEntry
 		location="D:\apache-maven-3.3.3\dependency\mysql\mysql-connector-java\5.1.21\mysql-connector-java-5.1.21.jar" />
+	
 	<context id="mysqlMybatis"  defaultModelType="conditional" >
 		<commentGenerator>
 			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
@@ -11,7 +12,7 @@
 			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
 		</commentGenerator>
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://127.0.0.1:3306/test?characterEncoding=UTF-8" userId="test"
+			connectionURL="jdbc:mysql://127.0.0.1:3306/tlms?characterEncoding=UTF-8" userId="test"
 			password="test" />
 		
 		<javaModelGenerator targetPackage="com.tlms.core.domain"
@@ -21,9 +22,10 @@
 		<javaClientGenerator targetPackage="com.tlms.core.dao"
 			targetProject="tlms-core/src/main/java" type="XMLMAPPER" />
 
-		<table tableName="T_APPLY" domainObjectName="Apply" enableCountByExample="false"
+		<table tableName="test1" domainObjectName="Test1" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
+		
 	</context>
 </generatorConfiguration>

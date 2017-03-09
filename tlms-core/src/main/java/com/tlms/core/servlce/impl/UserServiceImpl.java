@@ -7,12 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.tlms.core.annotion.AnnotationTest;
-import com.tlms.core.dao.Test1Mapper;
 import com.tlms.core.dao.Test2Mapper;
-import com.tlms.core.domain.Test1;
 import com.tlms.core.domain.Test2;
+import com.tlms.core.domain.Test1;
 import com.tlms.core.service.IUserSerivice;
-
+import com.tlms.core.dao.Test1Mapper;
 @Service
 @Transactional
 public class UserServiceImpl implements IUserSerivice {

@@ -1,13 +1,13 @@
 package com.tlms.core.domain;
 
 public class Test1 {
-    public String id;
+    private String id;
 
-    public String userid;
+    private String userid;
 
-    public String couse;
+    private String couse;
 
-    public String point;
+    private String point;
 
     public String getId() {
         return id;

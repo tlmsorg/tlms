@@ -23,11 +23,14 @@
 			targetProject="tlms-web/src/main/java" type="XMLMAPPER" />
 		
 		
-		<table tableName="sys_user" domainObjectName="User" enableCountByExample="false"
+		<!-- <table tableName="sys_user" domainObjectName="User" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> -->
+		<table tableName="sys_user" domainObjectName="SysUser" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		
 				
 		
 	</context>
