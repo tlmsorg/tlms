@@ -22,5 +22,25 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-  </dependencies>
+    <!-- 阿里云基础包 -->
+	<dependency>
+		 <groupId>com.aliyun</groupId>
+		 <artifactId>aliyun-java-sdk-core</artifactId>
+		 <version>3.0.0</version>
+	</dependency>
+	<!-- 阿里云邮件包 -->
+	<dependency>
+		<groupId>com.aliyun</groupId>
+		<artifactId>aliyun-java-sdk-dm</artifactId>
+		<version>3.0.0-rc2</version>
+	</dependency>
+	<!-- 阿里云短信包 -->
+	<dependency>
+		<groupId>com.aliyun</groupId>
+		<artifactId>aliyun-java-sdk-sms</artifactId>
+		<version>3.0.0-rc1</version>
+	</dependency>	
+	
+	</dependencies>
+	
 </project>
