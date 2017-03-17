@@ -1,5 +1,6 @@
 package com.tlms.push.config;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import com.tlms.push.intercepter.PcmsHandShakeIntercepter;
 @Configuration
 @EnableWebSocket
 public class PcmsWebSocketConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer{
+	private static final Logger logger = Logger.getLogger(PcmsWebSocketConfig.class);
 	@Autowired
 	private WebSocketHandler pcmsWebSocketHandler;
 	@Autowired
@@ -23,7 +25,7 @@ public class PcmsWebSocketConfig extends WebMvcConfigurerAdapter implements WebS
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		// TODO Auto-generated method stub
-		System.out.println("register websocket handler");
+		logger.info("register websocket handler");
 		registry.addHandler(pcmsWebSocketHandler, "/tlmsWebSocketServer.ctrl").addInterceptors(pcmsHandShakeIntercepter);
 		/*registry.addHandler(tlmsWebSocketHandler, "/sockjs/tlmsWebSocketServer/info").addInterceptors(tlmsHandShakeIntercepter).withSockJS();*/
 	}

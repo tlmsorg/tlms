@@ -2,6 +2,7 @@ package com.tlms.push.handler;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -13,6 +14,7 @@ import org.springframework.web.socket.WebSocketSession;
 //@Configuration
 @Component
 public class PcmsWebSocketHandler implements WebSocketHandler{
+	private static final Logger logger = Logger.getLogger(PcmsWebSocketHandler.class);
 	public static final ArrayList<WebSocketSession> sessionList;
 	static{
 		sessionList = new ArrayList<WebSocketSession>();
@@ -21,32 +23,29 @@ public class PcmsWebSocketHandler implements WebSocketHandler{
 	@Override
 	public void afterConnectionClosed(WebSocketSession webSocketSession, CloseStatus arg1) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("PcmsWebSocketHandler->afterConnectionClosed webSocketSession:"+webSocketSession);
+		
 		ArrayList<WebSocketSession> sessionList = PcmsWebSocketHandler.sessionList;
 		for(int i = 0;i < sessionList.size();i++){
 			WebSocketSession tempSession = sessionList.get(i);
-			System.out.println("PcmsWebSocketHandler->afterConnectionClosed tempSession:"+tempSession);
+			logger.info("tempSession:"+tempSession);
 			if(webSocketSession.equals(tempSession)){
 				sessionList.remove(tempSession);
-				System.out.println("i:"+sessionList.size());
+				logger.info("i:"+sessionList.size());
 			}	
 		}
-		System.out.println("PcmsWebSocketHandler->afterConnectionClosed 剩余链接数 sessionList.size():"+sessionList.size());
+		logger.info("剩余链接数 sessionList.size():"+sessionList.size());
 	}
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession webSocketSession) throws Exception {
-		// TODO Auto-generated method stub
-		System.out.println("afterConnectionEstablished");
-		
-		System.out.println(webSocketSession.getRemoteAddress());
-		System.out.println(webSocketSession.getHandshakeAttributes());
+		logger.info("afterConnectionEstablished");
+		logger.info(webSocketSession.getRemoteAddress());
+		logger.info(webSocketSession.getHandshakeAttributes());
 		webSocketSession.sendMessage(new TextMessage("服务端链接成功"));
 	}
 
 	@Override
 	public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> message) throws Exception {
-		// TODO Auto-generated method stub
 		Object recObject = message.getPayload();
 		if(sessionList.size() == 0){
 			sessionList.add(webSocketSession);
@@ -68,7 +67,7 @@ public class PcmsWebSocketHandler implements WebSocketHandler{
 				existSession.getHandshakeAttributes().put("userName", recObject);
 			}
 		}
-		System.out.println("接收客户端数据："+recObject+"|剩余链接数 sessionList.size():"+sessionList.size());
+		logger.info("接收客户端数据："+recObject+"|当前链接session数 sessionList.size():"+sessionList.size());
 	}
 
 	@Override

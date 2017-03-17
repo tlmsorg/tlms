@@ -25,7 +25,7 @@ public class WebSocketConfig extends WebMvcConfigurerAdapter implements
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(systemWebSocketHandler(), "/websck.ctrl").addInterceptors(new HandshakeInterceptor());
 
-        System.out.println("registed!");
+//        System.out.println("registed!");  
 //        registry.addHandler(systemWebSocketHandler(), "/sockjs/websck/info").addInterceptors(new HandshakeInterceptor())
 //                .withSockJS();
 

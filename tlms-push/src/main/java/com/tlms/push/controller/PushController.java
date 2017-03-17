@@ -3,6 +3,7 @@ package com.tlms.push.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +16,11 @@ import com.tlms.push.handler.PcmsWebSocketHandler;
 
 @Controller
 public class PushController {
+	private static final Logger logger = Logger.getLogger(PushController.class);
 	@ResponseBody
 	@RequestMapping(value="/startPush.ctrl")
 	public void startPush(){
-		System.out.println("PushController->startPush");
+		logger.info("PushController->startPush");
 		ArrayList<WebSocketSession> sessionList = PcmsWebSocketHandler.sessionList;
 		int openCnt = 0;
 		for(WebSocketSession webSocketSession:sessionList){
@@ -29,10 +31,9 @@ public class PushController {
 					webSocketSession.sendMessage(new TextMessage(sendToClient));
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}		
 		}
-		System.out.println("sessionList:"+sessionList+"|当前链接数openCnt："+openCnt);
+		logger.info("sessionList:"+sessionList+"|当前链接数openCnt："+openCnt);
 	}
 }
