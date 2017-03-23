@@ -13,6 +13,12 @@
         <dependent-module archiveName="tlms-docs-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/tlms-docs/tlms-docs">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="pjrp-i-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pjrp-i/pjrp-i">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="pujjr-util-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pujjr-util/pujjr-util">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="tlms-web"/>
         <property name="java-output-path" value="/tlms-web/target/classes"/>
     </wb-module>

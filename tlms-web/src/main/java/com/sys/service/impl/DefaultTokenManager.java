@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.springframework.util.StringUtils;
 
-import com.alibaba.fastjson.serializer.UUIDCodec;
 import com.sys.service.TokenManager;
 
 

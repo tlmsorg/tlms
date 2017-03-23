@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.springframework.util.StringUtils;
 
-import com.alibaba.fastjson.serializer.UUIDCodec;
 
 
 public class DefaultTokenManager implements TokenManager {
