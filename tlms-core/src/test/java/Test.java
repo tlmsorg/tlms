@@ -1,3 +1,4 @@
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -9,6 +10,10 @@ import org.springframework.util.StringUtils;
 
 public class Test {
 
+	public void getCurrClassName(){
+		System.out.println(this.getClass().getName());
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		/*String str1 = new String("ttt");
@@ -65,5 +70,13 @@ public class Test {
 			k++;
 		}
 		System.out.println("tttttttt");
+		new Test().getCurrClassName();
+		Test test = new Test();
+		try {
+			System.out.println("路径："+test.getClass().getClassLoader().getResource("").toURI().getPath());
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

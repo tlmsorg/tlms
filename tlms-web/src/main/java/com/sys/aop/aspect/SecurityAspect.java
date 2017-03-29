@@ -14,6 +14,7 @@ public class SecurityAspect {
 	@Around("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
 	public Object execute(ProceedingJoinPoint pjp) throws Throwable{
 		logger.info("execute");
+		System.out.println("execute");
 		Object obj = pjp.proceed();
 		return obj;
 	}

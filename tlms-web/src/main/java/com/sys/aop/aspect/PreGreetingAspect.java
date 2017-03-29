@@ -39,4 +39,30 @@ public class PreGreetingAspect {
 		}
 		System.out.println("*********增强结束***********");
 	}
+	
+	@Before("execution(* com.sys.service.impl..*(..))")
+	public void target2(){
+		System.out.println("*********增强开始***********");
+		System.out.println("PreGreetingAspect->target");
+		/*System.out.println("对象类名 ："+object.getClass().getName());
+		
+		Method[] methods = object.getClass().getMethods();
+		for (int i = 0; i < methods.length; i++) {
+			Method method = methods[i];
+			if(method.getName().startsWith("get")){
+				System.out.println(method.getName());
+			}
+		}
+		Field[] fields = object.getClass().getDeclaredFields();
+		for (int i = 0; i < fields.length; i++) {
+			Field field = fields[i];
+			
+			try {
+//				System.out.println("属性名:"+field.getName()+"|值："+(String) field.get(object));
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+		}*/
+		System.out.println("*********增强结束***********");
+	}
 }

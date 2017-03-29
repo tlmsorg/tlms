@@ -20,13 +20,11 @@
 	<context:annotation-config />
 
 	<!-- 扫描服务层 -->
-	<context:component-scan base-package="com.sys.service.impl" />
+	<context:component-scan base-package="com.sys.service,com.sys.service.impl" />
 	<context:component-scan base-package="com.tlms.core.service" />
 	<context:component-scan base-package="com.tlms.core.servlce.impl" />
 	<context:component-scan base-package="com.tlms.push.service.aopcontexttest" />
 	<context:component-scan base-package="com.sys.aop.impl" />
-
-	<context:component-scan base-package="com.sys.aop.aspect" />
 	<!-- <bean class="com.sys.aop.aspect.PreGreetingAspect"/> -->
 
 	<!-- 定义首页 -->
@@ -46,8 +44,10 @@
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"
 		p:messageConverters-ref="mappingJacksonHttpMessageConverter" />
 
+	<!-- 基于@AspectJ注解的驱动器 -->
 	<aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="true" />
-	<!-- <bean class="com.sys.aop.aspect.PreGreetingAspect"/> -->
+	<!-- 使用AspectJ注解的切面类 -->
+	<bean class="com.sys.aop.aspect.PreGreetingAspect"/>
 
 	<!-- <bean id="websocket" class="com.tlms.push2.WebsocketEndPoint"/> <websocket:handlers> 
 		<websocket:mapping path="/websocket" handler="websocket"/> <websocket:handshake-interceptors> 
@@ -60,7 +60,7 @@
 	<!-- 使用zookeeper注册中心暴露服务地址 -->
 	<dubbo:registry address="zookeeper://127.0.0.1:2181" check="false"></dubbo:registry>
 	<!-- 要访问的服务接口 -->
-	<dubbo:reference interface="com.pujjr.pjrp.dubbo.service.IDubboService" id="dubboServiceImpl"></dubbo:reference>
+	<!-- <dubbo:reference interface="com.pujjr.pjrp.dubbo.service.IDubboService" id="dubboServiceImpl"></dubbo:reference> -->
 	<dubbo:reference interface="com.pujjr.pjrp.dubbo.service.IPjrpService" id="pjrpServiceImpl"></dubbo:reference>
 
 </beans>
