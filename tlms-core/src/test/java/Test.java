@@ -1,3 +1,4 @@
+import java.io.File;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -78,5 +79,14 @@ public class Test {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		String path = "d:\\test\\test";
+		File file = new File(path);
+		System.out.println(file.exists());
+		if(!file.exists())
+			System.out.println(file.mkdirs());
+		else
+			System.out.println("方法反反复复");
+			
 	}
 }
