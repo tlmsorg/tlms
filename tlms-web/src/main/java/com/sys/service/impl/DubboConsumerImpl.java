@@ -2,8 +2,8 @@ package com.sys.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.pujjr.pjrp.dubbo.service.IDubboService;
-
+//import com.pujjr.pjrp.dubbo.service.IDubboService;
+/*
 @Service
 public class DubboConsumerImpl implements IDubboService {
 
@@ -12,4 +12,4 @@ public class DubboConsumerImpl implements IDubboService {
 		return "1234343";
 	}
 
-}
+}*/

@@ -10,10 +10,18 @@ public class EnumTestMain {
 		};
 		public abstract String getName();*/
 	}
+	
+	public void sendFlagTest(ESendFlag sendFlag){
+		switch(sendFlag.getCode()){
+			case "01":
+				break;
+		}
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 //		ColorEnum colorEnum;
-		System.out.println(ColorEnum.values()[0]);
+//		System.out.println(ColorEnum.values()[0]);
+		new EnumTestMain().sendFlagTest(ESendFlag.havaSend);
 	}
 
 }

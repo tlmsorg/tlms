@@ -1,4 +1,6 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -87,6 +89,23 @@ public class Test {
 			System.out.println(file.mkdirs());
 		else
 			System.out.println("方法反反复复");
+		
+		String colors = "111#222#333";
+		String[] cls = colors.split("\\#");
+		System.out.println("|"+cls[0]+"|"+cls[1]+"|"+cls[2]+"|");
 			
+		
+		Pattern pattern3 = Pattern.compile("[0-9]*");
+		Matcher matcher3 = pattern3.matcher("16456");
+		System.out.println(matcher3.matches());
+		
+		System.out.println(5000%1001);
+		File file2 = new File("test.txt");
+		try {
+			FileOutputStream fos = new FileOutputStream(file2);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

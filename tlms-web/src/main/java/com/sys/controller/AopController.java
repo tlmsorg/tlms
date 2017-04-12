@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.pujjr.utils.TransactionMapData;
+//import com.pujjr.utils.TransactionMapData;
 import com.sys.service.IAopTest;
 import com.sys.service.ICoreServiceImpl1;
 import com.sys.service.impl.AopTestImpl;
@@ -35,8 +35,8 @@ public class AopController {
 	@RequestMapping(value="/aopTest",method=RequestMethod.GET)
 	public String aopTest(){
 		System.out.println("aopTest");
-		TransactionMapData tmd = TransactionMapData.getInstance();
-		tmd.put("name", "唐亮");
+//		TransactionMapData tmd = TransactionMapData.getInstance();
+//		tmd.put("name", "唐亮");
 //		aopTestImpl.aopTest(tmd);
 		return "aopController";
 	}
