@@ -132,5 +132,27 @@ public class DubboTestController {
 		String dubboServiceRet = pjrpServiceImpl.exportLedgerOfRiskDept(time);
 		return dubboServiceRet;
 	}
+	
+	@RequestMapping(value="/selectBranchProductSortCountData/{time}/{pageNum}/{pageSize}",method=RequestMethod.GET)
+	public PageVo selectBranchProductSortCountData(@PathVariable String time,@PathVariable String pageNum,@PathVariable String pageSize){
+		return pjrpServiceImpl.selectBranchProductSortCountData(time, pageNum, pageSize);
+	}
+	
+	@RequestMapping(value="/exportBranchProductSortCountData/{time}",method=RequestMethod.GET)
+	public String exportBranchProductSortCountData(@PathVariable String time){
+		String dubboServiceRet = pjrpServiceImpl.exportBranchProductSortCountData(time);
+		return dubboServiceRet;
+	}
+	
+	@RequestMapping(value="/selectBranchOverdueData/{time}/{pageNum}/{pageSize}",method=RequestMethod.GET)
+	public PageVo selectBranchOverdueData(@PathVariable String time,@PathVariable String pageNum,@PathVariable String pageSize){
+		return pjrpServiceImpl.selectBranchOverdueData(time, pageNum, pageSize);
+	}
+	
+	@RequestMapping(value="/exportBranchOverdueData/{time}",method=RequestMethod.GET)
+	public String exportBranchOverdueData(@PathVariable String time){
+		String dubboServiceRet = pjrpServiceImpl.exportBranchOverdueData(time);
+		return dubboServiceRet;
+	}
 	//------------------------
 }
