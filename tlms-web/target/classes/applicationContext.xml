@@ -58,7 +58,7 @@
 <!-- 消费者 -->
 	<dubbo:application name="dubbo_consumer"></dubbo:application>
 	<!-- 使用zookeeper注册中心暴露服务地址 -->
-	<dubbo:registry address="zookeeper://127.0.0.1:2181" check="false"></dubbo:registry>
+	<dubbo:registry address="${zookkeeperAddress}" check="false"></dubbo:registry>
 	<!-- 要访问的服务接口 -->
 	<!-- <dubbo:reference interface="com.pujjr.pjrp.dubbo.service.IDubboService" id="dubboServiceImpl"></dubbo:reference> -->
 	<dubbo:reference interface="com.pujjr.pjrp.dubbo.service.IPjrpService" id="pjrpServiceImpl"></dubbo:reference>

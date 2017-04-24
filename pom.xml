@@ -35,7 +35,7 @@
 		<dubbo.version>2.5.4-SNAPSHOT</dubbo.version>
 		<zookeeper.version>3.4.8</zookeeper.version>
 		<zkclient.version>0.1</zkclient.version>
-		<dubbo-pjrp-api.version>1.0.2-SNAPSHOT</dubbo-pjrp-api.version>
+		<dubbo-pjrp-api.version>1.0.3-SNAPSHOT</dubbo-pjrp-api.version>
 	</properties>
 
 

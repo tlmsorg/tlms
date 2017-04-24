@@ -154,5 +154,70 @@ public class DubboTestController {
 		String dubboServiceRet = pjrpServiceImpl.exportBranchOverdueData(time);
 		return dubboServiceRet;
 	}
-	//------------------------
+	//20170418 add  上海资信上报数据  + 银联入账
+	@RequestMapping(value="/selectShzxLoanApplyInfo/{timeBegin}/{timeEnd}/{pageNum}/{pageSize}",method=RequestMethod.GET)
+	public PageVo selectShzxLoanApplyInfo(@PathVariable String timeBegin,@PathVariable String timeEnd,@PathVariable String pageNum,@PathVariable String pageSize){
+		System.out.println("消费者调用提供者服务*****selectShzxLoanApplyInfo");
+		return pjrpServiceImpl.selectShzxLoanApplyInfo(timeBegin, timeEnd, pageNum, pageSize);
+	}
+	
+	@RequestMapping(value="/exportShzxLoanApplyInfo/{timeBegin}/{timeEnd}",method=RequestMethod.GET)
+	public String exportShzxLoanApplyInfo(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
+		System.out.println("消费者调用提供者服务******exportShzxLoanApplyInfo");
+		String dubboServiceRet = pjrpServiceImpl.exportShzxLoanApplyInfo(timeBegin, timeEnd);
+		return dubboServiceRet;
+	}
+
+	@RequestMapping(value="/selectShzxLivingInfo/{timeBegin}/{timeEnd}/{pageNum}/{pageSize}",method=RequestMethod.GET)
+	public PageVo selectShzxLivingInfo(@PathVariable String timeBegin,@PathVariable String timeEnd,@PathVariable String pageNum,@PathVariable String pageSize){
+		System.out.println("消费者调用提供者服务*****selectShzxLivingInfo");
+		return pjrpServiceImpl.selectShzxLivingInfo(timeBegin, timeEnd, pageNum, pageSize);
+	}
+	
+	@RequestMapping(value="/exportShzxLivingInfo/{timeBegin}/{timeEnd}",method=RequestMethod.GET)
+	public String exportShzxLivingInfo(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
+		System.out.println("消费者调用提供者服务******exportShzxLivingInfo");
+		String dubboServiceRet = pjrpServiceImpl.exportShzxLivingInfo(timeBegin, timeEnd);
+		return dubboServiceRet;
+	}
+	
+
+	@RequestMapping(value="/selectShzxIdInfo/{timeBegin}/{timeEnd}/{pageNum}/{pageSize}",method=RequestMethod.GET)
+	public PageVo selectShzxIdInfo(@PathVariable String timeBegin,@PathVariable String timeEnd,@PathVariable String pageNum,@PathVariable String pageSize){
+		System.out.println("消费者调用提供者服务*****selectShzxIdInfo");
+		return pjrpServiceImpl.selectShzxIdInfo(timeBegin, timeEnd, pageNum, pageSize);
+	}
+	
+	@RequestMapping(value="/exportShzxIdInfo/{timeBegin}/{timeEnd}",method=RequestMethod.GET)
+	public String exportShzxIdInfo(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
+		System.out.println("消费者调用提供者服务******exportShzxIdInfo");
+		String dubboServiceRet = pjrpServiceImpl.exportShzxIdInfo(timeBegin, timeEnd);
+		return dubboServiceRet;
+	}
+
+	@RequestMapping(value="/selectShzxCareerInfo/{timeBegin}/{timeEnd}/{pageNum}/{pageSize}",method=RequestMethod.GET)
+	public PageVo selectShzxCareerInfo(@PathVariable String timeBegin,@PathVariable String timeEnd,@PathVariable String pageNum,@PathVariable String pageSize){
+		System.out.println("消费者调用提供者服务*****selectShzxCareerInfo");
+		return pjrpServiceImpl.selectShzxCareerInfo(timeBegin, timeEnd, pageNum, pageSize);
+	}
+	
+	@RequestMapping(value="/exportShzxCareerInfo/{timeBegin}/{timeEnd}",method=RequestMethod.GET)
+	public String exportShzxCareerInfo(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
+		System.out.println("消费者调用提供者服务******exportShzxCareerInfo");
+		String dubboServiceRet = pjrpServiceImpl.exportShzxCareerInfo(timeBegin, timeEnd);
+		return dubboServiceRet;
+	}
+
+	@RequestMapping(value="/selectUnionPayRecord/{timeBegin}/{timeEnd}/{pageNum}/{pageSize}",method=RequestMethod.GET)
+	public PageVo selectUnionPayRecord(@PathVariable String timeBegin,@PathVariable String timeEnd,@PathVariable String pageNum,@PathVariable String pageSize){
+		System.out.println("消费者调用提供者服务*****selectUnionPayRecord");
+		return pjrpServiceImpl.selectUnionPayRecord(timeBegin, timeEnd, pageNum, pageSize);
+	}
+	
+	@RequestMapping(value="/exportUnionPayRecord/{timeBegin}/{timeEnd}",method=RequestMethod.GET)
+	public String exportUnionPayRecord(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
+		System.out.println("消费者调用提供者服务******exportUnionPayRecord");
+		String dubboServiceRet = pjrpServiceImpl.exportUnionPayRecord(timeBegin, timeEnd);
+		return dubboServiceRet;
+	}
 }
