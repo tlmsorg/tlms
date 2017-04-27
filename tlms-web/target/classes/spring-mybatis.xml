@@ -18,8 +18,14 @@
 <!--     <context:annotation-config /> -->
 
      <!-- 引入配置文件 -->  
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
-        <property name="location" value="classpath:jdbc.properties" />  
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
+    	<property name="locations">
+    		<list>
+    			<value>classpath:jdbc.properties</value>
+    			<value>classpath:property.properties</value>
+    		</list>
+    	</property> 
+        <!-- <property name="location" value="classpath:jdbc.properties" />   -->
     </bean>
 	<!-- 加载property文件 -->
 	<context:property-placeholder location="classpath:property.properties"/>
