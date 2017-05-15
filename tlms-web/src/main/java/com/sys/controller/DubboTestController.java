@@ -13,7 +13,7 @@ import com.pujjr.pjrp.dubbo.service.IPjrpService;
 import com.pujjr.vo.PageVo;
 
 /**
- * 测试报表系统
+ * 报表系统测试客户端
  * @author tom
  *
  */
@@ -218,6 +218,23 @@ public class DubboTestController {
 	public String exportUnionPayRecord(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
 		System.out.println("消费者调用提供者服务******exportUnionPayRecord");
 		String dubboServiceRet = pjrpServiceImpl.exportUnionPayRecord(timeBegin, timeEnd);
+		return dubboServiceRet;
+	}
+	
+	@RequestMapping(value="/exportIncomeLog/{timeBegin}/{timeEnd}",method=RequestMethod.GET)
+	public String exportIncomeLog(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
+		String dubboServiceRet = pjrpServiceImpl.exportIncomeLog(timeBegin, timeEnd);
+		return dubboServiceRet;
+	}
+
+	@RequestMapping(value="/exportProbationBranchCredit/{timeBegin}/{timeEnd}",method=RequestMethod.GET)
+	public String exportProbationBranchCredit(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
+		String dubboServiceRet = pjrpServiceImpl.exportProbationBranchCredit(timeBegin, timeEnd);
+		return dubboServiceRet;
+	}
+	@RequestMapping(value="/exportZdwUploadData/{timeBegin}/{timeEnd}",method=RequestMethod.GET)
+	public String exportZdwUploadData(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
+		String dubboServiceRet = pjrpServiceImpl.exportZdwUploadData(timeBegin, timeEnd);
 		return dubboServiceRet;
 	}
 }

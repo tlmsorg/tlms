@@ -35,7 +35,7 @@
 		<dubbo.version>2.5.4-SNAPSHOT</dubbo.version>
 		<zookeeper.version>3.4.8</zookeeper.version>
 		<zkclient.version>0.1</zkclient.version>
-		<dubbo-pjrp-api.version>1.0.3-SNAPSHOT</dubbo-pjrp-api.version>
+		<dubbo-pjrp-api.version>1.0.4.20170508.RELEASE</dubbo-pjrp-api.version>
 	</properties>
 
 
@@ -280,11 +280,20 @@
 			<version>${zkclient.version}</version>
 		</dependency> 
 		
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt</artifactId>
+		    <version>0.7.0</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.pujjr</groupId>
 			<artifactId>dubbo-pjrp-api</artifactId>
 			<version>${dubbo-pjrp-api.version}</version>
 		</dependency>
+		
+		
 	</dependencies>
 
 	<build>

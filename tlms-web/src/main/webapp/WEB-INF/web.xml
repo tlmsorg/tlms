@@ -52,10 +52,10 @@
         <servlet-name>springServlet</servlet-name>
         <url-pattern>*.ctrl</url-pattern>
     </servlet-mapping> -->
-    <servlet-mapping>
+   <!--  <servlet-mapping>
         <servlet-name>springServlet</servlet-name>
         <url-pattern>/login/*</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> -->
     <servlet-mapping>
     	<servlet-name>springServlet</servlet-name>
     	<url-pattern>/*</url-pattern>
@@ -77,7 +77,7 @@
 	    <filter-class>com.sys.filter.CorsFilter</filter-class>  
 	    <init-param>  
 	        <param-name>allowOrigin</param-name>  
-	        <param-value>http://localhost:63342</param-value>  
+	        <param-value>*</param-value>  
 	    </init-param>  
 	    <init-param>  
 	        <param-name>allowMethods</param-name>  
@@ -89,8 +89,12 @@
 	    </init-param>  
 	    <init-param>  
 	        <param-name>allowHeaders</param-name>  
-	        <param-value>Content-Type,X-Token</param-value>  
-	    </init-param>  
+	        <param-value>Content-Type,token,Authorization</param-value>  
+	    </init-param> 
+	    <init-param>
+	    	<param-name>exposeHeaders</param-name>
+	    	<param-value>Content-Type,token</param-value>
+	    </init-param> 
 	</filter>
     <filter-mapping>  
 	    <filter-name>corsFilter</filter-name>  

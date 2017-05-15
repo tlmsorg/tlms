@@ -3,17 +3,21 @@ package com.sys.controller;
 import java.lang.reflect.Method;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sys.dao.SysUserMapper;
 import com.sys.domain.SysUser;
+import com.sys.service.IAuthService;
 
 /**
  * @author tom
@@ -21,12 +25,15 @@ import com.sys.domain.SysUser;
  */
 @RestController
 @ResponseBody
+@RequestMapping(value = "/login")
 public class LoginController {
 	@Autowired
 	public SysUserMapper sysUserMapperImpl;
+	@Autowired
+	public IAuthService authServiceImpl;
 //	@RequestMapping(value="/userLogin",method=RequestMethod.POST,produces="text/plain;charset=UTF-8")
 	@RequestMapping(value="/userLogin",method=RequestMethod.POST)
-	public String userLogin(@RequestBody SysUser user) throws Exception{
+	public SysUser userLogin(@RequestBody SysUser user,HttpServletRequest request,HttpServletResponse response) throws Exception{
 		String strRet = "健康了减肥考了多少";
 //		System.out.println("user"+user.getName());
 		String str = null;
@@ -67,11 +74,28 @@ public class LoginController {
 		
 		SysUser sysUser = new SysUser();
 		sysUser.setId("111");
-		sysUserMapperImpl.insertSelective(sysUser);
+//		sysUserMapperImpl.insertSelective(sysUser);
+		String jwt = authServiceImpl.createJwt();
+		authServiceImpl.checkJwt(jwt);
 		
-//		return JSONObject.toJSONString(user2);
+//		response.addHeader("X-Token", jwt);
+		response.setHeader("token", jwt);
+//		response.addHeader("Access-Control-Expose-Header", "Server");
+//		response.setHeader("Access-Control-Expose-Headers", "Server,token");
+		
+		return sysUser;
 //		return user2;
-		return "健康了减肥考了多少";
+//		return "健康了减肥考了多少";
+//		return JSONObject.toJSONString(sysUser);
 
+	}
+	
+	@RequestMapping(value="/doTrans",method=RequestMethod.POST)
+	public String doTrans(@RequestBody String tranData,HttpServletRequest request){
+		System.out.println("toTrans:"+tranData);
+		String tokenRcv = request.getHeader("token");
+		authServiceImpl.checkJwt(tokenRcv);
+		System.out.println("tokenRcv:"+tokenRcv);
+		return "{\"msg\":\"交易成功\"}";
 	}
 }
