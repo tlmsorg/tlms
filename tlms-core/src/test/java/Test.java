@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 
 import org.springframework.util.StringUtils;
 
+import com.tlms.core.util.Utils;
+
 public class Test {
 
 	public void getCurrClassName(){
@@ -107,5 +109,14 @@ public class Test {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		System.out.println("File.pathSeparator:"+File.pathSeparator+"|"+File.pathSeparatorChar+"|"+File.separator+"|"+File.separatorChar);
+	
+		Pattern pattern4 = Pattern.compile("carVin");
+		String str4 = "carVin2";
+		Matcher matcher4 = pattern4.matcher(str4);
+		System.out.println(matcher4.find());
+		
+		System.out.println(Utils.number2Chn(15230.21));
 	}
 }

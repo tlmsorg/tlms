@@ -237,4 +237,50 @@ public class DubboTestController {
 		String dubboServiceRet = pjrpServiceImpl.exportZdwUploadData(timeBegin, timeEnd);
 		return dubboServiceRet;
 	}
+	
+	@RequestMapping(value="/exportLoanTenantDetail/{timeBegin}/{timeEnd}",method=RequestMethod.GET)
+	public String exportLoanTenantDetail(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
+		String dubboServiceRet = pjrpServiceImpl.exportLoanTenantDetail(timeBegin, timeEnd);
+		return dubboServiceRet;
+	}
+	
+	@RequestMapping(value="/exportBranchApplyAndLoanData/{timeBegin}/{timeEnd}",method=RequestMethod.GET)
+	public String exportBranchApplyAndLoanData(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
+		String dubboServiceRet = pjrpServiceImpl.exportBranchApplyAndLoanData(timeBegin, timeEnd);
+		return dubboServiceRet;
+	}
+	
+
+	@RequestMapping(value="/exportShzxLoanBusiInfo/{timeBegin}/{timeEnd}",method=RequestMethod.GET)
+	public String exportShzxLoanBusiInfo(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
+		String dubboServiceRet = pjrpServiceImpl.exportShzxLoanBusiInfo(timeBegin, timeEnd);
+		return dubboServiceRet;
+	}
+	@RequestMapping(value="/exportDrivingLicense/{timeBegin}/{timeEnd}",method=RequestMethod.GET)
+	public String exportDrivingLicense(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
+		String dubboServiceRet = pjrpServiceImpl.exportDrivingLicense(timeBegin, timeEnd);
+		return dubboServiceRet;
+	}
+	@RequestMapping(value="/exportSettleTenant/{timeBegin}/{timeEnd}",method=RequestMethod.GET)
+	public String exportSettleTenant(@PathVariable String timeBegin,@PathVariable("timeEnd") String timeEnd){
+		String dubboServiceRet = pjrpServiceImpl.exportSettleTenant(timeBegin, timeEnd);
+		return dubboServiceRet;
+	}
+	@RequestMapping(value="/exportLoanMonitorDataOfRetailBusi",method=RequestMethod.GET)
+	public String exportLoanMonitorDataOfRetailBusi(){
+		String dubboServiceRet = pjrpServiceImpl.exportLoanMonitorDataOfRetailBusi();
+		return dubboServiceRet;
+	}
+	@RequestMapping(value="/exportNoSettleTenantAfterSettledate/{time}",method=RequestMethod.GET)
+	public String exportNoSettleTenantAfterSettledate(@PathVariable String time){
+		String dubboServiceRet = pjrpServiceImpl.exportNoSettleTenantAfterSettledate(time);
+		return dubboServiceRet;
+	}
+	
+	@RequestMapping(value="/exportIcbcBatchLoan",method=RequestMethod.GET)
+	public String exportIcbcBatchLoan(){
+		String dubboServiceRet = pjrpServiceImpl.exportIcbcBatchLoan();
+		return dubboServiceRet;
+	}
+	
 }
