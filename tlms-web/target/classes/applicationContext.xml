@@ -16,7 +16,7 @@
 		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd
 		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
 	default-lazy-init="true">
-
+	<import resource="tlms-dubbo.xml"/>
 	<context:annotation-config />
 
 	<!-- 扫描服务层 -->
@@ -28,7 +28,8 @@
 	<!-- <bean class="com.sys.aop.aspect.PreGreetingAspect"/> -->
 
 	<!-- 定义首页 -->
-	<!-- <mvc:view-controller path="/" view-name="redirect:/login/" /> -->
+	<!-- <mvc:view-controller path="/" view-name="index"/> -->
+	<mvc:view-controller path="/" view-name="redirect:/home/index" />
 
 	<!-- 返回json -->
 	<bean id="mappingJacksonHttpMessageConverter"
@@ -54,13 +55,22 @@
 		<bean class="com.tlms.push2.HandshakeInterceptor"/> </websocket:handshake-interceptors> 
 		</websocket:handlers> -->
 
-<!-- dubbo相关配置 -->
-<!-- 消费者 -->
-	<dubbo:application name="dubbo_consumer"></dubbo:application>
-	<!-- 使用zookeeper注册中心暴露服务地址 -->
-	<dubbo:registry address="${zookkeeperAddress}" check="false"></dubbo:registry>
-	<!-- 要访问的服务接口 -->
-	<!-- <dubbo:reference interface="com.pujjr.pjrp.dubbo.service.IDubboService" id="dubboServiceImpl"></dubbo:reference> -->
-	<dubbo:reference interface="com.pujjr.pjrp.dubbo.service.IPjrpService" id="pjrpServiceImpl"></dubbo:reference>
-
+<!-- 配置freeMarker的模板路径 -->  
+     <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">  
+        <property name="templateLoaderPath" value="/ftl/" />  
+        <property name="defaultEncoding" value="UTF-8" /> 
+        <property name="freemarkerVariables">
+        	<map>
+        		<entry key="webRoot" value="${project.webRoot}"></entry>
+        		<entry key="webVersion" value="${project.webVersion}"></entry>
+        	</map>
+        </property> 
+     </bean>  
+     <!-- freemarker视图解析器 -->  
+     <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">  
+        <property name="suffix" value=".html" />  
+        <property name="contentType" value="text/html;charset=UTF-8" />  
+        <!-- 此变量值为pageContext.request, 页面使用方法：rc.contextPath -->  
+        <property name="requestContextAttribute" value="rc" />  
+     </bean> 
 </beans>

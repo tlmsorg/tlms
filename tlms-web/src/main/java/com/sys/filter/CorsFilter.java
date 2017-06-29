@@ -10,6 +10,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -69,6 +70,7 @@ public class CorsFilter implements Filter {
         if (!StringUtils.isEmpty(exposeHeaders)) {  
             response.setHeader("Access-Control-Expose-Headers", exposeHeaders);  
         }  
+        
         chain.doFilter(req, res);  
 	}
 

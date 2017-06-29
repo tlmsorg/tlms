@@ -1,0 +1,31 @@
+<#include "base/layout.html"/>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>测试</title>
+</head>
+<body>
+<#--注释部分-->
+<#list users as user>
+	<div>用户名：${user.userName}</div>
+	<div>密码:${user.passWord}</div>
+	<div>是否男性2：${user.man?string('yes','no')}</div>
+	<div>年龄:${user.age!}</div>
+	<div>用户名3：${user.userName!?html?replace('bright', '<span style="color: blue;">'+user.passWord+'</span>' )}</div>
+	<div>页面跳转:<a href="${webRoot}/home/userQuery">跳转userQuery</a></div>
+	<#if user.userName != "brighttang">
+		<div>未找到${user.userName}</div>
+		<div>未找到1</div>
+		<#elseif user.userName == "brighttang">
+		<div>找到${user.userName}</div>
+		<div>找到1</div>
+	</#if>
+</#list>
+<#include "include1.html"/>
+<#include "base/include2.html" encoding="UTF-8"/>
+<#include "base/version.html"/>
+
+
+</body>
+</html>

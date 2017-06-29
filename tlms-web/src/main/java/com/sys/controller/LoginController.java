@@ -1,11 +1,14 @@
 package com.sys.controller;
 
 import java.lang.reflect.Method;
+import java.util.Calendar;
 import java.util.Date;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -80,6 +83,8 @@ public class LoginController {
 		
 //		response.addHeader("X-Token", jwt);
 		response.setHeader("token", jwt);
+		long serverTime = System.currentTimeMillis();
+		response.setHeader("expireTime", serverTime+3*60*1000+"");
 //		response.addHeader("Access-Control-Expose-Header", "Server");
 //		response.setHeader("Access-Control-Expose-Headers", "Server,token");
 		
@@ -92,10 +97,22 @@ public class LoginController {
 	
 	@RequestMapping(value="/doTrans",method=RequestMethod.POST)
 	public String doTrans(@RequestBody String tranData,HttpServletRequest request){
+		String strRet = "";
 		System.out.println("toTrans:"+tranData);
 		String tokenRcv = request.getHeader("token");
-		authServiceImpl.checkJwt(tokenRcv);
-		System.out.println("tokenRcv:"+tokenRcv);
-		return "{\"msg\":\"交易成功\"}";
+		String expireTime = request.getHeader("expireTime");
+		Long exTimeMillis = Long.parseLong(expireTime);
+		Long nowTimeMillis = System.currentTimeMillis();
+		if(exTimeMillis < nowTimeMillis){
+			System.out.println("exTimeMillis:"+exTimeMillis+",nowTimeMillis:"+nowTimeMillis+",cookie失效");
+			strRet = "{\"msg\":\"登录超时，请重新登录\"}";
+		}else{
+			authServiceImpl.checkJwt(tokenRcv);
+			System.out.println("tokenRcv:"+tokenRcv);
+			
+			System.out.println("exTimeMillis:"+exTimeMillis+",nowTimeMillis:"+nowTimeMillis+",cookie有效");
+			strRet = "{\"msg\":\"交易成功\"}";
+		}
+		return strRet;
 	}
 }

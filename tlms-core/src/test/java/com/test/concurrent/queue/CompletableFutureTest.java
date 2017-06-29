@@ -50,12 +50,12 @@ public class CompletableFutureTest {
 	public void supplierTest(ExecutorService executor,List paramList){
 		final String name = "brignttang";
 		List<CompletableFuture<List<ThreadResponseVo>>> futureList = new ArrayList<CompletableFuture<List<ThreadResponseVo>>>();
+		final List<String> responseList = new ArrayList<String>();//多个线程共享变量，多个线程将数据放入次链表
 		for (final Object object : paramList) {
 			CompletableFuture<List<ThreadResponseVo>> future = CompletableFuture.supplyAsync(new Supplier<List<ThreadResponseVo>>() {
 				@Override
 				public List<ThreadResponseVo> get() {//类似于callable的返回结果
-					System.out.println(Thread.currentThread().getName());
-					System.out.println(object);
+					System.out.println(Thread.currentThread().getName()+object);
 					int i = 0;
 					while(i++ < 5){
 						try {
@@ -73,6 +73,8 @@ public class CompletableFutureTest {
 					trv.setName(name);
 					trv.setSex("男");
 					trvList.add(trv);
+					responseList.add("test");
+					
 					return trvList;
 				}
 			}, executor);
@@ -81,24 +83,33 @@ public class CompletableFutureTest {
 
 		
 		try {
-			for (CompletableFuture<List<ThreadResponseVo>> future : futureList) {
+			/*for (CompletableFuture<List<ThreadResponseVo>> future : futureList) {
 				List<ThreadResponseVo> trvList = future.get();
 				for (ThreadResponseVo trv : trvList) {
 					System.out.println("线程执行完成 future.get():"+trv.getName()+"|"+trv.getSex()+"|"+trv.getAge()+"|"+trv.getLoopTime()+"|");
 				}
-			}
+			}*/
+			CompletableFuture.allOf(futureList.toArray(new CompletableFuture[futureList.size()])).join();//阻塞：等待所有completefuture执行完成
+			System.out.println("所有线程执行完成，responseList:"+responseList);
 			executor.shutdown();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	public static void main(String[] args) {
-		ExecutorService executor = Executors.newFixedThreadPool(2);
+		ExecutorService executor = Executors.newFixedThreadPool(4);
 		CompletableFutureTest cft = new CompletableFutureTest();
 		List<String> list = new ArrayList<String>();
-		list.add("参数");
+		//6个任务，即同事启动6个线程处理问题。
+		list.add("任务1");
+		list.add("任务2");
+		list.add("任务3");
+		list.add("任务4");
+		list.add("任务5");
+		list.add("任务6");
 		cft.supplierTest(executor,list);
 //		cft.runanbleTest(executor);
+		
 	}
 
 }

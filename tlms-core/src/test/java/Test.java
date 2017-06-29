@@ -118,5 +118,7 @@ public class Test {
 		System.out.println(matcher4.find());
 		
 		System.out.println(Utils.number2Chn(15230.21));
+		
+		System.out.println("ttt:"+Math.round(9989*0.001));
 	}
 }

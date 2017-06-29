@@ -96,6 +96,7 @@ public class FutureTest {
 		 */
 		System.out.println(trv.getName()+"|"+trv.getSex()+"|"+trv.getAge());
 		System.out.println("回调后代码段");
+		
 	}
 	/**
 	 * runable

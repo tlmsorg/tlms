@@ -36,7 +36,6 @@ public class AuthServiceImpl implements IAuthService {
 		
 		SignatureAlgorithm signatureAlgoritm = SignatureAlgorithm.HS256;
 		System.out.println(signatureAlgoritm.getJcaName());
-		
 		byte[] secretByte = DatatypeConverter.parseBase64Binary("secret");
 		Key signKey = new SecretKeySpec(secretByte, signatureAlgoritm.getJcaName());
 		JwtBuilder jb = Jwts.builder()

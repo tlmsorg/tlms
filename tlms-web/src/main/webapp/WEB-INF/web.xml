@@ -89,11 +89,11 @@
 	    </init-param>  
 	    <init-param>  
 	        <param-name>allowHeaders</param-name>  
-	        <param-value>Content-Type,token,Authorization</param-value>  
+	        <param-value>Content-Type,token,Authorization,expireTime</param-value>  
 	    </init-param> 
 	    <init-param>
 	    	<param-name>exposeHeaders</param-name>
-	    	<param-value>Content-Type,token</param-value>
+	    	<param-value>Content-Type,token,expireTime,serverTime</param-value>
 	    </init-param> 
 	</filter>
     <filter-mapping>  
