@@ -27,6 +27,7 @@ public class PcmsWebSocketConfig extends WebMvcConfigurerAdapter implements WebS
 		// TODO Auto-generated method stub
 		logger.info("register websocket handler");
 		registry.addHandler(pcmsWebSocketHandler, "/tlmsWebSocketServer.ctrl").addInterceptors(pcmsHandShakeIntercepter);
+
 		/*registry.addHandler(tlmsWebSocketHandler, "/sockjs/tlmsWebSocketServer/info").addInterceptors(tlmsHandShakeIntercepter).withSockJS();*/
 	}
 //	@Bean

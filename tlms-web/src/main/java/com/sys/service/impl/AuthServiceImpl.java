@@ -9,6 +9,7 @@ import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.sys.service.IAuthService;
@@ -19,7 +20,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 @Service
 public class AuthServiceImpl implements IAuthService {
-
+	@Value("${token.expire.time}")
+	private long expireTime;
+	
 	public static void main(String[] args) {
 		AuthServiceImpl ai = new AuthServiceImpl();
 		ai.checkJwt(ai.createJwt());
@@ -45,6 +48,7 @@ public class AuthServiceImpl implements IAuthService {
 				.setIssuer("brighttang")
 				.claim("userName", userName)
 				.claim("passWord", passWord)
+				.claim("expireTime",System.currentTimeMillis() + expireTime)//token超时时间
 				.signWith(signatureAlgoritm, signKey);
 		
 		if(expiration > 0){
@@ -70,6 +74,8 @@ public class AuthServiceImpl implements IAuthService {
 		System.out.println("sub:"+claims.get("sub"));
 		System.out.println("userName:"+claims.get("userName"));
 		System.out.println("passWord:"+claims.get("passWord"));
+		System.out.println("expireTime:"+claims.get("expireTime"));
+		
 		return null;
 	}
 

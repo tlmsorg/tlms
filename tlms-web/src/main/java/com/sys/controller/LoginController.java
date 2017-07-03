@@ -96,7 +96,7 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value="/doTrans",method=RequestMethod.POST)
-	public String doTrans(@RequestBody String tranData,HttpServletRequest request){
+	public String doTrans(@RequestBody SysUser tranData,HttpServletRequest request){
 		String strRet = "";
 		System.out.println("toTrans:"+tranData);
 		String tokenRcv = request.getHeader("token");

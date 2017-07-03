@@ -24,7 +24,7 @@
     
     //链接
     function connect() {  
-        webSocket= new WebSocket("ws://localhost:8080/tlms-web/tlmsWebSocketServer.ctrl");
+        webSocket= new WebSocket("ws://localhost:8090/tlms-web/tlmsWebSocketServer.ctrl");
       //事件处理方法
         webSocket.onopen = onOpen;
         webSocket.onclose = onClose;
