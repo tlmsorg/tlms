@@ -19,18 +19,13 @@ public class BlockqueueTest {
 		int keepAliveTime = 5000;
 		BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(2);
 		ThreadPoolExecutor executor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.MINUTES, workQueue);
-		
 		BlockingQueue queue = new LinkedBlockingDeque(2);
 		Producer p = new Producer(queue);
-		
 		Future<?> futures = executor.submit(p);
-		
 		try {
-			
 			Thread.currentThread().sleep(5000);
-			System.out.println(Thread.currentThread().getName()+"555");
-//			executor.shutdownNow();
-			System.out.println("futures.get():"+futures.get());
+			System.out.println(Thread.currentThread().getName()+"关闭线程池");
+			executor.shutdownNow();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

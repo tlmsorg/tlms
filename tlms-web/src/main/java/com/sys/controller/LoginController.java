@@ -87,7 +87,7 @@ public class LoginController {
 		response.setHeader("expireTime", serverTime+3*60*1000+"");
 //		response.addHeader("Access-Control-Expose-Header", "Server");
 //		response.setHeader("Access-Control-Expose-Headers", "Server,token");
-		
+		Thread.currentThread().sleep(5000);
 		return sysUser;
 //		return user2;
 //		return "健康了减肥考了多少";

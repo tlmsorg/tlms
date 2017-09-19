@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
-	<classPathEntry
-		location="D:\apache-maven-3.3.3\dependency\mysql\mysql-connector-java\5.1.21\mysql-connector-java-5.1.21.jar" />
+	<classPathEntry location="D:\apache-maven-3.3.3\dependency\mysql\mysql-connector-java\5.1.21\mysql-connector-java-5.1.21.jar" />
 	
 	<context id="mysqlMybatis"  defaultModelType="conditional" >
 		<commentGenerator>
@@ -22,6 +21,11 @@
 		<javaClientGenerator targetPackage="com.tlms.core.dao"
 			targetProject="tlms-core/src/main/java" type="XMLMAPPER" />
 
+		<!-- <table tableName="test1" domainObjectName="Test1" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> -->
+		
 		<table tableName="test1" domainObjectName="Test1" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">

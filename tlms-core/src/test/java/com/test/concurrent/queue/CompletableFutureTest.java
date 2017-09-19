@@ -22,7 +22,6 @@ public class CompletableFutureTest {
 	public void runanbleTest(ExecutorService executor){
 		final String name = "brighttang";
 		CompletableFuture<Void> future = CompletableFuture.runAsync(new Runnable() {
-			
 			@Override
 			public void run() {//采用runnable 线程执行完成，返回null
 				int i = 0;
@@ -39,7 +38,6 @@ public class CompletableFutureTest {
 		}, executor);
 		try {
 			System.out.println("线程执行完成，返回："+future.get());
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -70,34 +68,37 @@ public class CompletableFutureTest {
 					ThreadResponseVo trv = new ThreadResponseVo();
 					trv.setAge(10);
 					trv.setLoopTime(10);
-					trv.setName(name);
-					trv.setSex("男");
+					trv.setName(object+name);
+					trv.setSex(object+"男");
 					trvList.add(trv);
-					responseList.add("test");
+					responseList.add("test"+object);
 					
 					return trvList;
 				}
 			}, executor);
+			
 			futureList.add(future);
 		}
 
 		
 		try {
-			/*for (CompletableFuture<List<ThreadResponseVo>> future : futureList) {
+			for (CompletableFuture<List<ThreadResponseVo>> future : futureList) {
 				List<ThreadResponseVo> trvList = future.get();
 				for (ThreadResponseVo trv : trvList) {
 					System.out.println("线程执行完成 future.get():"+trv.getName()+"|"+trv.getSex()+"|"+trv.getAge()+"|"+trv.getLoopTime()+"|");
 				}
-			}*/
+			}
+//			CompletableFuture.allOf(futureList.toArray(new CompletableFuture[futureList.size()])).join();//阻塞：等待所有completefuture执行完成
 			CompletableFuture.allOf(futureList.toArray(new CompletableFuture[futureList.size()])).join();//阻塞：等待所有completefuture执行完成
 			System.out.println("所有线程执行完成，responseList:"+responseList);
 			executor.shutdown();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	public static void main(String[] args) {
-		ExecutorService executor = Executors.newFixedThreadPool(4);
+		ExecutorService executor = Executors.newFixedThreadPool(6);
 		CompletableFutureTest cft = new CompletableFutureTest();
 		List<String> list = new ArrayList<String>();
 		//6个任务，即同事启动6个线程处理问题。

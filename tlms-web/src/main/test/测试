@@ -1,3 +1,15 @@
 用户登录测试
 url：http://localhost:8090/tlms-web/login/userLogin/
 method：post
+
+websocket测试：前端上送：
+{"userId":"200810405234","userName":"brighttang1"}
+{"userId":"200810405235","userName":"brighttang2"}
+{"userId":"200810405236","userName":"brighttang3"}
+
+推送测试
+第一步：http://localhost:8090/tlms-web/testSocket.html，发送登录连接
+第二部：推送测试，restclient录入：
+method:post
+url:http://localhost:8090/tlms-web/websocket/push
+body体：{"userId":"200810405234","userName":"测试服务端推送功能"}

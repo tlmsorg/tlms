@@ -5,5 +5,6 @@ encoding//src/main/resources/property.properties=UTF-8
 encoding//src/main/webapp/ftl/base/include2.html=UTF-8
 encoding//src/main/webapp/ftl/base/version.html=UTF-8
 encoding//src/main/webapp/ftl/include1.html=UTF-8
+encoding//src/main/webapp/testSocket.html=UTF-8
 encoding//src/test/java=UTF-8
 encoding/<project>=UTF-8

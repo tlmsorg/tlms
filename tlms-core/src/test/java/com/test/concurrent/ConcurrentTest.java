@@ -11,23 +11,20 @@ import org.apache.ibatis.executor.ExecutorException;
 public class ConcurrentTest {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		System.out.println("父线程执行中："+Thread.currentThread().getName());
 		ExecutorService executorService = Executors.newFixedThreadPool(10);
 		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
-				System.out.println("线程1执行中");
-				
+				System.out.println("线程1执行"+Thread.currentThread().getName());
 			}
 		});
-	
 //		executorService.shutdown();
-		System.out.println("父线程执行中："+Thread.currentThread().getName());
 		Future<?> future2 = executorService.submit(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					System.out.println("线程2执行中："+Thread.currentThread().getName());
+					System.out.println("线程2执行："+Thread.currentThread().getName());
 					Thread.currentThread().sleep(5000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -39,7 +36,7 @@ public class ConcurrentTest {
 			@Override
 			public void run() {
 				try {
-					System.out.println("线程3执行中："+Thread.currentThread().getName());
+					System.out.println("线程3执行："+Thread.currentThread().getName());
 					Thread.currentThread().sleep(10000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -51,7 +48,7 @@ public class ConcurrentTest {
 			@Override
 			public Object call() throws Exception {
 				try {
-					System.out.println("线程4执行中："+Thread.currentThread().getName());
+					System.out.println("线程4执行："+Thread.currentThread().getName());
 					Thread.currentThread().sleep(15000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -59,6 +56,7 @@ public class ConcurrentTest {
 				return "线程4返回";
 			}
 		});
+		
 		executorService.shutdown();
 		try {
 			System.out.println("future2.get():"+future2.get());
@@ -67,6 +65,7 @@ public class ConcurrentTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
+		
 	}
 
 }

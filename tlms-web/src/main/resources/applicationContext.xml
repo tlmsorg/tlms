@@ -25,10 +25,10 @@
 	<context:component-scan base-package="com.tlms.core.servlce.impl" />
 	<context:component-scan base-package="com.tlms.push.service.aopcontexttest" />
 	<context:component-scan base-package="com.sys.aop.impl" />
+	<context:component-scan base-package="com.tlms.rabitmq.test" />
 	
 	<context:component-scan base-package="com.sys.filter" />
 	<!-- <bean class="com.sys.aop.aspect.PreGreetingAspect"/> -->
-
 	<!-- 定义首页 -->
 	<!-- <mvc:view-controller path="/" view-name="index"/> -->
 	<mvc:view-controller path="/" view-name="redirect:/home/index" />

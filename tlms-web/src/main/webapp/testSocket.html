@@ -58,10 +58,10 @@
             //ws = (url.indexOf('sockjs') != -1) ?new SockJS(url, undefined, {protocols_whitelist: transports}) : new WebSocket(url);
             if ('WebSocket' in window) {
             	alert("111");
-                ws= new WebSocket("ws://localhost:8080/tlms-web/tlmsWebSocketServer.ctrl");
+                ws= new WebSocket("ws://localhost:8090/tlms-web/tlmsWebSocketServer.ctrl");
             }else {
             	alert("222");
-                ws = new SockJS("http://localhost:8080/tlms-web/sockjs/websck");
+                ws = new SockJS("http://localhost:8090/tlms-web/sockjs/websck");
             }
             //websocket = new SockJS("http://localhost:8084/SpringWebSocketPush/sockjs/websck");
             
@@ -91,7 +91,7 @@
             }
             setConnected(false);
         }
-
+ 
         function echo() {
             if (ws != null) {
                 var message = document.getElementById('message').value;
@@ -172,7 +172,22 @@
     <div id="console-container">
         <div id="console"></div>
     </div>
+    
+    
 </div>
+
+	<div>
+    	<p>消息推送测试</p>
+    	<!-- <form action="/websocket/push" method="post">
+    		<textarea type="text" value="录入消息" id="message"/>
+    		<input type="submit" value="Submit" />
+    	</form> -->
+    	<form action="websocket/push" method="get">
+		  消息：<textarea type="text" id="message" style="width:200px;height:100px"></textarea>
+		  <input type="submit" value="Submit" />
+		</form>
+    	
+    </div>
 </body>
 
 </html>

@@ -1,13 +1,20 @@
 package com.test.concurrent.queue;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
+
+import com.tlms.core.domain.Test1;
 
 /**
  * 线程执行结果返回测试
@@ -15,6 +22,64 @@ import java.util.concurrent.TimeUnit;
  *
  */
 public class FutureTest {
+	
+	public void completableFutureTest(){
+		ExecutorService executor = Executors.newFixedThreadPool(2);
+		final String threadName1 = "线程1";
+		final String threadName2 = "线程2";
+		final Test1 test1 = new Test1();
+		List<CompletableFuture> futureList = new ArrayList<CompletableFuture>();
+		CompletableFuture<String> completeFuture1 = CompletableFuture.supplyAsync(new Supplier<String>() {
+			@Override
+			public String get() {
+				int i = 0;
+				
+				test1.setUserid("200810405234");
+				while(i < 5){
+					try {
+						Thread.currentThread().sleep(1000);
+						System.out.println(threadName1+":"+i);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					i++;
+				}
+				return "1111";
+			}
+			
+		});
+		futureList.add(completeFuture1);
+		CompletableFuture<String> completeFuture2 = CompletableFuture.supplyAsync(new Supplier<String>() {
+			@Override
+			public String get() {
+				int i = 0;
+				while(i < 5){
+					try {
+						Thread.currentThread().sleep(1000);
+						System.out.println(threadName2+":"+i);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					i++;
+				}
+				return "222";
+			}
+		});
+		futureList.add(completeFuture2);
+		
+		
+		try {
+//			System.out.println(completeFuture1.get());
+//			System.out.println(completeFuture2.get());
+			CompletableFuture<Void> allFuture = CompletableFuture.allOf(futureList.toArray(new CompletableFuture[futureList.size()]));
+			allFuture.join();
+			System.out.println(test1.getUserid());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 	
 	/**
 	 * 测试多个线程
@@ -127,7 +192,7 @@ public class FutureTest {
 	 * @param args
 	 */
 	public void callableTest(ThreadPoolExecutor pool){
-		LinkedBlockingQueue<String> paramQueue = new LinkedBlockingQueue<String>();
+		BlockingQueue<String> paramQueue = new LinkedBlockingQueue<String>();
 		try {
 			paramQueue.put("brighttang");
 		} catch (InterruptedException e1) {
@@ -151,6 +216,7 @@ public class FutureTest {
 		 */
 		System.out.println(trv.getName()+"|"+trv.getSex()+"|"+trv.getAge());
 		System.out.println("回调后代码段");
+		pool.shutdown();
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -162,9 +228,10 @@ public class FutureTest {
 		ThreadPoolExecutor pool = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.MINUTES, workQueue);
 		
 //		ft.callableTest(pool);
-		ft.runableTest(pool);
+//		ft.runableTest(pool);
 //		ft.multThreadTest(pool);
 //		ft.multThreadTest2(pool);
+		ft.completableFutureTest();
 		
 	}
 

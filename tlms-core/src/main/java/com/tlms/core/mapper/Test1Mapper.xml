@@ -20,13 +20,13 @@
     delete from test1
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.sys.domain.Test1" >
+  <insert id="insert" parameterType="com.tlms.core.domain.Test1" >
     insert into test1 (id, userId, couse, 
       point)
     values (#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{couse,jdbcType=VARCHAR}, 
       #{point,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.sys.domain.Test1" >
+  <insert id="insertSelective" parameterType="com.tlms.core.domain.Test1" >
     insert into test1
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -57,7 +57,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.sys.domain.Test1" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.tlms.core.domain.Test1" >
     update test1
     <set >
       <if test="userid != null" >
@@ -72,11 +72,18 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.sys.domain.Test1" >
+  <update id="updateByPrimaryKey" parameterType="com.tlms.core.domain.Test1" >
     update test1
     set userId = #{userid,jdbcType=VARCHAR},
       couse = #{couse,jdbcType=VARCHAR},
       point = #{point,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <select id="selectByPoint" resultType="HashMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from test1
+    where point = #{point,jdbcType=VARCHAR}
+  </select>
 </mapper>

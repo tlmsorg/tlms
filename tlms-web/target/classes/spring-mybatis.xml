@@ -30,18 +30,38 @@
 	<!-- 加载property文件 -->
 	<context:property-placeholder location="classpath:property.properties"/>
 
-  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 
+    <bean id="dataSource1" class="org.apache.commons.dbcp.BasicDataSource" 
 		destroy-method="close"
-		p:driverClassName="${driver}"
-		p:url="${url}"
-		p:username="${username}"
-		p:password="${password}"/>
+		p:driverClassName="${driver1}"
+		p:url="${url1}"
+		p:username="${username1}"
+		p:password="${password1}"/>
+		
+	<bean id="dataSource2" class="org.apache.commons.dbcp.BasicDataSource" 
+		destroy-method="close"
+		p:driverClassName="${driver2}"
+		p:url="${url2}"
+		p:username="${username2}"
+		p:password="${password2}"/>
+
+	<bean id="dynamicDataSource" class="com.core.mutidata.DynamicDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry key="dataSource1" value-ref="dataSource1"></entry>
+				<entry key="dataSource2" value-ref="dataSource2"></entry>
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="dataSource1"></property>
+	</bean> 
+	
+	
 
 	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->  
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
-        <property name="dataSource" ref="dataSource" />  
+        <property name="dataSource" ref="dynamicDataSource" />  
         <!-- 自动扫描mapping.xml文件 -->  
-        <property name="mapperLocations" value="classpath:com/sys/mapper/*.xml,classpath:com/tlms/core/mapper/*.xml"></property>
+        <!-- <property name="mapperLocations" value="classpath*:com/sys/mapper/*.xml,classpath:com/tlms/core/mapper/*.xml"></property> -->
+        <property name="mapperLocations" value="classpath:com/tlms/core/mapper/*.xml"></property>
     </bean>  
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->  
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
@@ -51,8 +71,38 @@
   
     <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->  
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
-        <property name="dataSource" ref="dataSource" />  
+        <property name="dataSource" ref="dynamicDataSource" />  
     </bean> 
+    
+    
+    <!-- 
+    <bean id="dataSourceInterceptor" class="com.core.mutidata.DataSourceInterceptor"></bean> 
+    <aop:config>  
+        <aop:pointcut id="transactionPointCut" expression="execution(* com.core.mutidata.dao..*.*(..))" />  
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="transactionPointCut" />  
+    </aop:config>  
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">  
+        <tx:attributes>  
+            <tx:method name="add*" propagation="REQUIRED" />  
+            <tx:method name="save*" propagation="REQUIRED" />  
+            <tx:method name="update*" propagation="REQUIRED" />  
+            <tx:method name="delete*" propagation="REQUIRED" />  
+            <tx:method name="*" read-only="true" />  
+        </tx:attributes>  
+    </tx:advice> 
+    <aop:config>  
+        <aop:aspect id="dataSourceAspect" ref="dataSourceInterceptor">  
+            <aop:pointcut id="daoOne" expression="execution(* com.dao.one.*.*(..))" />  
+            <aop:pointcut id="daoTwo" expression="execution(* com.dao.two.*.*(..))" />  
+            <aop:before pointcut-ref="daoOne" method="setdataSourceOne" />  
+            <aop:before pointcut-ref="daoTwo" method="setdataSourceTwo" />  
+        </aop:aspect>  
+    </aop:config>  
+     -->
+    
+    
+    
+    
     
  <!-- activiti 配置开始 -->
     <!-- 流程引擎实例 -->
@@ -66,7 +116,7 @@ true： activiti会对数据库中所有表进行更新操作。如果表不存�
 create_drop： 在activiti启动时创建表，在关闭时删除表（必须手动关闭引擎，才能删除表）。
 drop-create： 在activiti启动时删除原来的旧表，然后在创建新表（不需要手动关闭引擎）。-->
     <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
-    	<property name="dataSource" ref="dataSource" />
+    	<property name="dataSource" ref="dynamicDataSource" />
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="databaseSchemaUpdate" value="true" />
 		<property name="jobExecutorActivate" value="false" />
@@ -84,6 +134,8 @@ drop-create： 在activiti启动时删除原来的旧表，然后在创建新表
     <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService"/>
     <!-- activiti 配置结束 --> 
     
+    
+    
     <tx:annotation-driven transaction-manager="transactionManager"/>
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" p:dataSource-ref="dataSource"/>
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" p:dataSource-ref="dynamicDataSource"/>
 </beans>

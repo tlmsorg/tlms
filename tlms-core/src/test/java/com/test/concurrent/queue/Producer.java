@@ -16,7 +16,6 @@ public class Producer implements Runnable{
 	}
 	public void run() {
 		try {
-			
 			while(!isStop){
 				System.out.println("生产者状态监控"+this.isWakeup);
 				if(isWakeup){
