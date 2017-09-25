@@ -1,26 +1,19 @@
 package com.sys.controller;
 
-import java.lang.reflect.Method;
-import java.util.Calendar;
-import java.util.Date;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.time.DateUtils;
-import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sys.dao.SysUserMapper;
-import com.sys.domain.SysUser;
-import com.sys.service.IAuthService;
+import com.tlms.core.dao.SysUserMapper;
+import com.tlms.core.domain.SysUser;
+import com.tlms.core.service.IAuthService;
 
 /**
  * @author tom
@@ -34,6 +27,8 @@ public class LoginController {
 	public SysUserMapper sysUserMapperImpl;
 	@Autowired
 	public IAuthService authServiceImpl;
+	@Value("${token.expire.time}")
+	private long expireTime;
 //	@RequestMapping(value="/userLogin",method=RequestMethod.POST,produces="text/plain;charset=UTF-8")
 	@RequestMapping(value="/userLogin",method=RequestMethod.POST)
 	public SysUser userLogin(@RequestBody SysUser user,HttpServletRequest request,HttpServletResponse response) throws Exception{
@@ -78,16 +73,18 @@ public class LoginController {
 		SysUser sysUser = new SysUser();
 		sysUser.setId("111");
 //		sysUserMapperImpl.insertSelective(sysUser);
-		String jwt = authServiceImpl.createJwt();
-		authServiceImpl.checkJwt(jwt);
+		sysUser.setUserId("001");
+		sysUser.setPasswd("000000");
+		String jwt = authServiceImpl.createJwt(sysUser).getToken();
+//		authServiceImpl.checkJwt(jwt);
 		
 //		response.addHeader("X-Token", jwt);
 		response.setHeader("token", jwt);
 		long serverTime = System.currentTimeMillis();
-		response.setHeader("expireTime", serverTime+3*60*1000+"");
+		response.setHeader("expireTime", serverTime+expireTime+"");
+//		response.setStatus(400);
 //		response.addHeader("Access-Control-Expose-Header", "Server");
 //		response.setHeader("Access-Control-Expose-Headers", "Server,token");
-		Thread.currentThread().sleep(5000);
 		return sysUser;
 //		return user2;
 //		return "健康了减肥考了多少";
@@ -103,7 +100,7 @@ public class LoginController {
 		String expireTime = request.getHeader("expireTime");
 		Long exTimeMillis = Long.parseLong(expireTime);
 		Long nowTimeMillis = System.currentTimeMillis();
-		if(exTimeMillis < nowTimeMillis){
+		/*if(exTimeMillis < nowTimeMillis){
 			System.out.println("exTimeMillis:"+exTimeMillis+",nowTimeMillis:"+nowTimeMillis+",cookie失效");
 			strRet = "{\"msg\":\"登录超时，请重新登录\"}";
 		}else{
@@ -112,7 +109,9 @@ public class LoginController {
 			
 			System.out.println("exTimeMillis:"+exTimeMillis+",nowTimeMillis:"+nowTimeMillis+",cookie有效");
 			strRet = "{\"msg\":\"交易成功\"}";
-		}
+		}*/
+		System.out.println("exTimeMillis:"+exTimeMillis+",nowTimeMillis:"+nowTimeMillis+",cookie失效");
+		authServiceImpl.checkJwt(tokenRcv);
 		return strRet;
 	}
 }

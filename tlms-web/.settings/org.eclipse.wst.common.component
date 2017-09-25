@@ -20,6 +20,9 @@
         <dependent-module archiveName="tlms-mq-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/tlms-mq/tlms-mq">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="tlms-bpm-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/tlms-bpm/tlms-bpm">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="tlms-web"/>
         <property name="java-output-path" value="/tlms-web/target/classes"/>
     </wb-module>

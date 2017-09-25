@@ -1,24 +1,30 @@
 package com.tlms.core.servlce.impl;
 
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.tlms.core.annotion.AnnotationTest;
-import com.tlms.core.dao.Test2Mapper;
-import com.tlms.core.domain.Test2;
-import com.tlms.core.domain.Test1;
-import com.tlms.core.service.IUserSerivice;
+import com.tlms.core.dao.SysUserMapper;
 import com.tlms.core.dao.Test1Mapper;
+import com.tlms.core.dao.Test2Mapper;
+import com.tlms.core.domain.SysUser;
+import com.tlms.core.domain.Test1;
+import com.tlms.core.domain.Test2;
+import com.tlms.core.service.IAuthService;
+import com.tlms.core.service.IUserService;
 @Service
 @Transactional
-public class UserServiceImpl implements IUserSerivice {
+public class UserServiceImpl implements IUserService {
 	@Autowired
 	private Test1Mapper test1Mapper;
 	@Autowired
 	private Test2Mapper test2Mapper;
+	@Autowired
+	private SysUserMapper sysUserMapperImpl;
+	@Autowired
+	private IAuthService authServiceImpl;
 	
 	public void userUpd(Test1 test1,String accountId) {
 		// TODO Auto-generated method stub
@@ -58,6 +64,29 @@ public class UserServiceImpl implements IUserSerivice {
 		}else{
 			System.out.println("test2更新成功");
 		}
+	}
+
+	@Override
+	public boolean userSignIn(String userId, String passwd) {
+		boolean isValid = false;
+		SysUser sysUser = sysUserMapperImpl.SelectByUseridAndPasswd(userId, passwd);
+		if(sysUser == null){
+			isValid = false;
+		}else{
+			isValid = true;
+		}
+		return isValid;
+	}
+
+	@Override
+	public boolean userSignOut(String userId) {
+		return false;
+	}
+
+	@Override
+	public boolean userValid(String token){
+		authServiceImpl.checkJwt(token);
+		return true;
 	}
 
 

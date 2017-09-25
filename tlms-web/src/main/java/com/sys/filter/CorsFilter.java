@@ -10,16 +10,15 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.activiti.engine.impl.util.CollectionUtil;
+import org.apache.log4j.Logger;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 public class CorsFilter implements Filter {
-
+	private static final Logger logger = Logger.getLogger(CorsFilter.class);
 	private String allowOrigin;  
     private String allowMethods;  
     private String allowCredentials;  
@@ -27,7 +26,7 @@ public class CorsFilter implements Filter {
     private String exposeHeaders;  
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// TODO Auto-generated method stub
+		logger.info("CorsFilter init");
 		allowOrigin = filterConfig.getInitParameter("allowOrigin");  
         allowMethods = filterConfig.getInitParameter("allowMethods");  
         allowCredentials = filterConfig.getInitParameter("allowCredentials");  

@@ -16,7 +16,7 @@
 	default-lazy-init="true">
 
 <!--     <context:annotation-config /> -->
-
+<!-- 	<context:component-scan base-package="com.sys.filter" /> -->
      <!-- 引入配置文件 -->  
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
     	<property name="locations">
@@ -54,8 +54,6 @@
 		<property name="defaultTargetDataSource" ref="dataSource1"></property>
 	</bean> 
 	
-	
-
 	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->  
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
         <property name="dataSource" ref="dynamicDataSource" />  
@@ -64,7 +62,7 @@
         <property name="mapperLocations" value="classpath:com/tlms/core/mapper/*.xml"></property>
     </bean>  
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->  
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
         <property name="basePackage" value="com.sys.dao,com.tlms.core.dao" />  
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
     </bean>  

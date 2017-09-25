@@ -48,7 +48,8 @@
 		</rabbit:bindings>
 	</rabbit:topic-exchange>
 	<rabbit:listener-container connection-factory="connectionFactory" acknowledge="auto">
-	    <rabbit:listener queues="${icbc_mq_apply.queue}" ref="queueListenter"/>
-	    <rabbit:listener queues="${icbc_mq_result.queue}" ref="queueListenter"/>
+	<!-- 注释，暂时停用消息队列监听 -->
+	   <!--  <rabbit:listener queues="${icbc_mq_apply.queue}" ref="queueListenter"/>
+	    <rabbit:listener queues="${icbc_mq_result.queue}" ref="queueListenter"/> -->
 	</rabbit:listener-container>
 </beans>

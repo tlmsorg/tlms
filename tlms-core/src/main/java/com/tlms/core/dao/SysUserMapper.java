@@ -1,9 +1,12 @@
-package com.sys.dao;
+package com.tlms.core.dao;
 
-import com.sys.domain.SysUser;
+import org.apache.ibatis.annotations.Param;
+
+import com.tlms.core.domain.SysUser;
 
 public interface SysUserMapper {
-    int deleteByPrimaryKey(String id);
+
+	int deleteByPrimaryKey(String id);
 
     int insert(SysUser record);
 
@@ -14,4 +17,6 @@ public interface SysUserMapper {
     int updateByPrimaryKeySelective(SysUser record);
 
     int updateByPrimaryKey(SysUser record);
+    
+    SysUser SelectByUseridAndPasswd(@Param("userId") String userId,@Param("passwd") String passwd);
 }

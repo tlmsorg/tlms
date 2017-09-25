@@ -1,50 +1,15 @@
-package com.tlms.core.controler;
+package com.tlms.core.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-
-import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.ProcessEngines;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
-import org.activiti.engine.identity.User;
-import org.activiti.engine.impl.RepositoryServiceImpl;
-//import org.activiti.engine.impl.bpmn.diagram.ProcessDiagramGenerator;
-import org.activiti.engine.impl.bpmn.parser.factory.DefaultActivityBehaviorFactory;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
-import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.activiti.engine.impl.pvm.delegate.ActivityBehavior;
-import org.activiti.engine.impl.pvm.process.ActivityImpl;
-import org.activiti.engine.impl.pvm.process.ProcessDefinitionImpl;
-import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
-import org.activiti.image.impl.DefaultProcessDiagramGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSONArray;
-import com.tlms.core.annotion.AnnotationTest;
 import com.tlms.core.domain.Test1;
 import com.tlms.core.domain.Test2;
-import com.tlms.core.service.IUserSerivice;
+import com.tlms.core.service.IUserService;
 import com.tlms.core.servlce.impl.CoreServiceImpl2;
 
 //@RequestMapping(value="/ActivitiSpring2")
@@ -53,7 +18,7 @@ public class CoreController2{
 	@Autowired
 	private CoreServiceImpl2 coreServiceImpl3;
 	@Autowired
-	private IUserSerivice userService;
+	private IUserService userService;
 	
 	/**
 	 * rollback测试

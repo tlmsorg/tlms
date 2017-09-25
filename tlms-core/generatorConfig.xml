@@ -26,7 +26,7 @@
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table> -->
 		
-		<table tableName="test1" domainObjectName="Test1" enableCountByExample="false"
+		<table tableName="sys_user" domainObjectName="SysUser" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>

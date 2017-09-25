@@ -12,21 +12,33 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.sys.service.IAuthService;
+import com.tlms.core.service.IAuthService;
+import com.tlms.core.service.IUserService;
+import com.tlms.core.vo.TokenVo;
+
 
 @WebFilter
 public class AuthFilter implements Filter{
+	private static final Logger logger = Logger.getLogger(AuthFilter.class);
 	@Value("${token.expire.time}")
-	private long expireTimeOffset;
+	private long expireTime;
 	@Autowired
 	private IAuthService authServiceImpl;
+	@Autowired
+	private IUserService userServiceImpl;
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		System.out.println("init");
+		logger.info("AuthFilter init");
+		 ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(filterConfig.getServletContext());
+		 IUserService demoBean = (IUserService)context.getBean("userServiceImpl");
+		 logger.info("demoBean:"+demoBean);
 	}
 
 	@Override
@@ -37,11 +49,16 @@ public class AuthFilter implements Filter{
 		HttpServletRequest servletRequest = (HttpServletRequest)request;
 		HttpServletResponse servletResponse = (HttpServletResponse) response;
 		String token = servletRequest.getHeader("token");
-		//验证token，如果验证通过，继续，并更新expireTime，如果验证未通过，返回结果，前端跳转重新登录页面。
-//		authServiceImpl.checkJwt(token);
-		//模拟已经验证通过，更新token超时时间：expireTime
-		servletResponse.setHeader("expireTime", System.currentTimeMillis()+expireTimeOffset+"");
-		servletResponse.setHeader("token", token);
+		TokenVo tokenVo = new TokenVo();
+		if(!"OPTIONS".equals(servletRequest.getMethod())){
+			tokenVo = authServiceImpl.checkJwt(token);
+		}
+		request.setAttribute("userId", tokenVo.getUserId());
+		request.setAttribute("passwd", tokenVo.getPasswd());
+		
+		servletResponse.setHeader("token", tokenVo.getToken());
+		servletResponse.setHeader("expiretime", tokenVo.getExpireTime()+"");
+
 		chain.doFilter(servletRequest, servletResponse);
 	}
 
