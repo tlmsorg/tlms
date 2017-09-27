@@ -81,7 +81,7 @@ public class AuthServiceImpl implements IAuthService {
 		Claims claims = Jwts.parser()
 				.setSigningKey(DatatypeConverter.parseBase64Binary("secret"))
 				.parseClaimsJws(jwt).getBody();
-		/*
+		
 		System.out.println("*************webtoken验证*************");
 		System.out.println("claims:"+claims);
 		System.out.println(sdf.format(claims.getExpiration()));
@@ -93,12 +93,14 @@ public class AuthServiceImpl implements IAuthService {
 		System.out.println("passwd:"+claims.get("passwd"));
 		System.out.println("expireTime:"+claims.get("expireTime"));
 		System.out.println("系统当前时间："+System.currentTimeMillis());
-		*/
+		
 		//模拟密码验证通过后，刷新token
 		SysUser user = new SysUser();
 		user.setUserId(claims.get("userId")+"");
 		user.setPasswd(claims.get("passwd")+"");
 		tokenVo = this.createJwt(user);
+		tokenVo.setUserId(claims.get("userId")+"");
+		tokenVo.setPasswd(claims.get("passwd")+"");
 		return tokenVo;
 	}
 

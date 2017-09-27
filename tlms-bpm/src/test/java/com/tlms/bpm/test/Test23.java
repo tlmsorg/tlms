@@ -24,6 +24,6 @@ public class Test23 extends TestCase {
 		
 		RuntimeService runtimeService = processEngine.getRuntimeService();
 		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("myProcess");
-		System.out.println(processInstance.getId()+"|"+processInstance.getName()+"|"+processInstance.getBusinessKey()+"|"+processInstance.getProcessDefinitionKey());
+		System.out.println(processInstance.getId()+"|"+processInstance.getName()+"|"+processInstance.getProcessVariables()+"|"+processInstance.getBusinessKey()+"|"+processInstance.getProcessDefinitionKey());
 	}
 }

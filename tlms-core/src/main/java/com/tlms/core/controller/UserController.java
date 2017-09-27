@@ -3,6 +3,7 @@ package com.tlms.core.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
@@ -120,6 +121,13 @@ public class UserController{
 		}
 		json.put("result", strRet);
 		return json;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/service/signout",method = RequestMethod.POST)
+	public void signOut(HttpServletRequest request,HttpServletResponse response) throws Exception{
+//		String userId = request.getAttribute("userId")+"";
+		response.setHeader("token", "");
 	}
 	
 	
