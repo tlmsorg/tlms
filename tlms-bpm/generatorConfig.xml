@@ -15,18 +15,18 @@
 			connectionURL="jdbc:mysql://127.0.0.1:3306/tlms?characterEncoding=UTF-8" userId="test"
 			password="test" />
 		
-		<javaModelGenerator targetPackage="com.sys.domain"
-			targetProject="tlms-web/src/main/java" />
-		<sqlMapGenerator targetPackage="com.sys.mapper"
-			targetProject="tlms-web/src/main/java" />
-		<javaClientGenerator targetPackage="com.sys.dao"
-			targetProject="tlms-web/src/main/java" type="XMLMAPPER" />
+		<javaModelGenerator targetPackage="com.tlms.bpm.domain"
+			targetProject="tlms-bpm/src/main/java" />
+		<sqlMapGenerator targetPackage="com.tlms.bpm.mapper"
+			targetProject="tlms-bpm/src/main/java" />
+		<javaClientGenerator targetPackage="com.tlms.bpm.dao"
+			targetProject="tlms-bpm/src/main/java" type="XMLMAPPER" />
 		
-		<!-- 
+		
 		<table tableName="t_apply" domainObjectName="Apply" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table> -->
+		</table>
 				
 		
 	</context>

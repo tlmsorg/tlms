@@ -47,6 +47,11 @@ public class BpmController {
 		return bpmServiceImpl.queryProcess();
 	}
 	
+	@RequestMapping(value="/service/process/query/{busiKey}/{pdKey}",method=RequestMethod.GET)
+	public List<ProcessInstanceVo> querySpecialProcess(@PathVariable String busiKey,@PathVariable String pdKey){
+		return bpmServiceImpl.queryProcessByBusinesskeyAndPdkey(busiKey, pdKey);
+	}
+	
 	/**
 	 * 读取流程图
 	 * @param processInstId
@@ -86,5 +91,11 @@ public class BpmController {
 	public void doAgree(HttpServletRequest request,@PathVariable String procInstId){
 		String userId = request.getAttribute("userId")+"";
 		bpmServiceImpl.doAgree(userId,procInstId);
+	}
+	
+	@RequestMapping(value="/service/process/reject/{procInstId}",method=RequestMethod.POST)
+	public void doReject(HttpServletRequest request,@PathVariable String procInstId){
+		String userId = request.getAttribute("userId")+"";
+		bpmServiceImpl.doReject(userId,procInstId);
 	}
 }

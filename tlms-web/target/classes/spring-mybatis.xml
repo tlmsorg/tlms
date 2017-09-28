@@ -58,12 +58,17 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
         <property name="dataSource" ref="dynamicDataSource" />  
         <!-- 自动扫描mapping.xml文件 -->  
-        <!-- <property name="mapperLocations" value="classpath*:com/sys/mapper/*.xml,classpath:com/tlms/core/mapper/*.xml"></property> -->
-        <property name="mapperLocations" value="classpath:com/tlms/core/mapper/*.xml"></property>
+        <!-- <property name="mapperLocations" value="classpath:com/tlms/**/mapper/*.xml"></property> -->
+        <property name="mapperLocations">
+        	<list>
+        		<value>classpath:com/tlms/core/mapper/*.xml</value>
+        		<value>classpath:com/tlms/bpm/mapper/*.xml</value>
+        	</list>
+        </property>
     </bean>  
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->  
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
-        <property name="basePackage" value="com.sys.dao,com.tlms.core.dao" />  
+        <property name="basePackage" value="com.sys.dao,com.tlms.core.dao,com.tlms.bpm.dao" />  
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
     </bean>  
   

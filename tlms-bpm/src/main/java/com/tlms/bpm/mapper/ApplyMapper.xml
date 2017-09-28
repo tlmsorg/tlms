@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tlms.bpm.dao.ApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.tlms.bpm.domain.Apply" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="time_begin" property="timeBegin" jdbcType="TIMESTAMP" />
+    <result column="time_end" property="timeEnd" jdbcType="TIMESTAMP" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, apply_id, user_id, time_begin, time_end, comment
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_apply
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.tlms.bpm.domain.Apply" >
+    insert into t_apply (id, apply_id, user_id, 
+      time_begin, time_end, comment
+      )
+    values (#{id,jdbcType=VARCHAR}, #{applyId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{timeBegin,jdbcType=TIMESTAMP}, #{timeEnd,jdbcType=TIMESTAMP}, #{comment,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tlms.bpm.domain.Apply" >
+    insert into t_apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="applyId != null" >
+        apply_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="timeBegin != null" >
+        time_begin,
+      </if>
+      <if test="timeEnd != null" >
+        time_end,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null" >
+        #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="timeBegin != null" >
+        #{timeBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeEnd != null" >
+        #{timeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tlms.bpm.domain.Apply" >
+    update t_apply
+    <set >
+      <if test="applyId != null" >
+        apply_id = #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="timeBegin != null" >
+        time_begin = #{timeBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeEnd != null" >
+        time_end = #{timeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tlms.bpm.domain.Apply" >
+    update t_apply
+    set apply_id = #{applyId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      time_begin = #{timeBegin,jdbcType=TIMESTAMP},
+      time_end = #{timeEnd,jdbcType=TIMESTAMP},
+      comment = #{comment,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

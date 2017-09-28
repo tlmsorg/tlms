@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.HistoryService;
@@ -25,6 +26,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tlms.bpm.dao.ApplyMapper;
+import com.tlms.bpm.domain.Apply;
 import com.tlms.bpm.service.IBpmService;
 import com.tlms.bpm.vo.ProcessInstanceVo;
 
@@ -41,6 +44,8 @@ public class BpmServiceImpl implements IBpmService{
 	private TaskService taskService;
 	@Autowired
 	private HistoryService historyService;
+	@Autowired
+	private ApplyMapper applyMapperImpl;
 	@Override
 	public void deployProcess() {
 		repositoryService.createDeployment().addClasspathResource("LeaveProcess.bpmn").deploy();
@@ -60,8 +65,34 @@ public class BpmServiceImpl implements IBpmService{
 	
 	@Override
 	public void startProcess(String pdid) {
+		Apply apply = new Apply();
+		/**
+		 * 申请单表主键（和流程实例关联的业务编码）
+		 */
+		String applyId = "tlms"+System.currentTimeMillis();
+		apply.setId(UUID.randomUUID().toString());
+		apply.setUserId("001");
+		apply.setApplyId(applyId);
+		applyMapperImpl.insertSelective(apply);
+		
 		logger.info("启动流程："+pdid);
-		ProcessInstance processInstance = runtimeService.startProcessInstanceById(pdid);
+//		ProcessInstance processInstance = runtimeService.startProcessInstanceById(pdid);
+		Map<String,Object> variables = new HashMap<String,Object>();
+		variables.put("businessKey", applyId);
+		//使用processDefinitionId启动流程
+		/**
+		 * 根据流程定义id启动流程，设置流程变量
+		 */
+//		ProcessInstance processInstance = runtimeService.startProcessInstanceById(pdid, variables);
+		String pdKey = pdid;
+		/**
+		 * 根据流程定义key启动流程，设置流程变量
+		 */
+//		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(pdKey, variables);
+		/**
+		 * 根据流程定义key启动流程，设置业务编码和流程变量
+		 */
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(pdKey, applyId, variables);
 		logger.info("processInstance:"+processInstance);
 		logger.info(processInstance.getId());
 	}
@@ -113,7 +144,7 @@ public class BpmServiceImpl implements IBpmService{
 		InputStream inputStream = null;
 		if("dgrmResource".equals(resourceType)){
 //			ProcessDiagramGenerator pdg = processEngineConfiguration.getProcessDiagramGenerator();
-			BpmnModel bpmnModel = repositoryService.getBpmnModel("leaveProcess:1:7504");
+			BpmnModel bpmnModel = repositoryService.getBpmnModel(pdid);
 			
 			//已完成节点+当前处理节点
 			List<String> activeActivityIdList = new ArrayList<String>();
@@ -133,7 +164,7 @@ public class BpmServiceImpl implements IBpmService{
 			// 经过的流  
 	        ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(task.getProcessDefinitionId());  
 	        List<String> highLightedFlows = new ArrayList<>();  
-	        getHighLightedFlows(processDefinitionEntity.getActivities(), highLightedFlows, activeActivityIdList); 
+//	        getHighLightedFlows(processDefinitionEntity.getActivities(), highLightedFlows, activeActivityIdList); 
 
 	        ProcessDiagramGenerator pdg = processEngineConfiguration.getProcessDiagramGenerator();  
 	        /*InputStream inputStream = pdg.generateDiagram(bpmnModel, "PNG", finishActiveActivityIdList, highLightedFlows,  
@@ -164,6 +195,10 @@ public class BpmServiceImpl implements IBpmService{
 		}
 		return is;
 		*/
+		
+		//模拟获取表单数据
+		logger.info("taskService获取流程变量："+taskService.getVariable(task.getId(), "businessKey"));
+		logger.info("runtimeService获取流程变量："+runtimeService.getVariable(task.getProcessInstanceId(), "businessKey"));
 		return inputStream;
 	}
 
@@ -191,6 +226,31 @@ public class BpmServiceImpl implements IBpmService{
 		Map<String,Object> variables = new HashMap<String,Object>();
 		variables.put("bmldComment", "部门领导审批意见：通过");
  		taskService.complete(task.getId(), variables);
+	}
+
+	@Override
+	public void doReject(String userId, String procInstId) {
+		ProcessInstance procInst = runtimeService.createProcessInstanceQuery().processInstanceId(procInstId).singleResult();
+		Task task = taskService.createTaskQuery().processInstanceId(procInstId).singleResult();
+		Map<String,Object> variables = new HashMap<String,Object>();
+		variables.put("gjComment", "个金审批意见：拒绝");
+		variables.put("type", 2);
+		taskService.complete(task.getId(), variables);
+	}
+
+	@Override
+	public List<ProcessInstanceVo> queryProcessByBusinesskeyAndPdkey(String busiKey, String pdKey) {
+		List<ProcessInstanceVo> pivList = new ArrayList<ProcessInstanceVo>();
+		List<ProcessInstance> piList = runtimeService.createProcessInstanceQuery().processInstanceBusinessKey(busiKey, pdKey).list();
+		for (ProcessInstance pi : piList) {
+			ProcessInstanceVo piv = new ProcessInstanceVo();
+			piv.setId(pi.getId());
+			piv.setProcInstId(pi.getProcessInstanceId());
+			piv.setProcDefId(pi.getProcessDefinitionId());
+			pivList.add(piv);
+		}
+		
+		return pivList;
 	}
 
 

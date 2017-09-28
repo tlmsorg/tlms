@@ -29,6 +29,15 @@ public interface IBpmService {
 	 * @return
 	 */
 	public List<ProcessInstanceVo> queryCurrProcess(String userId);
-	public void doAgree(String userId,String processInstId);
+	public void doAgree(String userId,String procInstId);
+	public void doReject(String userId,String procInstId);
+	
+	/**
+	 * 根据业务编码和流程key查询流程实例
+	 * @param busiKey 业务表单业务编码
+	 * @param pdKey Process definition key 流程定义key
+	 * @return
+	 */
+	public List<ProcessInstanceVo> queryProcessByBusinesskeyAndPdkey(String busiKey,String pdKey);
 	
 }
