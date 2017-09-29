@@ -75,11 +75,17 @@
             <param-value>com.tlms.bpm.application.TraceRestApplication</param-value>
         </init-param>
     </servlet>
-    <servlet-mapping>
-    	<servlet-name>TraceRestletServlet</servlet-name>
-    	<url-pattern>/trace/*</url-pattern>
-    </servlet-mapping>
     
+    <!-- Modeler REST服务 -->
+    <servlet>
+        <servlet-name>ModelerRestApplication</servlet-name>
+        <servlet-class>org.restlet.ext.servlet.ServerServlet</servlet-class>
+        <init-param>
+            <!-- Application class name -->
+            <param-name>org.restlet.application</param-name>
+            <param-value>org.activiti.rest.editor.application.ModelerRestApplication</param-value>
+        </init-param>
+    </servlet>
     
     <session-config>
         <session-timeout>600</session-timeout>
@@ -112,10 +118,7 @@
 	    	<param-value>Content-Type,token,expireTime,serverTime</param-value>
 	    </init-param> 
 	</filter>
-    <filter-mapping>  
-	    <filter-name>corsFilter</filter-name>  
-	    <url-pattern>/*</url-pattern>  
-	</filter-mapping>
+    
 	
 <!-- 	<filter>
 		<filter-name>authFilter</filter-name>
@@ -137,9 +140,22 @@
 	    <param-value>true</param-value>
 	  </init-param>
 	</filter>
+	
+	<filter-mapping>  
+	    <filter-name>corsFilter</filter-name>  
+	    <url-pattern>/*</url-pattern>  
+	</filter-mapping>
 	<filter-mapping>
 	  <filter-name>DelegatingFilterProxy</filter-name>
-	  <url-pattern>/service/*</url-pattern>
+	  <url-pattern>/service2/*</url-pattern>
 	</filter-mapping>
+	<servlet-mapping>
+        <servlet-name>ModelerRestApplication</servlet-name>
+        <url-pattern>/service/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>TraceRestletServlet</servlet-name>
+    	<url-pattern>/trace/*</url-pattern>
+    </servlet-mapping>
  
 </web-app>

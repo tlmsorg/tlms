@@ -253,6 +253,12 @@
 		    <artifactId>org.restlet</artifactId>
 		    <version>2.3.0</version>
 		</dependency>
+		<!-- 集成activiti modeler -->
+		<dependency>
+		    <groupId>org.activiti</groupId>
+		    <artifactId>activiti-modeler</artifactId>
+		    <version>5.16</version>
+		</dependency>
 		
 		
 		<!-- mysql驱动包 -->

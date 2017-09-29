@@ -98,4 +98,21 @@ public class BpmController {
 		String userId = request.getAttribute("userId")+"";
 		bpmServiceImpl.doReject(userId,procInstId);
 	}
+	
+	/*@RequestMapping(value="/service/model",method=RequestMethod.GET)
+	public ProcessInstanceVo dgrm2(){
+		return new ProcessInstanceVo();
+	}
+	
+	@RequestMapping(value="/service/model/{modelId}/json",method=RequestMethod.GET)
+	public ProcessInstanceVo dgrm(@PathVariable String modelId){
+		logger.info("模型编号："+modelId);
+		return new ProcessInstanceVo();
+	}*/
+	
+	@RequestMapping(value="/process/design",method=RequestMethod.GET)
+	public ProcessInstanceVo processDesign(){
+		bpmServiceImpl.processDesign();
+		return new ProcessInstanceVo();
+	}
 }

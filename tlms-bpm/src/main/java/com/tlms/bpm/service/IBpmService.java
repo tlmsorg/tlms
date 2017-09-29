@@ -40,4 +40,6 @@ public interface IBpmService {
 	 */
 	public List<ProcessInstanceVo> queryProcessByBusinesskeyAndPdkey(String busiKey,String pdKey);
 	
+	public void processDesign();
+	
 }

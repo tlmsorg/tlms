@@ -1,6 +1,7 @@
 package com.tlms.bpm.service.impl;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -26,6 +28,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tlms.bpm.dao.ApplyMapper;
 import com.tlms.bpm.domain.Apply;
 import com.tlms.bpm.service.IBpmService;
@@ -251,6 +255,37 @@ public class BpmServiceImpl implements IBpmService{
 		}
 		
 		return pivList;
+	}
+
+	@Override
+	public void processDesign() {
+		ObjectMapper objectMapper = new ObjectMapper();  
+        ObjectNode editorNode = objectMapper.createObjectNode();  
+        editorNode.put("id", "canvas");  
+        editorNode.put("resourceId", "canvas");  
+        ObjectNode stencilSetNode = objectMapper.createObjectNode();  
+        stencilSetNode.put("namespace", "http://b3mn.org/stencilset/bpmn2.0#");  
+        editorNode.set("stencilset", stencilSetNode);  
+        Model modelData = repositoryService.newModel();  
+         
+        ObjectNode modelObjectNode = objectMapper.createObjectNode();  
+//        modelObjectNode.put(MODEL_NAME, actReModel.getName());  
+//        modelObjectNode.put(MODEL_REVISION, 1);  
+        modelObjectNode.put("myFieldName", "属性已");
+        
+        //String description = null;  
+         
+//        modelObjectNode.put(MODEL_DESCRIPTION, descp);  
+        modelData.setMetaInfo(modelObjectNode.toString());  
+//        modelData.setName(actReModel.getName());  
+        modelData.setName("model名称");
+        repositoryService.saveModel(modelData);  
+        try {
+			repositoryService.addModelEditorSource(modelData.getId(), editorNode.toString().getBytes("utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
 	}
 
 

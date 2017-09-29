@@ -20,7 +20,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.tlms.core.service.IAuthService;
 import com.tlms.core.service.IUserService;
-import com.tlms.core.vo.TokenVo;
 
 
 @WebFilter
@@ -48,7 +47,7 @@ public class AuthFilter implements Filter{
 		
 		HttpServletRequest servletRequest = (HttpServletRequest)request;
 		HttpServletResponse servletResponse = (HttpServletResponse) response;
-		
+		/*
 		String token = servletRequest.getHeader("token");
 		TokenVo tokenVo = new TokenVo();
 		if(!"OPTIONS".equals(servletRequest.getMethod())){
@@ -59,7 +58,7 @@ public class AuthFilter implements Filter{
 		
 		servletResponse.setHeader("token", tokenVo.getToken());
 		servletResponse.setHeader("expiretime", tokenVo.getExpireTime()+"");
-
+*/
 		chain.doFilter(servletRequest, servletResponse);
 	}
 
