@@ -65,6 +65,22 @@
     	<url-pattern>*.ctrl</url-pattern>
     </servlet-mapping>
     
+    <!-- Diagram Viewer REST服务 -->
+    <servlet>
+        <servlet-name>TraceRestletServlet</servlet-name>
+        <servlet-class>org.restlet.ext.servlet.ServerServlet</servlet-class>
+        <init-param>
+            <!-- Application class name -->
+            <param-name>org.restlet.application</param-name>
+            <param-value>com.tlms.bpm.application.TraceRestApplication</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+    	<servlet-name>TraceRestletServlet</servlet-name>
+    	<url-pattern>/trace/*</url-pattern>
+    </servlet-mapping>
+    
+    
     <session-config>
         <session-timeout>600</session-timeout>
     </session-config>

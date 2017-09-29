@@ -230,7 +230,31 @@
 			<version>${activiti.version}</version>
 		</dependency>
 		<!-- activit end -->
-
+		
+		
+		<!-- 集成diagram viewer相关 -->
+		<dependency>
+		    <groupId>org.activiti</groupId>
+		    <artifactId>activiti-diagram-rest</artifactId>
+		    <version>5.16</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.activiti</groupId>
+		    <artifactId>activiti-common-rest</artifactId>
+		    <version>5.16</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.restlet.jee</groupId>
+		    <artifactId>org.restlet.ext.servlet</artifactId>
+		    <version>2.3.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.restlet.jee</groupId>
+		    <artifactId>org.restlet</artifactId>
+		    <version>2.3.0</version>
+		</dependency>
+		
+		
 		<!-- mysql驱动包 -->
 		<dependency>
 			<groupId>mysql</groupId>
