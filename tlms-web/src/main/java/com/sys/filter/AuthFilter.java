@@ -47,8 +47,8 @@ public class AuthFilter implements Filter{
 		
 		HttpServletRequest servletRequest = (HttpServletRequest)request;
 		HttpServletResponse servletResponse = (HttpServletResponse) response;
-		/*
-		String token = servletRequest.getHeader("token");
+		
+		/*String token = servletRequest.getHeader("token");
 		TokenVo tokenVo = new TokenVo();
 		if(!"OPTIONS".equals(servletRequest.getMethod())){
 			tokenVo = authServiceImpl.checkJwt(token);

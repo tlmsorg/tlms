@@ -3,6 +3,9 @@ package com.tlms.bpm.service;
 import java.io.InputStream;
 import java.util.List;
 
+import org.activiti.engine.repository.Model;
+
+import com.tlms.bpm.vo.ModelVo;
 import com.tlms.bpm.vo.ProcessInstanceVo;
 
 public interface IBpmService {
@@ -13,7 +16,7 @@ public interface IBpmService {
 	/**
 	 * 删除流程
 	 */
-	public void deleteProcess();
+	public void deleteProcess(String pdid);
 	public void startProcess(String pdid);
 	public List<ProcessInstanceVo> queryProcess();
 	/**
@@ -39,7 +42,27 @@ public interface IBpmService {
 	 * @return
 	 */
 	public List<ProcessInstanceVo> queryProcessByBusinesskeyAndPdkey(String busiKey,String pdKey);
-	
+	/**
+	 * 保存model测试
+	 */
 	public void processDesign();
+	/**
+	 * 根据id查询流程模型
+	 * @param modelId
+	 * @return
+	 */
+	public List<Model> selectModelById(String modelId);
+	/**
+	 * 查询所有流程模型
+	 * @return
+	 */
+	public List<ModelVo> selectAllModel();
+	
+//	public void editModel(String modelId);
+	/**
+	 * 发布流程模型
+	 * @param modelId
+	 */
+	public void deployModel(String modelId);
 	
 }

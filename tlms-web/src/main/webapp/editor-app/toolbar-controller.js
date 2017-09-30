@@ -56,9 +56,11 @@ angular.module('activitiModeler')
         
         // Click handler for secondary toolbar buttons
         $scope.toolbarSecondaryButtonClicked = function(buttonIndex) {
-            var buttonClicked = $scope.secondaryItems[buttonIndex];
+        	//20170930改造
+        	window.close();
+           /* var buttonClicked = $scope.secondaryItems[buttonIndex];
             var services = { '$scope' : $scope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate, '$location': $location};
-            executeFunctionByName(buttonClicked.action, window, services);
+            executeFunctionByName(buttonClicked.action, window, services);*/
         };
         
         /* Key bindings */

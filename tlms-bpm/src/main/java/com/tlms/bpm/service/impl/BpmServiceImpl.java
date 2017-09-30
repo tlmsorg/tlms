@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.HistoryService;
+import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -33,6 +36,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tlms.bpm.dao.ApplyMapper;
 import com.tlms.bpm.domain.Apply;
 import com.tlms.bpm.service.IBpmService;
+import com.tlms.bpm.vo.ModelVo;
 import com.tlms.bpm.vo.ProcessInstanceVo;
 
 @Service
@@ -50,6 +54,8 @@ public class BpmServiceImpl implements IBpmService{
 	private HistoryService historyService;
 	@Autowired
 	private ApplyMapper applyMapperImpl;
+	@Autowired
+	private ProcessEngine processEngine;
 	@Override
 	public void deployProcess() {
 		repositoryService.createDeployment().addClasspathResource("LeaveProcess.bpmn").deploy();
@@ -58,13 +64,15 @@ public class BpmServiceImpl implements IBpmService{
 	}
 	
 	@Override
-	public void deleteProcess() {
-		ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery();
+	public void deleteProcess(String pdid) {
+		/*ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery();
 		List<ProcessDefinition> pdList = processDefinitionQuery.list();
 		for (ProcessDefinition processDefinition : pdList) {
 			logger.info("删除已deploy流程，deployid："+processDefinition.getDeploymentId());
 			repositoryService.deleteDeployment(processDefinition.getDeploymentId(), true);
-		}
+		}*/
+		ProcessDefinition pd = repositoryService.createProcessDefinitionQuery().processDefinitionId(pdid).singleResult();
+		repositoryService.deleteDeployment(pd.getId(), true);
 	}
 	
 	@Override
@@ -267,26 +275,76 @@ public class BpmServiceImpl implements IBpmService{
         stencilSetNode.put("namespace", "http://b3mn.org/stencilset/bpmn2.0#");  
         editorNode.set("stencilset", stencilSetNode);  
         Model modelData = repositoryService.newModel();  
-         
-        ObjectNode modelObjectNode = objectMapper.createObjectNode();  
-//        modelObjectNode.put(MODEL_NAME, actReModel.getName());  
-//        modelObjectNode.put(MODEL_REVISION, 1);  
-        modelObjectNode.put("myFieldName", "属性已");
         
+        ObjectNode modelObjectNode = objectMapper.createObjectNode();  
+//      modelObjectNode.put(MODEL_NAME, actReModel.getName());  
+//      modelObjectNode.put(MODEL_REVISION, 1);  
+        modelObjectNode.put("myFieldName", "属性已");
         //String description = null;  
-         
-//        modelObjectNode.put(MODEL_DESCRIPTION, descp);  
+//      modelObjectNode.put(MODEL_DESCRIPTION, descp);  
         modelData.setMetaInfo(modelObjectNode.toString());  
-//        modelData.setName(actReModel.getName());  
+//      modelData.setName(actReModel.getName());  
         modelData.setName("model名称");
         repositoryService.saveModel(modelData);  
         try {
 			repositoryService.addModelEditorSource(modelData.getId(), editorNode.toString().getBytes("utf-8"));
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
 	}
 
+	@Override
+	public List<Model> selectModelById(String modelId) {
+		Model model = repositoryService.createModelQuery().modelId(modelId).singleResult();
+//		repositoryService.createDeployment().name("test").addS
+		return null;
+	}
 
+	@Override
+	public List<ModelVo> selectAllModel() {
+		List<ModelVo> mvList = new ArrayList<ModelVo>();
+		List<Model> modelList = repositoryService.createModelQuery().list();
+		for (Model model : modelList) {
+			ModelVo mv = new ModelVo();
+			mv.setId(model.getId());
+			mv.setName(model.getName());
+			mvList.add(mv);
+		}
+		return mvList;
+	}
+
+	@Override
+	public void deployModel(String modelId) {
+//		Model model = repositoryService.createModelQuery().modelId(modelId).singleResult();
+		//1、读取模型资源
+		Model model = repositoryService.getModel(modelId);
+		byte[] modelEditorSource = repositoryService.getModelEditorSource(modelId);
+		byte[] modelEditorSourceExtra = repositoryService.getModelEditorSourceExtra(modelId);
+		//2、模型流程资源转json对象。
+		ObjectNode modelNode = null;
+		try {
+			modelNode = (ObjectNode) new ObjectMapper().readTree(modelEditorSource);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//3、模型节点对象转bpmn模型对象
+		BpmnModel bpmnModel = new BpmnJsonConverter().convertToBpmnModel(modelNode);
+		//4、bpmn模型对象转xml字符串
+		byte[] bpmnXmlArray = new BpmnXMLConverter().convertToXML(bpmnModel);
+		String bpmn = "";
+		try {
+			bpmn = new String(bpmnXmlArray,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		//5、发布bpmn对象
+//		String processName = modelNode.get("properties").get("name").asText();
+		String processName = modelNode.get("properties").get("name").textValue() + "";
+		logger.info(modelNode.get("properties").get("name"));
+		logger.info(modelNode.get("properties").get("name").asText());
+		logger.info(modelNode.get("properties").get("name").textValue());
+		repositoryService.createDeployment().name(processName).addString(processName, bpmn).deploy();
+//		repositoryService.createDeployment().name(processName).addBpmnModel(processName, bpmnModel).deploy();
+	}
+	
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tlms.bpm.service.IBpmService;
+import com.tlms.bpm.vo.ModelVo;
 import com.tlms.bpm.vo.ProcessInstanceVo;
 
 @RestController
@@ -25,29 +26,29 @@ public class BpmController {
 	@Autowired
 	private IBpmService bpmServiceImpl;
 	
-	@RequestMapping(value="/service/process/deploy",method=RequestMethod.GET)
+	@RequestMapping(value="/process/deploy",method=RequestMethod.GET)
 	public void processDeploy(HttpServletRequest request){
 		logger.info(request.getAttribute("userId"));
 		bpmServiceImpl.deployProcess();
 	}
 	
-	@RequestMapping(value="/service/process/delete",method=RequestMethod.GET)
-	public void deleteProcess(HttpServletRequest request){
-		bpmServiceImpl.deleteProcess();
+	@RequestMapping(value="/process/delete/{pdid}",method=RequestMethod.GET)
+	public void deleteProcess(@PathVariable String pdid){
+		bpmServiceImpl.deleteProcess(pdid);
 	}
 	
 	
-	@RequestMapping(value="/service/process/start/{processId}",method=RequestMethod.GET)
+	@RequestMapping(value="/process/start/{processId}",method=RequestMethod.GET)
 	public void startProcess(HttpServletRequest request,@PathVariable String processId){
 		bpmServiceImpl.startProcess(processId);
 	}
 	
-	@RequestMapping(value="/service/process/query",method=RequestMethod.GET)
+	@RequestMapping(value="/process/query",method=RequestMethod.GET)
 	public List<ProcessInstanceVo> queryProcess(){
 		return bpmServiceImpl.queryProcess();
 	}
 	
-	@RequestMapping(value="/service/process/query/{busiKey}/{pdKey}",method=RequestMethod.GET)
+	@RequestMapping(value="/process/query/{busiKey}/{pdKey}",method=RequestMethod.GET)
 	public List<ProcessInstanceVo> querySpecialProcess(@PathVariable String busiKey,@PathVariable String pdKey){
 		return bpmServiceImpl.queryProcessByBusinesskeyAndPdkey(busiKey, pdKey);
 	}
@@ -77,7 +78,7 @@ public class BpmController {
 	 * 查询当前任务
 	 * @return
 	 */
-	@RequestMapping(value="/service/process/task",method=RequestMethod.GET)
+	@RequestMapping(value="/process/task",method=RequestMethod.GET)
 	public List<ProcessInstanceVo> queryCurrProcess(HttpServletRequest request){
 		String userId = request.getAttribute("userId")+"";
 		return bpmServiceImpl.queryCurrProcess(userId);
@@ -87,13 +88,13 @@ public class BpmController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value="/service/process/agree/{procInstId}",method=RequestMethod.POST)
+	@RequestMapping(value="/process/agree/{procInstId}",method=RequestMethod.POST)
 	public void doAgree(HttpServletRequest request,@PathVariable String procInstId){
 		String userId = request.getAttribute("userId")+"";
 		bpmServiceImpl.doAgree(userId,procInstId);
 	}
 	
-	@RequestMapping(value="/service/process/reject/{procInstId}",method=RequestMethod.POST)
+	@RequestMapping(value="/process/reject/{procInstId}",method=RequestMethod.POST)
 	public void doReject(HttpServletRequest request,@PathVariable String procInstId){
 		String userId = request.getAttribute("userId")+"";
 		bpmServiceImpl.doReject(userId,procInstId);
@@ -114,5 +115,22 @@ public class BpmController {
 	public ProcessInstanceVo processDesign(){
 		bpmServiceImpl.processDesign();
 		return new ProcessInstanceVo();
+	}
+	
+	@RequestMapping(value="/process/model",method=RequestMethod.GET)
+	public List<ModelVo> queryModel(){
+		return bpmServiceImpl.selectAllModel();
+	}
+	
+	@RequestMapping(value="/process/model/{modelId}",method=RequestMethod.POST)
+	public ProcessInstanceVo editModel(String modeiId){
+		bpmServiceImpl.processDesign();
+		return new ProcessInstanceVo();
+	}
+	
+	@RequestMapping(value="/process/model/deploy/{modelId}",method=RequestMethod.POST)
+	public void deployModel(@PathVariable String modelId){
+		bpmServiceImpl.deployModel(modelId);
+		
 	}
 }
