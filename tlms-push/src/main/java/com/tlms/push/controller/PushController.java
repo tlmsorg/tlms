@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.tlms.push.handler.PcmsWebSocketHandler;
@@ -23,15 +21,16 @@ public class PushController {
 		logger.info("PushController->startPush");
 		ArrayList<WebSocketSession> sessionList = PcmsWebSocketHandler.sessionList;
 		int openCnt = 0;
+		logger.info("连接数:"+sessionList.size());
 		for(WebSocketSession webSocketSession:sessionList){
-			String sendToClient = webSocketSession.getHandshakeAttributes().get("userName").toString();
 			try {
+				String sendToClient = webSocketSession.getHandshakeAttributes().get("userId").toString();
 				if(webSocketSession.isOpen()){
 					openCnt++;
 					webSocketSession.sendMessage(new TextMessage(sendToClient));
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
 			}		
 		}
 		logger.info("sessionList:"+sessionList+"|当前链接数openCnt："+openCnt);

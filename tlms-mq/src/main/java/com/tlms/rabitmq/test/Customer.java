@@ -10,28 +10,26 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.GetResponse;
 
 public class Customer {
+	private final static String QUEUE_NAME = "pujjr.wms.queue";
 	
-	
-	
-//	private final static String QUEUE_NAME = "rabbitMQ.test";
-//	public final static String EXCHANGE_NAME="exchangeNametopic";
-	
-	private final static String QUEUE_NAME = "icbc.mq.apply.tang";
-	public final static String EXCHANGE_NAME="icbc-mq-exchange.tang";
+	public final static String host = "172.18.10.131";
+	public final static int port = 5672;
+	public final static String userName = "pjadmin";
+	public final static String passWord = "Purking0326";
+	public final static String virtualHost = "/test";
 	
     public static void main(String[] args) throws IOException, TimeoutException {
         // 创建连接工厂
         ConnectionFactory factory = new ConnectionFactory();
         //设置RabbitMQ地址
 //        factory.setHost("localhost");
-        factory.setHost("39.108.166.189");
-        factory.setPort(5672);
-        factory.setUsername("icbc-mq");
-        factory.setPassword("123456");
-        factory.setVirtualHost("icbc-mq");
+        factory.setHost(host);
+        factory.setPort(port);
+        factory.setUsername(userName);
+        factory.setPassword(passWord);
+        factory.setVirtualHost(virtualHost);
 //        factory.setVirtualHost("icbc-mq");
         //创建一个新的连接
         Connection connection = factory.newConnection();
@@ -58,7 +56,12 @@ public class Customer {
                                        AMQP.BasicProperties properties, byte[] body)
                     throws IOException {
                 String message = new String(body, "UTF-8");
-                System.out.println("Customer Received '" + message + "'");
+                System.out.println("Customer Received ：" + message );
+                System.out.println("consumerTag:"+consumerTag);
+                System.out.println(envelope.getDeliveryTag());
+                System.out.println(envelope.getExchange());
+                System.out.println(envelope.getRoutingKey());
+                System.out.println(properties);
                /* int i = 0;
                 while(i < 5){
                 	System.out.println("i:"+i);
@@ -77,12 +80,13 @@ public class Customer {
 //                	channel.txRollback();
                 }*/
                 
-                	
+                System.out.println();
                 channel.basicAck(envelope.getDeliveryTag(), false);
             }
         };
         //自动回复队列应答 -- RabbitMQ中的消息确认机制
         channel.basicConsume(QUEUE_NAME, false, consumer);
+        System.out.println("执行完成");
        /*
         GetResponse response = channel.basicGet(QUEUE_NAME, false);
         System.out.println(response);

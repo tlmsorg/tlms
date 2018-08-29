@@ -127,6 +127,43 @@ drop-create： 在activiti启动时删除原来的旧表，然后在创建新表
 		<!-- 解决流程图乱码问题 -->
 		<property name="activityFontName" value="宋体"/>
 		<property name="labelFontName" value="宋体"/>
+		<!-- 所有类型时间监听 -->
+		<property name="eventListeners">
+			<list>
+				<ref bean="globalEventListener"/>
+			</list>
+		</property>
+		<!-- 按事件类型监听 -->
+		<!-- <property name="typedEventListeners">
+			<map>
+				<entry key="ENTITY_CREATED,ENTITY_INITIALIZED">
+					<list>
+						<ref bean="globalEventListener"/>
+					</list>
+				</entry>
+				<entry key="ACTIVITY_STARTED">
+					<list>
+						<ref bean="globalEventListener"/>
+					</list>
+				</entry>
+			</map>
+		</property> -->
+		<!-- 启动事件日志 -->
+		<property name="enableDatabaseEventLogging" value="true"/>
+    </bean>
+    
+    <bean id="globalEventListener" class="com.tlms.bpm.listener.GlobalEventListener">
+		<property name="handlers">
+		<map>
+			<entry key="TASK_CREATED" value="taskCreateListener" />
+			<entry key="TASK_COMPLETED" value="taskCompleteListener" />
+			<entry key="TASK_ASSIGNED" value="taskAssignedListener" />
+			<entry key="PROCESS_COMPLETED" value="processCompleteListener" />
+			<entry key="ACTIVITY_STARTED" value="activityStartedListener" />
+			<entry key="ACTIVITY_COMPLETED" value="activityCompletedListener" />
+			<entry key="ACTIVITY_SIGNALED" value="activitySignaledListener" />
+		</map>  
+	</property>  
     </bean>
     <!-- activiti的各种服务接口 -->
 	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />

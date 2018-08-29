@@ -81,4 +81,11 @@
         <!-- 此变量值为pageContext.request, 页面使用方法：rc.contextPath -->  
         <property name="requestContextAttribute" value="rc" />  
      </bean> 
+     
+        <!-- 注册spring web mvc中处理上传事件的组件CommonsMultipartResolver,
+        而具体怎样处理上传文件，则是由导入的包common-upload.jar和common-io.jar去处理-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="1024000000000"></property>
+        <property name="resolveLazily" value="true"></property>
+    </bean>
 </beans>

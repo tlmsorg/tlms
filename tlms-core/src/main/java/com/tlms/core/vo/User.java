@@ -1,8 +1,21 @@
 package com.tlms.core.vo;
 
-public class User {
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.eclipse.persistence.oxm.annotations.XmlCDATA;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+//@XmlType(propOrder = {"header","body"})
+@XmlRootElement(name = "xml")
+public class User{
 	private String id;
+	@XmlCDATA
+	@XmlElement(name = "userId")
 	private String userId;
+	@XmlElement(name = "userName/test")
 	private String userName;
 	public String getId() {
 		return id;

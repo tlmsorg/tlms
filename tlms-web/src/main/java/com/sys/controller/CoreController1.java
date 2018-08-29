@@ -33,4 +33,14 @@ public class CoreController1 {
 		System.out.println(coreServiceImpl3);
 		return "rollback_test";
 	}
+	
+	/*@Autowired
+	private IPjMessageService pjMessageServiceImpl;
+	*/
+	/*@ResponseBody
+	@RequestMapping(value="/push/{accountId}/{messageType}/{message}")
+	public void pushMessage(@PathVariable String accountId,@PathVariable String messageType,@PathVariable String message){
+		System.out.println("PjMessageTestController--->pushMessage");
+		pjMessageServiceImpl.pushMessage(accountId, messageType, message);
+	}*/
 }

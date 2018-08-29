@@ -19,10 +19,10 @@
 
 <!-- dubbo相关配置 -->
 <!-- 消费者 -->
-	<dubbo:application name="dubbo_consumer"></dubbo:application>
+	<!-- <dubbo:application name="dubbo_consumer"></dubbo:application> -->
 	<!-- 使用zookeeper注册中心暴露服务地址 -->
-	<dubbo:registry address="${zookkeeperAddress}" check="false"></dubbo:registry>
-	<dubbo:protocol port="${project.dubbo.port}"></dubbo:protocol>
+	<!-- <dubbo:registry address="${zookkeeperAddress}" check="false"></dubbo:registry> -->
 	<!-- 要访问的服务接口 -->
-	<dubbo:reference interface="com.pujjr.pjrp.dubbo.service.IPjrpService" id="pjrpServiceImpl" timeout="7200000" retries="0"></dubbo:reference>
+	<!-- <dubbo:reference interface="com.pujjr.pjrp.dubbo.service.IPjrpService" id="pjrpServiceImpl" timeout="7200000" retries="0"></dubbo:reference>
+	<dubbo:reference interface="com.pujjr.pjmessage.dubbo.service.IPjMessageService" id="pjMessageServiceImpl" timeout="7200000" retries="0"></dubbo:reference> -->
 </beans>

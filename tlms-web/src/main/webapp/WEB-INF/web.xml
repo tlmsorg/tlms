@@ -127,8 +127,13 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>authFilter</filter-name>
-		<url-pattern>/service/*</url-pattern>
+		<url-pattern>/sysservice/*</url-pattern>
 	</filter-mapping>
+	<filter-mapping>
+		<filter-name>authFilter</filter-name>
+		<url-pattern>/process/*</url-pattern>
+	</filter-mapping>
+	
 	
 	<filter>
 	  <filter-name>DelegatingFilterProxy</filter-name> <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

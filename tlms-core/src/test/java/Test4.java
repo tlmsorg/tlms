@@ -1,10 +1,5 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 
 public class Test4 {
 
@@ -87,6 +82,8 @@ public class Test4 {
 		//风险类型去重复：
 		String riskType = "汽车租赁欺诈、汽车租赁欺诈";
 		System.out.println(new Test4().getUnRepeatRecord(riskType));
+		
+		System.out.println(false && false);
 	}
 
 }

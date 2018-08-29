@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -120,5 +119,8 @@ public class Test {
 		System.out.println(Utils.number2Chn(15230.21));
 		
 		System.out.println("ttt:"+Math.round(9989*0.001));
+		
+		String name = "唐";
+		System.out.println(name.length());
 	}
 }

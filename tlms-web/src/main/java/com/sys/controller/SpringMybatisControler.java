@@ -4,29 +4,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
-import org.activiti.engine.identity.User;
-import org.activiti.engine.impl.RepositoryServiceImpl;
-//import org.activiti.engine.impl.bpmn.diagram.ProcessDiagramGenerator;
-import org.activiti.engine.impl.bpmn.parser.factory.DefaultActivityBehaviorFactory;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
-import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.activiti.engine.impl.pvm.delegate.ActivityBehavior;
-import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.impl.pvm.process.ProcessDefinitionImpl;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -160,6 +148,15 @@ public class SpringMybatisControler{
 				processEngine.getProcessEngineConfiguration().getActivityFontName(), 
 				processEngine.getProcessEngineConfiguration().getLabelFontName(), 
 				null, 1.0);
+		/*
+		BufferedImage bi = new DefaultProcessDiagramGenerator().generateImage(
+				 bpmnModel, "png", 
+				 activiActivityIds, new ArrayList<String>(),
+				 processEngine.getProcessEngineConfiguration().getActivityFontName(), 
+				 processEngine.getProcessEngineConfiguration().getActivityFontName(), 
+				 processEngine.getProcessEngineConfiguration().getLabelFontName(), 
+				 null, 1.0);*/
+		
 		byte[] buf = new byte[1024];
 		int length = -1;
 		try {

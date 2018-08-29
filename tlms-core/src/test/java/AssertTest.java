@@ -1,4 +1,3 @@
-import org.apache.log4j.Logger;
 import org.springframework.util.Assert;
 
 public class AssertTest {
@@ -8,6 +7,7 @@ public class AssertTest {
 			String str = "1";
 			Assert.isNull("2".equals(str), "请输入用户名密码");
 		} catch (Exception e) {
+			
 			System.out.println(e);
 		}
 	}	

@@ -20,6 +20,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.tlms.core.service.IAuthService;
 import com.tlms.core.service.IUserService;
+import com.tlms.core.vo.TokenVo;
 
 
 @WebFilter
@@ -37,6 +38,9 @@ public class AuthFilter implements Filter{
 		logger.info("AuthFilter init");
 		 ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(filterConfig.getServletContext());
 		 IUserService demoBean = (IUserService)context.getBean("userServiceImpl");
+		 this.userServiceImpl = demoBean;
+		 IAuthService authService = (IAuthService) context.getBean("authServiceImpl");
+		 this.authServiceImpl = authService;
 		 logger.info("demoBean:"+demoBean);
 	}
 
@@ -48,17 +52,16 @@ public class AuthFilter implements Filter{
 		HttpServletRequest servletRequest = (HttpServletRequest)request;
 		HttpServletResponse servletResponse = (HttpServletResponse) response;
 		
-		/*String token = servletRequest.getHeader("token");
+		String token = servletRequest.getHeader("token");
 		TokenVo tokenVo = new TokenVo();
 		if(!"OPTIONS".equals(servletRequest.getMethod())){
+//			logger.info(authServiceImpl);
 			tokenVo = authServiceImpl.checkJwt(token);
+			request.setAttribute("userId", tokenVo.getUserId());
+			request.setAttribute("passwd", tokenVo.getPasswd());
+			servletResponse.setHeader("token", tokenVo.getToken());
+			servletResponse.setHeader("expiretime", tokenVo.getExpireTime()+"");
 		}
-		request.setAttribute("userId", tokenVo.getUserId());
-		request.setAttribute("passwd", tokenVo.getPasswd());
-		
-		servletResponse.setHeader("token", tokenVo.getToken());
-		servletResponse.setHeader("expiretime", tokenVo.getExpireTime()+"");
-*/
 		chain.doFilter(servletRequest, servletResponse);
 	}
 

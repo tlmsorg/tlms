@@ -38,7 +38,7 @@ public class UserController{
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/service/user",method = RequestMethod.GET)
+	@RequestMapping(value="/sysservice/user",method = RequestMethod.GET)
 	public List<User> getAllUser(){
 		List<User> userList = new ArrayList();
 		User user = new User();
@@ -48,14 +48,14 @@ public class UserController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/service/user/{id}",method = RequestMethod.GET)
+	@RequestMapping(value="/sysservice/user/{id}",method = RequestMethod.GET)
 	public User geUserById(@PathVariable String id){
 		logger.debug("接收参数："+id);
 		User user = new User();
 		return user;
 	}
 	@ResponseBody
-	@RequestMapping(value="/service/user/v1/{id}",method = RequestMethod.GET)
+	@RequestMapping(value="/sysservice/user/v1/{id}",method = RequestMethod.GET)
 	public User geUserByIdV1(@PathVariable String id){
 		logger.debug("接收参数："+id);
 		User user = new User();
@@ -63,7 +63,7 @@ public class UserController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/service/user/v2",method = RequestMethod.GET)
+	@RequestMapping(value="/sysservice/user/v2",method = RequestMethod.GET)
 	public User geUserByIdV2(@RequestParam String id){
 		logger.debug("接收参数："+id);
 		User user = new User();
@@ -71,7 +71,7 @@ public class UserController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/service/user/v3/{id}/{name}",method = RequestMethod.GET)
+	@RequestMapping(value="/sysservice/user/v3/{id}/{name}",method = RequestMethod.GET)
 	public User geUserByIdV3(@PathVariable String id,@PathVariable String name){
 		logger.debug("接收参数："+id+"|"+name);
 		User user = new User();
@@ -79,7 +79,7 @@ public class UserController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/service/user/v4/{id}/name/{name}",method = RequestMethod.GET)
+	@RequestMapping(value="/sysservice/user/v4/{id}/name/{name}",method = RequestMethod.GET)
 	public User geUserByIdV4(@PathVariable String id,@PathVariable String name){
 		logger.debug("接收参数："+id+"|"+name);
 		User user = new User();
@@ -87,7 +87,7 @@ public class UserController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/service/user/v5/{id}/name/{name}",method = RequestMethod.GET)
+	@RequestMapping(value="/sysservice/user/v5/{id}/name/{name}",method = RequestMethod.GET)
 	public List<User> geUserByIdV5(@PathVariable String id,@PathVariable String name){
 		logger.debug("接收参数："+id+"|"+name);
 		List<User> userList = new ArrayList();
@@ -99,7 +99,7 @@ public class UserController{
 	
 	
 	@ResponseBody
-	@RequestMapping(value="/service/user",method = RequestMethod.POST)
+	@RequestMapping(value="/sysservice/user",method = RequestMethod.POST)
 	public void saveUser(@RequestBody User user){
 		logger.debug(JSONObject.toJSONString(user));
 	}
@@ -124,7 +124,7 @@ public class UserController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/service/signout",method = RequestMethod.POST)
+	@RequestMapping(value="/sysservice/signout",method = RequestMethod.POST)
 	public void signOut(HttpServletRequest request,HttpServletResponse response) throws Exception{
 //		String userId = request.getAttribute("userId")+"";
 		response.setHeader("token", "");

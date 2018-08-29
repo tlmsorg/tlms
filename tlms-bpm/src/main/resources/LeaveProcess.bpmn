@@ -3,9 +3,13 @@
   <process id="leaveProcess" name="请假流程" isExecutable="true">
     <startEvent id="startevent1" name="Start"></startEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <userTask id="part" name="部门审批" activiti:assignee="001"></userTask>
+    <userTask id="part" name="部门审批" activiti:candidateGroups="001"></userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="part"></sequenceFlow>
-    <userTask id="gjsp" name="个金审批" activiti:assignee="002"></userTask>
+    <userTask id="gjsp" name="个金审批" activiti:assignee="002">
+    	<extensionElements>
+    		<activiti:taskListener event="create" class="com.tlms.bpm.listener.TaskAutoRedirectListener"></activiti:taskListener>
+    	</extensionElements>
+    </userTask>
     <sequenceFlow id="flow3" sourceRef="part" targetRef="gjsp"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="gjsp" targetRef="exclusivegateway1"></sequenceFlow>
@@ -51,14 +55,14 @@
         <omgdi:waypoint x="442.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="335.0" y="87.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="302.0" y="318.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="302.0" y="318.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="282.0" y="338.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="380.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="282.0" y="338.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="282.0" y="338.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

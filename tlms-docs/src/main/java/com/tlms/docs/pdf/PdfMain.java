@@ -1,24 +1,16 @@
 package com.tlms.docs.pdf;
 
-import java.awt.Color;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.AcroFields;
@@ -29,9 +21,6 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.events.IndexEvents.Entry;
-import com.itextpdf.text.pdf.hyphenation.TernaryTree;
-import com.itextpdf.text.pdf.hyphenation.TernaryTree.Iterator;
 import com.tlms.docs.vo.LeaseConstractVo;
 import com.tlms.docs.vo.PdfMgc;
 
@@ -53,6 +42,7 @@ public class PdfMain {
 				e.printStackTrace();
 			}
 		}
+	
 	}
 	/**
 	 * 打印共同还租承诺 print colessee promise
