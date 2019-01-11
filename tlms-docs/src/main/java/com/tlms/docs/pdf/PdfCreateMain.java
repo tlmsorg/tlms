@@ -3,28 +3,19 @@ package com.tlms.docs.pdf;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import javax.swing.border.Border;
-
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.AcroFields;
-import com.itextpdf.text.pdf.Barcode128;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPRow;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 /**
@@ -105,8 +96,8 @@ public class PdfCreateMain {
 		cell3.setColspan(10);
 		cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		table.addCell(cell3);*/
-		
 	}
+	
 	
 	/**
 	 * 附加条件

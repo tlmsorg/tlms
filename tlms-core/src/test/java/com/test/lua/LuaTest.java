@@ -26,23 +26,36 @@ public class LuaTest {
 		}
 		LuaValue luaValue =  globals.load(isr, "chunkname");
 		luaValue.call();
+//		System.out.println(LuaValue.valueOf("hi"));
+		System.out.println(globals.get("hi"));
+		System.out.println(globals.get(LuaValue.valueOf("hi")));
 		LuaValue funValue = globals.get(LuaValue.valueOf("hi"));
-		funValue.invoke(new LuaValue[]{LuaValue.valueOf("brighttang")});
+//		Varargs varRet = funValue.invoke(new LuaValue[]{LuaValue.valueOf("brighttang"),LuaValue.valueOf("brighttang2")});
+		LuaTable varRet = (LuaTable) funValue.invoke(new LuaValue[]{LuaValue.valueOf("brighttang"),LuaValue.valueOf("brighttang2")});
+		for(int i = 0;i <= varRet.length();i++) {
+			LuaValue row = varRet.get(i);
+			System.out.println("返回row"+i+"："+row);
+			for (int j = 0; j <= row.length(); j++) {
+				System.out.println("row值"+j+"："+row.get(j));
+			}
+		}
 		
+		
+		System.out.println("------------");
 		LuaValue htableValue = globals.get(LuaValue.valueOf("hTable"));
-		System.out.println(htableValue);
+		System.out.println("htableValue:"+htableValue.get(0));
 		
 		LuaValue nilValue = LuaValue.NIL;
-//		System.out.println(nilValue);
+		System.out.println(nilValue);
 		Varargs varargs = htableValue.next(nilValue);
 		LuaValue v1 = varargs.arg(1);
-		System.out.println(v1.tostring());
+		System.out.println("v1:"+v1.tostring());
 		
 		LuaValue v2 = varargs.arg(2);
-		System.out.println(v2.toString());
+		System.out.println("v2:"+v2.toString());
 
 		LuaTable luaTable = (LuaTable) CoerceLuaToJava.coerce(v2, LuaTable.class);
-		
+		System.out.println(luaTable);
 		
 		try {
 			isr.close();
@@ -59,8 +72,13 @@ public class LuaTest {
 		luaValue.call();
 	}
 	
+	
 	public static void main(String[] args) throws Exception {
 		LuaTest luaTest = new LuaTest();
-		luaTest.fromNuaSciptFile();
+		while(true) {
+			Thread.currentThread().sleep(3000);
+			luaTest.fromNuaSciptFile();
+		}
+		
 	}
 }

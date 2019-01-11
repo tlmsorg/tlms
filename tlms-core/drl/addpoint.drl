@@ -1,0 +1,33 @@
+package com.drools.demo.point  
+   
+import java.util.Map;
+  
+  
+  
+rule birthdayPoint
+    salience 100  
+    lock-on-active true  
+    
+    when  
+        $pointDomain : PointDomain(birthDay == true)  
+    then 
+     
+    	$pointDomain.setPoint(1000 * 10000); 
+        System.out.println($pointDomain.getPoint());
+        System.out.println("计算测试："+$pointDomain.getBuyMoney() * $pointDomain.getBuyNums());
+       
+end 
+  
+rule birthdayPoint2
+    salience 100  
+    lock-on-active true  
+    
+    when  
+        $map : Map(birthDay == true)  
+    then 
+     	System.out.println("计算测试："+$map.get("point") * 1);
+       
+end
+
+
+  

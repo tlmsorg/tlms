@@ -22,13 +22,46 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-    
-    
-    <dependency>
+
+
+	<dependency>
 		<groupId>org.eclipse.persistence</groupId>
 		<artifactId>org.eclipse.persistence.moxy</artifactId>
 		<version>2.5.2-M1</version>
 	</dependency>
-    
+
+	<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
+	<dependency>
+		<groupId>org.bouncycastle</groupId>
+		<artifactId>bcprov-jdk15on</artifactId>
+		<version>1.60</version>
+	</dependency>
+	<!-- for drools: wrong class format -->
+<!-- 	<dependency>
+	   <groupid>org.eclipse.jdt</groupid>
+	   <artifactid>org.eclipse.jdt.core</artifactid>
+	   <version>3.13.100</version>
+	</dependency> -->
+	
+	<!-- drools 类型转换异常引包 -->
+	<!-- https://mvnrepository.com/artifact/org.eclipse.jdt/core -->
+	<dependency>
+	    <groupId>org.eclipse.jdt</groupId>
+	    <artifactId>core</artifactId>
+	    <version>3.3.0-v_771</version>
+	</dependency>
+	
+<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+<dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>27.0-jre</version>
+</dependency>
+
+
+	
+		
+
+	
   </dependencies>
 </project>

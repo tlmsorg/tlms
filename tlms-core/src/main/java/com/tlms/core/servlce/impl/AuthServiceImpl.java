@@ -84,7 +84,7 @@ public class AuthServiceImpl implements IAuthService {
 		
 		System.out.println("*************webtoken验证*************");
 		System.out.println("claims:"+claims);
-		System.out.println(sdf.format(claims.getExpiration()));
+//		System.out.println(sdf.format(claims.getExpiration()));
 		System.out.println("claims.getId():"+claims.getId());
 		System.err.println("claims.getIssuer():"+claims.getIssuer());
 		System.out.println("claims.getSubject():"+claims.getSubject());

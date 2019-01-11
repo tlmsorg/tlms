@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import com.tlms.core.annotion.AnnotationTest;
 import com.tlms.core.dao.SysUserMapper;
 import com.tlms.core.dao.Test1Mapper;
 import com.tlms.core.dao.Test2Mapper;
@@ -53,7 +52,6 @@ public class UserServiceImpl implements IUserService {
 		
 	}
 
-	@AnnotationTest
 	public void userUpd3(Test2 test2,String accountId) {
 		// TODO Auto-generated method stub
 		System.out.println("UserServiceImpl->userUpd3,开始更新test2表");

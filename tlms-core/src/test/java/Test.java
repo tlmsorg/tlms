@@ -122,5 +122,9 @@ public class Test {
 		
 		String name = "唐";
 		System.out.println(name.length());
+		
+		String nl = null;
+		String strNul = String.valueOf(nl);
+		System.out.println("strNul:"+nl);
 	}
 }

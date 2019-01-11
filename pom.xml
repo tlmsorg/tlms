@@ -427,7 +427,39 @@
 			    <artifactId>jsch</artifactId>
 			    <version>0.1.54</version>
 			</dependency>
-		
+
+<!-- drool相关 -->
+		<!-- <dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-api</artifactId>
+			<version>6.5.0.Final</version>
+		</dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.drools/drools-core -->
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-core</artifactId>
+			<version>5.5.0.Final</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.drools/drools-templates -->
+<!-- 		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-templates</artifactId>
+			<version>6.5.0.Final</version>
+		</dependency> -->
+
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-compiler</artifactId>
+			<version>5.5.0.Final</version>
+			<!-- <scope>runtime</scope> -->
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
@@ -451,5 +483,6 @@
 		<module>tlms-bpm</module>
 	    <module>tlms-fm</module>
 	    <module>tlms-mq</module>
+    <module>tlms-rpc</module>
   </modules>
 </project>
