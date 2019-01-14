@@ -47,8 +47,8 @@ public class JdkDynamicProxyMain {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		new JdkDynamicProxyMain().jdkDynamicProxy1();
-//		new JdkDynamicProxyMain().jdkDynamicProxy2();
+//		new JdkDynamicProxyMain().jdkDynamicProxy1();
+		new JdkDynamicProxyMain().jdkDynamicProxy2();
 		
 	}
 

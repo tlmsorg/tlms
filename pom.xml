@@ -7,6 +7,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+
+
 	<name>tlms</name>
 	<url>http://maven.apache.org</url>
 
@@ -44,10 +46,10 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
+		    <groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <version>4.12</version>
+		    <scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -354,11 +356,11 @@
 		    <version>0.7.0</version>
 		</dependency>
 		
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>com.pujjr</groupId>
 			<artifactId>dubbo-pjrp-api</artifactId>
 			<version>${dubbo-pjrp-api.version}</version>
-		</dependency>
+		</dependency> -->
 		
 		
 		<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/sqljdbc4 -->
@@ -408,11 +410,11 @@
 		    <version>1.1.3.RELEASE</version>
 		</dependency> -->
 		
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>com.pujjr</groupId>
 			<artifactId>dubbo-pjmessage-api</artifactId>
 			<version>${dubbo-pjmessage-api.version}</version>
-		</dependency>
+		</dependency> -->
 		
 		<!-- https://mvnrepository.com/artifact/org.luaj/luaj-jse -->
 		<dependency>
