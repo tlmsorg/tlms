@@ -6,9 +6,9 @@
     <userTask id="part" name="部门审批" activiti:candidateGroups="001"></userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="part"></sequenceFlow>
     <userTask id="gjsp" name="个金审批" activiti:assignee="002">
-    	<extensionElements>
-    		<activiti:taskListener event="create" class="com.tlms.bpm.listener.TaskAutoRedirectListener"></activiti:taskListener>
-    	</extensionElements>
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.tlms.bpm.listener.TaskAutoRedirectListener"></activiti:taskListener>
+      </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="part" targetRef="gjsp"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>

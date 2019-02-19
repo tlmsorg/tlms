@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class Test7 {
 
@@ -14,6 +15,8 @@ public class Test7 {
 		String[] strArray = new String[] {"111","222","333"};
 		new Test7().run(ArrayList.class,strArray,"444","555","666");
 		System.out.println(6%5);
+		
+		System.out.println(Pattern.compile("法院执行").matcher("身份证命中法院执行名单").find());
 	}
 
 }

@@ -37,18 +37,18 @@
 		p:username="${username1}"
 		p:password="${password1}"/>
 		
-	<bean id="dataSource2" class="org.apache.commons.dbcp.BasicDataSource" 
+	<!-- <bean id="dataSource2" class="org.apache.commons.dbcp.BasicDataSource" 
 		destroy-method="close"
 		p:driverClassName="${driver2}"
 		p:url="${url2}"
 		p:username="${username2}"
 		p:password="${password2}"/>
-
+ -->
 	<bean id="dynamicDataSource" class="com.core.mutidata.DynamicDataSource">
 		<property name="targetDataSources">
 			<map key-type="java.lang.String">
 				<entry key="dataSource1" value-ref="dataSource1"></entry>
-				<entry key="dataSource2" value-ref="dataSource2"></entry>
+				<!-- <entry key="dataSource2" value-ref="dataSource2"></entry> -->
 			</map>
 		</property>
 		<property name="defaultTargetDataSource" ref="dataSource1"></property>
@@ -56,7 +56,7 @@
 	
 	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->  
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
-        <property name="dataSource" ref="dynamicDataSource" />  
+        <property name="dataSource" ref="dataSource1" />  
         <!-- 自动扫描mapping.xml文件 -->  
         <!-- <property name="mapperLocations" value="classpath:com/tlms/**/mapper/*.xml"></property> -->
         <property name="mapperLocations">

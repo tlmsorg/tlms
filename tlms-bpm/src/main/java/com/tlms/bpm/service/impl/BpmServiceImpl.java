@@ -146,19 +146,27 @@ public class BpmServiceImpl implements IBpmService{
 	/* 
 	    * 递归查询经过的流 
 	    */  
-	   private void getHighLightedFlows(List<ActivityImpl> activityList, List<String> highLightedFlows, List<String> historicActivityInstanceList) {  
+	   private void getHighLightedFlows(List<ActivityImpl> activityList, List<String> highLightedFlows, List<String> hisActivityIdList) {  
 	       for (ActivityImpl activity : activityList) {  
 	           if (activity.getProperty("type").equals("subProcess")) {  
 	               // get flows for the subProcess  
-	               getHighLightedFlows(activity.getActivities(), highLightedFlows, historicActivityInstanceList);  
+	               getHighLightedFlows(activity.getActivities(), highLightedFlows, hisActivityIdList);  
 	           }  
 	  
-	           if (historicActivityInstanceList.contains(activity.getId())) {  
-//	               List<PvmTransition> pvmTransitionList = activity.getOutgoingTransitions();  
+	           if (hisActivityIdList.contains(activity.getId())) {  
+//	               List<PvmTransition> pvmTransitionList = activity.getOutgoingTransitions(); 
+	        	   //获取已执行完成输入端flow
 	        	   List<PvmTransition> pvmTransitionList = activity.getIncomingTransitions();
 	               for (PvmTransition pvmTransition : pvmTransitionList) {  
-	                   String destinationFlowId = pvmTransition.getDestination().getId(); 
-	                   if (historicActivityInstanceList.contains(destinationFlowId)) {  
+	            	   //flow target activity ID
+	                   String destinationActivityId = pvmTransition.getDestination().getId(); 
+	                   //flow source activity ID
+	                   String sourceActivityId = pvmTransition.getSource().getId();
+	                   /**
+	                    * 20190218
+	                    * 如果一个flow的sourceId 和 targetId 都在历史活动ID列表：hisActivityIdList中，则认为该flow是已完成flow
+	                    */
+	                   if (hisActivityIdList.contains(destinationActivityId) && hisActivityIdList.contains(sourceActivityId)) {  
 	                       highLightedFlows.add(pvmTransition.getId());  
 	                   }  
 	               }  
@@ -178,27 +186,27 @@ public class BpmServiceImpl implements IBpmService{
 			BpmnModel bpmnModel = repositoryService.getBpmnModel(pdid);
 
 			//已完成节点+当前处理节点
-			List<String> activeActivityIdList = new ArrayList<String>();
-			List<String> finishActiveActivityIdList = new ArrayList<String>();
+			List<String> hisActivityIdList = new ArrayList<String>();
+			List<String> finishActivityIdList = new ArrayList<String>();
 			//已执行的活动节点
 			List<HistoricActivityInstance> hisActivityInstanceList = historyService.createHistoricActivityInstanceQuery().processInstanceId(task.getProcessInstanceId()).finished().list();
 			for (HistoricActivityInstance historicActivityInstance : hisActivityInstanceList) {
-				finishActiveActivityIdList.add(historicActivityInstance.getActivityId());
+				finishActivityIdList.add(historicActivityInstance.getActivityId());
 			}
+			hisActivityIdList.addAll(finishActivityIdList);
 			
-			activeActivityIdList.addAll(finishActiveActivityIdList);
 			//获取活动状态节点
 			List<String> activeActivityIds = runtimeService.getActiveActivityIds(task.getProcessInstanceId());
-			activeActivityIdList.addAll(activeActivityIds);
+			hisActivityIdList.addAll(activeActivityIds);
 			
 			
 			// 经过的流  
 	        ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(task.getProcessDefinitionId());  
 	        List<String> highLightedFlows = new ArrayList<>();  
-//	        getHighLightedFlows(processDefinitionEntity.getActivities(), highLightedFlows, activeActivityIdList); 
+	        getHighLightedFlows(processDefinitionEntity.getActivities(), highLightedFlows, hisActivityIdList); 
 
 	        ProcessDiagramGenerator pdg = processEngineConfiguration.getProcessDiagramGenerator();  
-	        /*InputStream inputStream = pdg.generateDiagram(bpmnModel, "PNG", finishActiveActivityIdList, highLightedFlows,  
+	        /*InputStream inputStream = pdg.generateDiagram(bpmnModel, "PNG", finishActivityIdList, highLightedFlows,  
 	                processEngineConfiguration.getProcessEngineConfiguration().getActivityFontName(),  
 	                processEngineConfiguration.getProcessEngineConfiguration().getLabelFontName(),  
 	                processEngineConfiguration.getProcessEngineConfiguration().getProcessEngineConfiguration().getClassLoader(), 10.0);*/  
@@ -454,9 +462,11 @@ public class BpmServiceImpl implements IBpmService{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		logger.info("model反序列化后："+modelNode.toString());
+		
 		//3、模型节点对象转bpmn模型对象
 		BpmnModel bpmnModel = new BpmnJsonConverter().convertToBpmnModel(modelNode);
-		
+		bpmnModel.getProcesses();
 
 		/**
 		 * 发布流程定义时，指定各节点候选人、候选组

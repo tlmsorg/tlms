@@ -2,6 +2,8 @@ package com.test.log4j;
 
 public class Test {
 	public static void main(String[] args) {
+		System.out.println(false && false);
+		System.out.println(true && false);
 		
 		while(true){
 			try {
@@ -14,5 +16,7 @@ public class Test {
 			System.out.println(System.currentTimeMillis());
 			System.out.println(System.currentTimeMillis()+5000);
 		}
+		
+		
 	}
 }
