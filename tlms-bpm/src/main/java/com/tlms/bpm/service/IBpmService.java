@@ -88,4 +88,10 @@ public interface IBpmService {
 	 */
 	public void deployModelManual();
 	
+	/**
+	 * 跳过流程节点
+	 */
+	public void processJump(String procInstId);
+	
+	
 }

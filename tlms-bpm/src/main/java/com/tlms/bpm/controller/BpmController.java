@@ -181,4 +181,11 @@ public class BpmController {
 		bpmServiceImpl.deleteModel(modelId);
 		
 	}
+	
+	@RequestMapping(value="/process/jump/{procInstId}",method=RequestMethod.GET)
+	public void processJump(@PathVariable String procInstId){
+		 bpmServiceImpl.processJump(procInstId);
+		 
+	}
+	
 }

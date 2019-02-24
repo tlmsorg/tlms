@@ -19,6 +19,7 @@ import org.activiti.bpmn.model.UserTask;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
+import org.activiti.engine.ManagementService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -32,7 +33,6 @@ import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.DelegationState;
 import org.activiti.engine.task.Task;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.activiti.spring.SpringProcessEngineConfiguration;
@@ -45,6 +45,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.tlms.bpm.command.JumpActivityCmd;
 import com.tlms.bpm.dao.ApplyMapper;
 import com.tlms.bpm.domain.Apply;
 import com.tlms.bpm.service.IBpmService;
@@ -71,6 +72,8 @@ public class BpmServiceImpl implements IBpmService{
 	private ProcessEngine processEngine;
 	@Autowired
 	private IdentityService identityServiceImpl;
+	@Autowired
+	private ManagementService managementServiceImpl;
 	@Override
 	public void deployProcess() {
 		repositoryService.createDeployment().addClasspathResource("LeaveProcess.bpmn").deploy();
@@ -272,20 +275,32 @@ public class BpmServiceImpl implements IBpmService{
 
 	@Override
 	public void doAgree(String userId,String procInstId) {
+		
+		
+		
 		logger.info("审批通过："+userId+"|"+procInstId);
 		ProcessInstance procInst = runtimeService.createProcessInstanceQuery().processInstanceId(procInstId).singleResult();
 		Task task = taskService.createTaskQuery().processInstanceId(procInstId).singleResult();
+		
+		//先签收，再提交,否则无法记录处理人
+		taskService.claim(task.getId(), userId);
+		
 		 Map<String,Object> processVariables = runtimeService.getVariables(task.getExecutionId());
 		logger.info("审批通过,获取流程变量processVariables:"+processVariables);
 		Map<String,Object> variables = new HashMap<String,Object>();
 		variables.put("bmldComment", "部门领导审批意见：通过");
 		if(task.getTaskDefinitionKey().equals("deptLeaderAudit")){
 			variables.put("deptLeaderApproved", "true");
+			managementServiceImpl.executeCommand(new JumpActivityCmd("reportBack", procInstId));
 		}else if(task.getTaskDefinitionKey().equals("hrAudit")){
 			variables.put("hrApproved", "true");
 //			task.setAssignee("001");
+		}else if(task.getTaskDefinitionKey().equals("reportBack")){
+			variables.put("hrApproved", "true");
+//			task.setAssignee("001");
+			managementServiceImpl.executeCommand(new JumpActivityCmd("deptLeaderAudit", procInstId));
 		}
-		DelegationState delegationState = task.getDelegationState();
+		/*DelegationState delegationState = task.getDelegationState();
 		if(DelegationState.PENDING.equals(delegationState)){
 			Map<String,Object> delegateVars = new HashMap<String,Object>();
 			delegateVars.put("delegateComment", "待办意见");
@@ -293,7 +308,7 @@ public class BpmServiceImpl implements IBpmService{
 			taskService.complete(task.getId(), variables);
 		}else if("".equals("delegationState") || delegationState == null || "".equals("null")){
 			taskService.complete(task.getId(), variables);
-		}
+		}*/
 		
 			
  		
@@ -468,6 +483,7 @@ public class BpmServiceImpl implements IBpmService{
 		BpmnModel bpmnModel = new BpmnJsonConverter().convertToBpmnModel(modelNode);
 		bpmnModel.getProcesses();
 
+		
 		/**
 		 * 发布流程定义时，指定各节点候选人、候选组
 		 */
@@ -560,7 +576,7 @@ public class BpmServiceImpl implements IBpmService{
 		logger.info(modelNode.get("properties").get("name").asText());
 		logger.info(modelNode.get("properties").get("name").textValue());
 //		repositoryService.createDeployment().name(model.getName()).addString(processName, bpmn).deploy();
-		repositoryService.createDeployment().name(model.getName()).addBpmnModel(processName, bpmnModel).deploy();
+		repositoryService.createDeployment().name(model.getName()+"流程模型发布").addBpmnModel(processName, bpmnModel).deploy();
 	}
 
 	@Override
@@ -616,6 +632,24 @@ public class BpmServiceImpl implements IBpmService{
 	public void doDelegate(String userId, String procInstId) {
 		Task task = taskService.createTaskQuery().processInstanceId(procInstId).singleResult();
 		taskService.delegateTask(task.getId(), userId);
+	}
+
+	@Override
+	public void processJump(String procInstId) {
+		ProcessInstance procInst = runtimeService.createProcessInstanceQuery().processInstanceId(procInstId).singleResult();
+		Task task = taskService.createTaskQuery().processInstanceId(procInstId).singleResult();
+		 Map<String,Object> processVariables = runtimeService.getVariables(task.getExecutionId());
+		logger.info("审批通过,获取流程变量processVariables:"+processVariables);
+		Map<String,Object> variables = new HashMap<String,Object>();
+		variables.put("bmldComment", "部门领导审批意见：通过");
+		if(task.getTaskDefinitionKey().equals("deptLeaderAudit")){
+			variables.put("deptLeaderApproved", "true");
+			managementServiceImpl.executeCommand(new JumpActivityCmd("reportBack", procInstId));
+		}else {
+			managementServiceImpl.executeCommand(new JumpActivityCmd("deptLeaderAudit", procInstId));
+		}
+		
+		
 	}
 	
 }
