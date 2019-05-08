@@ -9,13 +9,10 @@ public class ThreadLocalMain {
 	
 	public static void main(String[] args) {
 		ThreadLocalMain threadLocalMain = new ThreadLocalMain();
+		/*
 		ThreadLocal<Long> threadLocalLong = new ThreadLocal<Long>();
 		ThreadLocal<String> threadLocalName = new ThreadLocal<String>();
-		/*ThreadLocal<UserInfo> threadLocalUserInfo = new ThreadLocal<UserInfo>() {
-			protected UserInfo initialValue() {
-				return new UserInfo();
-			}
-		};*/
+
 		ThreadLocal<UserInfo> threadLocalUserInfo = new ThreadLocal<UserInfo>();
 		threadLocalLong.set(Thread.currentThread().getId());
 		threadLocalName.set(Thread.currentThread().getName());
@@ -26,15 +23,13 @@ public class ThreadLocalMain {
 		
 		System.out.println(threadLocalLong.get());
 		System.out.println(threadLocalName.get());
-		/*
-		UserInfo userInfo2 = threadLocalUserInfo.get();
-		System.out.println(userInfo2.getName());*/
+
 		System.out.println("线程外："+threadLocalUserInfo);
 		new Thread(new UserThread1(threadLocalUserInfo)).start();
 		new Thread(new UserThread1(threadLocalUserInfo)).start();
-
-//		threadLocalMain.paramShare();
-		threadLocalMain.paramIsolation();
+*/
+		threadLocalMain.paramShare();
+//		threadLocalMain.paramIsolation();
 		
 		
 	}
@@ -51,7 +46,7 @@ public class ThreadLocalMain {
 		varPool.put("name", "王分享");
 		new Thread(new UserThreadShare()).start();
 		for(int i = 0;i < 5;i++) {
-			System.out.println("线程"+currThreadName+"中取值："+varPool.get("name"));
+			System.out.println(i+"线程"+currThreadName+"中取值："+varPool.get("name"));
 			try {
 				Thread.currentThread().sleep(1000);
 			} catch (Exception e) {
@@ -73,7 +68,7 @@ public class ThreadLocalMain {
 		System.out.println("线程"+currThreadName+"中赋值:"+varPool.get("name"));
 		new Thread(new UserThreadIsolation()).start();
 		for(int i = 0;i < 5;i++) {
-			System.out.println("线程"+currThreadName+"中取值："+varPool.get("name"));
+			System.out.println(i+"线程"+currThreadName+"中取值："+varPool.get("name"));
 			try {
 				Thread.currentThread().sleep(1000);
 			} catch (Exception e) {

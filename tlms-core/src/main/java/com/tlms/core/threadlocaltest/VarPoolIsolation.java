@@ -21,12 +21,12 @@ public class VarPoolIsolation {
 		VarPoolIsolation varPool = threadLocal.get();
 		String currThreadName = "线程："+Thread.currentThread().getName();
 		if(varPool == null) {
-			System.out.println(currThreadName+"-->varPool为null");
+			System.out.println("变量池：VarPoolIsolation----"+currThreadName+"-->varPool为null");
 			varPool = new VarPoolIsolation();
 			varPool.map = new HashMap<String,Object>();
 			threadLocal.set(varPool);
 		}else {
-//			System.out.println(currThreadName+"-->varPool已存在");
+			System.out.println("变量池：VarPoolIsolation----"+currThreadName+"-->varPool已存在");
 		}
 		return varPool;
 	}

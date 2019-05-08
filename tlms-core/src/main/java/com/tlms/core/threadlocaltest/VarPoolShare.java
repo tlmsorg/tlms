@@ -15,11 +15,11 @@ public class VarPoolShare {
 	public static VarPoolShare getInstanceNormal() {
 		String currThreadName = "线程："+Thread.currentThread().getName();
 		if(varPool == null) {
-			System.out.println(currThreadName+"-->varPool为null");
+			System.out.println("变量池：VarPoolShare----"+currThreadName+"-->varPool为null");
 			varPool = new VarPoolShare();
 			varPool.map = new HashMap<String,Object>();
 		}else {
-			System.out.println(currThreadName+"-->varPool已存在");
+			System.out.println("变量池：VarPoolShare----"+currThreadName+"-->varPool已存在");
 		}
 		return varPool;
 	}

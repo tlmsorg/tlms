@@ -5,6 +5,13 @@ public class UserThreadIsolation implements Runnable{
 	@Override
 	public void run() {
 		while(true) {
+			
+			try {
+				Thread.currentThread().sleep(2000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			
 			VarPoolIsolation varPool = VarPoolIsolation.getInstanceIsolation();
 			String currThreadName = Thread.currentThread().getName();
 			System.out.println("线程"+currThreadName+"中取值："+varPool.get("name"));
