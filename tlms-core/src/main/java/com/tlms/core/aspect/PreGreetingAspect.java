@@ -19,7 +19,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.tlms.core.dao.Test1Mapper;
 import com.tlms.core.dao.Test1OperHisMapper;
 import com.tlms.core.dao.Test1TableMapMapper;
-import com.tlms.core.domain.Test1;
 import com.tlms.core.domain.Test1OperHis;
 import com.tlms.core.domain.Test1TableMap;
 import com.tlms.core.util.Utils; 

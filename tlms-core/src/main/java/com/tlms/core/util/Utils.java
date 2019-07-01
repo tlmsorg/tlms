@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.test.postloan.RepayScheduleDetailPo;
 import com.tlms.core.enumeration.EIntervalMode;
 public class Utils {
 	private Logger logger = Logger.getLogger(Utils.class);
@@ -491,7 +490,7 @@ public class Utils {
 							Type gType  = destField.getGenericType();
 							ParameterizedType pType = (ParameterizedType) gType;
 							Type[] types = pType.getActualTypeArguments();
-							System.out.println("****types[0]:"+types[0]+"|"+"types[0].getTypeName():"+types[0].getTypeName()+"|"+types[0].getTypeName().equals(RepayScheduleDetailPo.class.getTypeName())+"|"+types[0].getClass());
+//							System.out.println("****types[0]:"+types[0]+"|"+"types[0].getTypeName():"+types[0].getTypeName()+"|"+types[0].getTypeName().equals(RepayScheduleDetailPo.class.getTypeName())+"|"+types[0].getClass());
 //							System.out.println("ttt:"+srcField.get(source));
 							for (Object object : tempSrcFieldValue) {
 //								Object rsdv = Class.forName(types[0].getTypeName()).newInstance();//目前仅仅拷贝list泛型中含有一个参数的情况，如：List<String>
