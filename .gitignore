@@ -3,3 +3,4 @@
 .settings
 tlms-rpc/.project
 .gitignore.bak
+*/bin
