@@ -27,7 +27,7 @@ public class RmiClient {
 		IRemoteMath remoteMath2 = (IRemoteMath) Naming.lookup("rmi://localhost:6500/remoteMath2");
 		String test2=remoteMath2.doSave("RmiClient2");
 		System.out.println("客户端调用服务端："+test2);
-		
+
 		Registry rigistry3 = LocateRegistry.getRegistry("127.0.0.1",7500);
 		IRemoteMath remoteMath3 = (IRemoteMath) rigistry3.lookup("remoteMath3");
 		String test3=remoteMath3.doSave("RmiClient3");
