@@ -1,7 +1,6 @@
-package com.tlms.core.proxy;
+package com.tlms.core.proxy.test;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,7 +10,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-public class Test {
+public class ProxyTest {
 
 	
 	static interface ISubject{
@@ -52,7 +51,7 @@ public class Test {
 		 
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			System.out.println("执行前ProxyInvocationHandler--->invoke");
+			System.out.println("执行前,ProxyInvocationHandler--->invoke");
 			Object obj = method.invoke(targetObj, args);
 			System.out.println("执行后");
 			return obj;
@@ -66,6 +65,10 @@ public class Test {
 		
 	}
 	
+	/**
+	 * 获取代理对象方法1
+	 * @throws Exception
+	 */
 	public void method1() throws Exception {
 		ISubject subjectImpl = new SubjectImpl();
 //		ISubject subjectProxy = (ISubject) Proxy.newProxyInstance(subjectImpl.getClass().getClassLoader(), subjectImpl.getClass().getInterfaces(), new ProxyInvocationHandler(subjectImpl));
@@ -75,13 +78,17 @@ public class Test {
 //		subjectProxy.doSave2("brighttang","20");
 	}
 	
+	/**
+	 * 获取代理对象方法2
+	 * @throws Exception
+	 */
 	public void method2() throws Exception {
 		ISubject subjectImpl = new SubjectImpl();
-		//获取代理类class
+		//1、获取代理类class
 		Class proxyClass = Proxy.getProxyClass(ISubject.class.getClassLoader(), new Class[] {ISubject.class});
-		//获取代理类contructor
+		//2、获取代理类contructor
 		Constructor constructor = proxyClass.getConstructor(new Class[] {InvocationHandler.class});
-		//获取代理对象
+		//3、获取代理对象
 		ISubject subjectProxy = (ISubject) constructor.newInstance(new ProxyInvocationHandler(subjectImpl));
 		subjectProxy.doSave1("method2");
 	}
@@ -110,11 +117,14 @@ public class Test {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		Test test = new Test();
+		ProxyTest test = new ProxyTest();
+		/**
+		 * 先执行序列化，再执行反序列化
+		 */
 //		test.serilizeObj();
-		test.deSerilizeObj();
-//		new Test().method1();
-//		new Test().method2();
+//		test.deSerilizeObj();
+		new ProxyTest().method1();
+//		new ProxyTest().method2();
 	}
 
 }
