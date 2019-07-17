@@ -1,4 +1,4 @@
-package com.tlms.core.annotion;
+package com.tlms.core.annotiontest;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;

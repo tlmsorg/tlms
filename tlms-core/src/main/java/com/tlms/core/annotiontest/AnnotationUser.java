@@ -1,4 +1,4 @@
-package com.tlms.core.annotion;
+package com.tlms.core.annotiontest;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,8 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Constraints {
-	boolean primaryKey() default false;
-	boolean allowNull() default false;
-	boolean unique() default false;
+public @interface AnnotationUser {
+	String userName() default "123";
 }

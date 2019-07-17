@@ -1,4 +1,4 @@
-package com.tlms.core.annotion;
+package com.tlms.core.annotiontest;
 
 public class UserDTO {
 	

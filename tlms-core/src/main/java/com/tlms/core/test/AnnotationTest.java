@@ -1,8 +1,8 @@
 package com.tlms.core.test;
 
-import com.tlms.core.annotion.UserDTO;
+import com.tlms.core.annotiontest.UserDTO;
 
-@com.tlms.core.annotion.AnnotationType
+@com.tlms.core.annotiontest.AnnotationType
 public class AnnotationTest {
 	private static String tableName;
 	

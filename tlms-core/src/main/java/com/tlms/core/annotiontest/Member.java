@@ -1,4 +1,4 @@
-package com.tlms.core.annotion;
+package com.tlms.core.annotiontest;
 
 @DBTable(name="MEMBER")
 public class Member {
