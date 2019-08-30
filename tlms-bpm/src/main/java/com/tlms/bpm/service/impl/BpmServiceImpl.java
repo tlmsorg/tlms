@@ -10,8 +10,10 @@ import java.util.UUID;
 
 import org.activiti.bpmn.BpmnAutoLayout;
 import org.activiti.bpmn.converter.BpmnXMLConverter;
+import org.activiti.bpmn.model.ActivitiListener;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.EndEvent;
+import org.activiti.bpmn.model.ImplementationType;
 import org.activiti.bpmn.model.Process;
 import org.activiti.bpmn.model.SequenceFlow;
 import org.activiti.bpmn.model.StartEvent;
@@ -257,6 +259,9 @@ public class BpmServiceImpl implements IBpmService{
 		}
 		
 		List<Task> currTaskList = taskService.createTaskQuery().taskCandidateGroupIn(groupIdList).list();//候选组列表待办任务
+		if(currTaskList == null || (currTaskList != null && currTaskList.size() == 0)) {
+			currTaskList = taskService.createTaskQuery().taskAssignee(userId).list();//候选人待办任务
+		}
 //		List<Task> currTaskList = taskService.createTaskQuery().taskAssignee(userId).list();//候选人待办任务
 //		List<Task> currTaskList = taskService.createTaskQuery().taskCandidateGroup("deptLeader").list();
 //		List<Task> currTaskList = taskService.createTaskQuery().taskCandidateUser(userId).list();//候选人待办任务
@@ -361,15 +366,18 @@ public class BpmServiceImpl implements IBpmService{
         ObjectNode stencilSetNode = objectMapper.createObjectNode();  
         stencilSetNode.put("namespace", "http://b3mn.org/stencilset/bpmn2.0#");  
         editorNode.set("stencilset", stencilSetNode);  
+        //初始化模型对象
         Model modelData = repositoryService.newModel();  
-        
-        ObjectNode modelObjectNode = objectMapper.createObjectNode();  
-//      modelObjectNode.put(MODEL_NAME, actReModel.getName());  
-//      modelObjectNode.put(MODEL_REVISION, 1);  
-        modelObjectNode.put("myFieldName", "属性已");
-        //String description = null;  
-//      modelObjectNode.put(MODEL_DESCRIPTION, descp);  
-        modelData.setMetaInfo(modelObjectNode.toString());  
+		/*
+		ObjectNode modelObjectNode = objectMapper.createObjectNode();  
+		//      modelObjectNode.put(MODEL_NAME, actReModel.getName());  
+		//      modelObjectNode.put(MODEL_REVISION, 1);  
+		modelObjectNode.put("myFieldName", "属性已");
+		//String description = null;  
+		//      modelObjectNode.put(MODEL_DESCRIPTION, descp);  
+		modelData.setMetaInfo(modelObjectNode.toString());  
+		*/
+        modelData.setMetaInfo("模型元数据信息");
 //      modelData.setName(actReModel.getName());  
         modelData.setName("model名称");
         repositoryService.saveModel(modelData);  
@@ -487,12 +495,26 @@ public class BpmServiceImpl implements IBpmService{
 		/**
 		 * 发布流程定义时，指定各节点候选人、候选组
 		 */
-		Process process = bpmnModel.getProcessById("leaveProcessXXKJ");
+//		Process process = bpmnModel.getProcessById("leaveProcessXXKJ");
+		Process process = bpmnModel.getProcesses().get(0);
 		UserTask ldspTask = (UserTask) process.getFlowElement("deptLeaderAudit");
 		List<String> ldspCandidateGroup = ldspTask.getCandidateGroups();
 		List<String> candidateGroups = new ArrayList();
 		candidateGroups.add("001");//001:group id
 		ldspTask.setCandidateGroups(candidateGroups);
+//		ldspTask.setAssignee("002");
+		//添加代办监听
+		List<ActivitiListener> activitiListeners = new ArrayList<ActivitiListener>();
+		ActivitiListener activitiListener = new ActivitiListener();
+		activitiListener.setEvent("create");
+		/**
+		 * 注意：必须加入类型
+		 */
+		activitiListener.setImplementationType(ImplementationType.IMPLEMENTATION_TYPE_CLASS);
+		activitiListener.setImplementation("com.tlms.bpm.listener.TaskAutoRedirectListener");
+		activitiListeners.add(activitiListener);
+		ldspTask.setTaskListeners(activitiListeners);
+		
 		
 		UserTask hrspTask = (UserTask) process.getFlowElement("hrAudit");
 		List<String> hrspCandidateGroups = new ArrayList();

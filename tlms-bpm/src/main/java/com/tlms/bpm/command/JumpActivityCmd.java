@@ -18,7 +18,7 @@ public class JumpActivityCmd implements Command<ExecutionEntity>{
 	@Override
 	public ExecutionEntity execute(CommandContext commandContext) {
 		ExecutionEntity executionEntity = commandContext.getExecutionEntityManager().findExecutionById(procInstId);
-		executionEntity.destroyScope("销毁原因");
+		executionEntity.destroyScope("退回原因：客户资料缺失，请重新提交资料");
 		ProcessDefinitionImpl procDef = executionEntity.getProcessDefinition();
 		ActivityImpl activity = procDef.findActivity(activityId);
 		executionEntity.executeActivity(activity);
