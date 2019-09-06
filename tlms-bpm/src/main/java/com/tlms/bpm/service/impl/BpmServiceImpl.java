@@ -3,6 +3,7 @@ package com.tlms.bpm.service.impl;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.ActivitiListener;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.EndEvent;
+import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.ImplementationType;
 import org.activiti.bpmn.model.Process;
 import org.activiti.bpmn.model.SequenceFlow;
@@ -28,13 +30,18 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.impl.RepositoryServiceImpl;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.PvmTransition;
+import org.activiti.engine.impl.pvm.ReadOnlyProcessDefinition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.activiti.engine.impl.pvm.process.TransitionImpl;
 import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
+import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.DelegationState;
 import org.activiti.engine.task.Task;
 import org.activiti.image.ProcessDiagramGenerator;
 import org.activiti.spring.SpringProcessEngineConfiguration;
@@ -269,6 +276,9 @@ public class BpmServiceImpl implements IBpmService{
 		for (Task task : currTaskList) {
 			ProcessInstanceVo piv = new ProcessInstanceVo();
 			String processInstId = task.getProcessInstanceId();
+			//表单数据
+			String formKey = task.getFormKey();
+			logger.info("任务ID："+task.getId()+"|处理人："+task.getAssignee() + "|表单数据:"+formKey);
 			ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstId).singleResult();
 			piv.setId(pi.getId());
 			piv.setProcInstId(pi.getProcessInstanceId());
@@ -290,33 +300,116 @@ public class BpmServiceImpl implements IBpmService{
 		//先签收，再提交,否则无法记录处理人
 		taskService.claim(task.getId(), userId);
 		
-		 Map<String,Object> processVariables = runtimeService.getVariables(task.getExecutionId());
+		Map<String,Object> processVariables = runtimeService.getVariables(task.getExecutionId());
 		logger.info("审批通过,获取流程变量processVariables:"+processVariables);
 		Map<String,Object> variables = new HashMap<String,Object>();
 		variables.put("bmldComment", "部门领导审批意见：通过");
+		String message = "审批备注";
 		if(task.getTaskDefinitionKey().equals("deptLeaderAudit")){
 			variables.put("deptLeaderApproved", "true");
-			managementServiceImpl.executeCommand(new JumpActivityCmd("reportBack", procInstId));
+			//模拟任意节点跳转
+//			managementServiceImpl.executeCommand(new JumpActivityCmd("reportBack", procInstId));
+			message= "领导审批备注";
+			this.jumpEndActivity("reportBack", procInstId);
+			this.doCommit(task, variables, message);
 		}else if(task.getTaskDefinitionKey().equals("hrAudit")){
 			variables.put("hrApproved", "true");
-//			task.setAssignee("001");
+			task.setAssignee("001");
+			message= "人力资源审批备注";
 		}else if(task.getTaskDefinitionKey().equals("reportBack")){
-			variables.put("hrApproved", "true");
-//			task.setAssignee("001");
+			variables.put("reportBack", "true");
+			task.setAssignee("001");
+			//模拟任意节点跳转
+//			managementServiceImpl.executeCommand(new JumpActivityCmd("deptLeaderAudit", procInstId));
+			message= "消假备注";
+			this.jumpEndActivity("deptLeaderAudit", procInstId);
+			this.doCommit(task, variables, message);
+		}else if(task.getTaskDefinitionKey().equals("modifyApply")){
+			variables.put("reApply", "true");
+			task.setAssignee("001");
+			//模拟任意节点跳转
 			managementServiceImpl.executeCommand(new JumpActivityCmd("deptLeaderAudit", procInstId));
+			message= "调整备注";
 		}
-		/*DelegationState delegationState = task.getDelegationState();
+		/*
+		//如下代码是正常提交
+		DelegationState delegationState = task.getDelegationState();
 		if(DelegationState.PENDING.equals(delegationState)){
 			Map<String,Object> delegateVars = new HashMap<String,Object>();
 			delegateVars.put("delegateComment", "待办意见");
 			taskService.resolveTask(task.getId(), delegateVars);
 			taskService.complete(task.getId(), variables);
 		}else if("".equals("delegationState") || delegationState == null || "".equals("null")){
+			taskService.addComment(task.getId(), procInstId, message+"11111");
+			taskService.addComment(task.getId(), procInstId,"redirect", message);
 			taskService.complete(task.getId(), variables);
-		}*/
-		
-			
+		}
+		*/	
  		
+	}
+	
+	//提交
+	public void doCommit(Task task,Map<String,Object> variables,String message) {
+		//如下代码是正常提交
+		DelegationState delegationState = task.getDelegationState();
+		if(DelegationState.PENDING.equals(delegationState)){
+			Map<String,Object> delegateVars = new HashMap<String,Object>();
+			delegateVars.put("delegateComment", "待办意见");
+			taskService.resolveTask(task.getId(), delegateVars);
+			taskService.complete(task.getId(), variables);
+		}else if("".equals("delegationState") || delegationState == null || "".equals("null")){
+			taskService.addComment(task.getId(), task.getProcessInstanceId(), message+"11111");
+			taskService.addComment(task.getId(), task.getProcessInstanceId(),"redirect", message);
+			taskService.complete(task.getId(), variables);
+		}
+	}
+	
+	public void jumpEndActivity(String targetActivityId,String procInstId) {
+		ActivityImpl currActivity = this.queryCurrActivity(procInstId);
+		ActivityImpl targetActivity =this.queryTargetActivity(targetActivityId, procInstId);
+		List<PvmTransition> outGoingTransions = currActivity.getOutgoingTransitions();
+		/**
+		 * 修改目标活动
+		 */
+		for (PvmTransition pvmTransition : outGoingTransions) {
+			TransitionImpl trasitionImpl = (TransitionImpl) pvmTransition;
+			//原始目标活动
+			ActivityImpl originTargetActivity = trasitionImpl.getDestination();
+			System.out.println("原始目标活动："+originTargetActivity.getId());
+			//跳转后目标活动
+			trasitionImpl.setDestination(targetActivity);
+			System.out.println("跳转后目标活动："+targetActivity.getId());
+		}
+	}
+	
+	public ActivityImpl queryCurrActivity(String procInstId) {
+		ActivityImpl currActivity = null;
+		//当前执行对象
+		Execution currExecution = runtimeService.createExecutionQuery().processInstanceId(procInstId).singleResult();
+		//当前活动ID
+		String activityId = currExecution.getActivityId();
+		//当前活动
+		currActivity = this.queryTargetActivity(activityId, procInstId);
+		return currActivity;
+	}
+	
+	public ActivityImpl queryTargetActivity(String targetActivityId,String procInstId) {
+		ActivityImpl activityImpl = null;
+		//获取指定流程实例ID的流程实例
+		ProcessInstance  currProcessInstance = runtimeService.createProcessInstanceQuery().processInstanceId(procInstId).singleResult();
+		//获取流程对应的流程定义ID
+		String processDefinitionId = currProcessInstance.getProcessDefinitionId();
+		ReadOnlyProcessDefinition deployedProcessDefinition = ((RepositoryServiceImpl)repositoryService).getDeployedProcessDefinition(processDefinitionId);
+		//流程实例对应版本的流程定义中，所有活动
+		List<ActivityImpl> activities = (List<ActivityImpl>) deployedProcessDefinition.getActivities();
+		for (ActivityImpl tmpActivity : activities) {
+			if(targetActivityId.equals(tmpActivity.getId())) {
+				//找到目标活动
+				activityImpl = tmpActivity;
+				break;
+			}
+		}
+		return activityImpl;
 	}
 
 	@Override
@@ -326,6 +419,10 @@ public class BpmServiceImpl implements IBpmService{
 		Map<String,Object> variables = new HashMap<String,Object>();
 		variables.put("gjComment", "个金审批意见：拒绝");
 		variables.put("type", 2);
+		//人力资源拒绝
+		variables.put("hrApproved", "false");
+		//调整申请
+		variables.put("reApply", "false");
 		taskService.complete(task.getId(), variables);
 	}
 	
@@ -497,6 +594,13 @@ public class BpmServiceImpl implements IBpmService{
 		 */
 //		Process process = bpmnModel.getProcessById("leaveProcessXXKJ");
 		Process process = bpmnModel.getProcesses().get(0);
+		
+		//测试获取所有流程节点
+		Collection<FlowElement> flowElements = process.getFlowElements();
+		for (FlowElement flowElement : flowElements) {
+			System.out.println("流程元素ID："+flowElement.getId());
+		}
+		
 		UserTask ldspTask = (UserTask) process.getFlowElement("deptLeaderAudit");
 		List<String> ldspCandidateGroup = ldspTask.getCandidateGroups();
 		List<String> candidateGroups = new ArrayList();
@@ -514,6 +618,8 @@ public class BpmServiceImpl implements IBpmService{
 		activitiListener.setImplementation("com.tlms.bpm.listener.TaskAutoRedirectListener");
 		activitiListeners.add(activitiListener);
 		ldspTask.setTaskListeners(activitiListeners);
+		
+		ldspTask.setFormKey("领导审批表单配置数据");
 		
 		
 		UserTask hrspTask = (UserTask) process.getFlowElement("hrAudit");
