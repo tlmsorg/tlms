@@ -266,6 +266,8 @@ public class BpmServiceImpl implements IBpmService{
 		}
 		
 		List<Task> currTaskList = taskService.createTaskQuery().taskCandidateGroupIn(groupIdList).list();//候选组列表待办任务
+		//查询某个用户在某只流程某个节点上的待办任务
+//		taskService.createTaskQuery().processDefinitionId("SMCS").taskDefinitionKey("smcs").taskAssignee("160068").list();
 		if(currTaskList == null || (currTaskList != null && currTaskList.size() == 0)) {
 			currTaskList = taskService.createTaskQuery().taskAssignee(userId).list();//候选人待办任务
 		}
