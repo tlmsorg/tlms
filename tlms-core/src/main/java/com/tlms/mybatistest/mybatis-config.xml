@@ -4,13 +4,21 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <!-- 根标签 -->
 <configuration>
-<properties>
-	<property name="driver" value="com.mysql.jdbc.Driver"/>
-	<property name="url" value="jdbc:mysql://127.0.0.1:3306/mybatis-110?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true"/>
-	<property name="username" value="root"/>
-    	<property name="password" value="123456"/>
-   </properties>
 
+	<properties>
+		<property name="driver" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true"/>
+		<property name="username" value="root"/>
+		<property name="password" value="root"/>
+	</properties>
+
+	<settings>
+		<!-- 返回结果为map时，显示null字段，对于resultType为对象时，本设置无用，本设置主要针对resultType为map -->
+		<setting name="callSettersOnNulls" value="true"/>
+		<!-- 结果集映射时下划线转驼峰命名,默认为：false -->
+		<setting name="mapUnderscoreToCamelCase" value="true"></setting>
+	</settings>
+	
    <!-- 环境，可以配置多个，default：指定采用哪个环境 -->
    <environments default="test">
       <!-- id：唯一标识 -->
@@ -20,9 +28,9 @@
          <!-- 数据源，池类型的数据源 -->
          <dataSource type="POOLED">
             <property name="driver" value="com.mysql.jdbc.Driver" />
-            <property name="url" value="jdbc:mysql://127.0.0.1:3306/mybatis-110" />
+            <property name="url" value="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true" />
             <property name="username" value="root" />
-            <property name="password" value="123456" />
+            <property name="password" value="root" />
          </dataSource>
       </environment>
       <environment id="development">
@@ -37,4 +45,12 @@
          </dataSource>
       </environment>
    </environments>
+   <mappers>
+		<mapper resource="com/tlms/mybatistest/MyMapper1.xml"/>
+		<mapper resource="com/tlms/mybatistest/MyMapper2.xml"/>
+		<mapper resource="com/tlms/mybatistest/MyMapper3.xml"/>
+   </mappers>
+   
+   
+   
   </configuration>

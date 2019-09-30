@@ -1,4 +1,4 @@
-package com.tlms.core.proxy.test;
+package com.tlms.core.proxy;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,6 +10,15 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+/**
+ * @company 潽金金融
+ * @project_name tlms-core
+ * @ClassName ProxyTest
+ * @Description 动态代理测试
+ * @author 160068
+ * @date 2019年9月30日 下午3:18:01
+ * @version V1.0
+ */
 public class ProxyTest {
 
 	
@@ -19,10 +28,12 @@ public class ProxyTest {
 	}
 	
 	static class SubjectImpl implements ISubject,Serializable{
+		
+
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 1660559793071510074L;
 
 		@Override
 		public String doSave1(String name) {
@@ -84,36 +95,39 @@ public class ProxyTest {
 	 */
 	public void method2() throws Exception {
 		ISubject subjectImpl = new SubjectImpl();
-		//1、获取代理类class
+		//1、获取代理类class（获取proxy class）
 		Class proxyClass = Proxy.getProxyClass(ISubject.class.getClassLoader(), new Class[] {ISubject.class});
-		//2、获取代理类contructor
+		//2、获取代理类contructor（获取proxy contructor）
 		Constructor constructor = proxyClass.getConstructor(new Class[] {InvocationHandler.class});
-		//3、获取代理对象
+		//3、获取代理对象（获取proxy object）
 		ISubject subjectProxy = (ISubject) constructor.newInstance(new ProxyInvocationHandler(subjectImpl));
 		subjectProxy.doSave1("method2");
 	}
 	
 	public void serilizeObj() throws Exception {
+		System.out.println("*********begin serialize***********");
 		ISubject subjectImpl = new SubjectImpl();
 		FileOutputStream fos = new FileOutputStream("d://objSerilizable.txt");
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		oos.writeObject(subjectImpl);
 		oos.close();
 		fos.close();
+		System.out.println("*********end serialize***********");
 	}
 	
 	public void deSerilizeObj() throws Exception {
-		
+		System.out.println("*********begin deSerialize***********");
 		FileInputStream fis = new FileInputStream("d://objSerilizable.txt");
 		ObjectInputStream ois = new ObjectInputStream(fis);
 //		ISubject subjectImpl = (ISubject) ois.readObject();
 		Object obj = ois.readObject();
 		System.out.println(obj.getClass().getName());
-		fis.close();
+		ois.close();
 		fis.close();
 //		subjectImpl.doSave1("deSerilizeObj--->brignttang");
 		ISubject subjectProxy = (ISubject) Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), new ProxyInvocationHandler(obj));
 		subjectProxy.doSave1("deSerilizeObj--->brignttang");
+		System.out.println("*********end deSerialize***********");
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -121,10 +135,10 @@ public class ProxyTest {
 		/**
 		 * 先执行序列化，再执行反序列化
 		 */
-//		test.serilizeObj();
-//		test.deSerilizeObj();
-		new ProxyTest().method1();
-//		new ProxyTest().method2();
+		test.serilizeObj();
+		test.deSerilizeObj();
+//		new ProxyTest().method1();
+		new ProxyTest().method2();
 	}
 
 }

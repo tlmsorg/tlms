@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MyMapper2">
+
+	<!-- 查询参数类型：对象 -->
+	<select id="selectSysAccountById1" 
+			parameterType="com.tlms.mybatistest.SysAccountReqDto"
+			resultType="com.tlms.mybatistest.SysAccountRespDto">
+		select 
+			a.*
+		from  sys_account a
+		where 1=1
+		<if test="id != null and id != ''">
+			and id = #{id}
+		</if>
+	</select>
+	
+	<!-- 查询参数类型：字符串 -->
+	<select id="selectSysAccountById2" 
+			parameterType="String"
+			resultType="com.tlms.mybatistest.SysAccountRespDto">
+		select 
+			a.*
+		from  sys_account a
+		where id = #{id}
+	</select>
+	
+</mapper>

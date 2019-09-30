@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tlms.mybatistest.SysAccountDao">
+
+	<!-- 查询参数类型：对象 -->
+	<select id="selectByParams" 
+			parameterType="com.tlms.mybatistest.SysAccountReqDto"
+			resultType="com.tlms.mybatistest.SysAccountRespDto">
+		select 
+			a.*
+		from  sys_account a
+		where 1=1
+		<if test="id != null and id != ''">
+			and a.id = #{id,jdbcType=VARCHAR}
+		</if>
+		<if test="name != null and name != ''">
+			and a.name = #{name,jdbcType=VARCHAR}
+		</if>
+		<if test="age != null and age != ''">
+			and a.age = #{age,jdbcType=INTEGER}
+		</if>
+		<if test="salary != null and salary != ''">
+			and a.salary = #{salary,jdbcType=DOUBLE}
+		</if>
+	</select>
+	
+</mapper>
