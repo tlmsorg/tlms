@@ -20,6 +20,9 @@ import com.tlms.bpm.vo.ModelVo;
 import com.tlms.bpm.vo.ProcessDefVo;
 import com.tlms.bpm.vo.ProcessInstanceVo;
 
+import io.swagger.annotations.Api;
+
+@Api(tags="流程控制")
 @RestController
 @ResponseBody
 public class BpmController {

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DbCreate {
+public class DbCreateMain {
 
 	private static String getConstraints(Constraints con) {
 	    String constraints = "";
@@ -25,7 +25,7 @@ public class DbCreate {
 		List<String> columnDefs = new ArrayList<String>();
 		
 		Member member = new Member();
-		Class<?> memberClass = Class.forName("com.tlms.core.annotion.Member");
+		Class<?> memberClass = Class.forName("com.tlms.core.annotiontest.Member");
 		System.out.println(memberClass.getClassLoader());
 		DBTable dbTable = memberClass.getAnnotation(DBTable.class);
 		String tableName = dbTable.name();
@@ -81,8 +81,8 @@ public class DbCreate {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		DbCreate dbCreate = new DbCreate();
-		dbCreate.createTableSql("com.tlms.core.annotion.Member");
+		DbCreateMain dbCreate = new DbCreateMain();
+		dbCreate.createTableSql("com.tlms.core.annotiontest.Member");
 	}
 
 }

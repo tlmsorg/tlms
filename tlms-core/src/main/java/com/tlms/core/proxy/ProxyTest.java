@@ -19,9 +19,9 @@ import java.lang.reflect.Proxy;
  * @date 2019年9月30日 下午3:18:01
  * @version V1.0
  */
-public class ProxyTest {
+public class ProxyTest implements Serializable{
 
-	
+
 	static interface ISubject{
 		String doSave1(String name);
 		String doSave2(String name,String age);

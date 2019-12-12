@@ -66,6 +66,8 @@ public class ContructorTest implements Serializable{
 		//获取proxy object
 		UserLogin userLoginProxy = (UserLogin) contructor.newInstance(new ProxyInvocationHandler(userLogin));
 		String result = userLoginProxy.login("160010", "111111");
+		
+		
 		System.out.println("最终结果："+result);
 	}
 
