@@ -35,7 +35,7 @@
 
 		<fastjson.version>1.2.29</fastjson.version>
 		<dubbo.version>2.5.4-SNAPSHOT</dubbo.version>
-		<zookeeper.version>3.4.8</zookeeper.version>
+		<zookeeper.version>3.4.14</zookeeper.version>
 		<zkclient.version>0.1</zkclient.version>
 		<dubbo-pjrp-api.version>1.0.9.20170705.RELEASE</dubbo-pjrp-api.version>
 		<rocketmq.version>4.1.0-incubating</rocketmq.version>
