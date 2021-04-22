@@ -29,7 +29,7 @@
 		<mule.version>3.4.0</mule.version>
 		<oracle.version>10.2.0.1.0</oracle.version>
 		<!-- mybatis版本号 -->
-		<mybatis.version>3.2.6</mybatis.version>
+		<mybatis.version>3.5.6</mybatis.version>
 		<!-- 设置编码为UTF-8 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
