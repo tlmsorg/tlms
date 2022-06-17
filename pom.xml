@@ -33,7 +33,7 @@
 		<!-- 设置编码为UTF-8 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<fastjson.version>1.2.29</fastjson.version>
+		<fastjson.version>1.2.83</fastjson.version>
 		<dubbo.version>2.5.4-SNAPSHOT</dubbo.version>
 		<zookeeper.version>3.4.8</zookeeper.version>
 		<zkclient.version>0.1</zkclient.version>
